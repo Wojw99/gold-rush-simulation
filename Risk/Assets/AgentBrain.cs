@@ -5,34 +5,53 @@ using UnityEngine;
 
 public class AgentBrain : MonoBehaviour
 {
-    public GoalName Goal { get; private set; }
+    public GoalName goal;
 
     public event Action<GoalName> GoalChanged;
+
+    private AgentStatus agentStatus;
     
     private void Start()
     {
+        agentStatus = GetComponent<AgentStatus>();
         StartCoroutine(StartSitting());
         StartCoroutine(StartWalking());
+    }
+
+    private void Update() {
+        goal = GoalName.SEARCH_FOR_DEPOSIT;
+        GoalChanged?.Invoke(goal);
+
+        if(agentStatus.nearestSpottedDeposit != null) {
+            goal = GoalName.GO_TO_NEAREST_DEPOSIT;
+            GoalChanged?.Invoke(goal);
+        }
+
+        if(agentStatus.collidedDeposit != null) {
+            goal = GoalName.MINE_DEPOSIT;
+            GoalChanged?.Invoke(goal);
+        }
     }
 
     private IEnumerator StartSitting()
     {
         yield return new WaitForSeconds(1);
-        Goal = GoalName.FREEZE;
-        GoalChanged?.Invoke(Goal);
+        goal = GoalName.FREEZE;
+        GoalChanged?.Invoke(goal);
     }
 
     private IEnumerator StartWalking()
     {
         yield return new WaitForSeconds(4);
-        Goal = GoalName.SEARCH_FOR_DEPOSIT;
-        GoalChanged?.Invoke(Goal);
+        goal = GoalName.SEARCH_FOR_DEPOSIT;
+        GoalChanged?.Invoke(goal);
     }
 
     public enum GoalName
     {
         FREEZE,
         SEARCH_FOR_DEPOSIT,
+        GO_TO_NEAREST_DEPOSIT,
         MINE_DEPOSIT,
         RUN_FOR_YOUR_LIFE
     }

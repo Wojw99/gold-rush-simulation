@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class AgentStatus : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public float health;
+    public float stamina;
+    public float ore;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public GameObject nearestSpottedDeposit;
+    public GameObject collidedDeposit;
 }

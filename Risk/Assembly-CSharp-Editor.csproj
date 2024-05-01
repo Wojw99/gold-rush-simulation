@@ -717,6 +717,9 @@
     <Reference Include="Unity.RenderPipelines.Universal.Runtime">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.AI.Navigation">
+        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.AI.Navigation.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Burst.Editor">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
     </Reference>
@@ -777,6 +780,9 @@
     <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.AI.Navigation.Updater">
+        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.AI.Navigation.Updater.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VisualScripting.State.Editor">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualScripting.State.Editor.dll</HintPath>
     </Reference>
@@ -798,8 +804,14 @@
     <Reference Include="Unity.RenderPipelines.Universal.Shaders">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.AI.Navigation.Editor">
+        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.AI.Navigation.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VisualScripting.State">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.AI.Navigation.Editor.ConversionSystem">
+        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.AI.Navigation.Editor.ConversionSystem.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>

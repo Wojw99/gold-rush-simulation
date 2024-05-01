@@ -41,12 +41,16 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\AgentStatus.cs" />
+     <Compile Include="Assets\AgentVision.cs" />
+     <Compile Include="Assets\Deposit.cs" />
      <Compile Include="Assets\AnimationController.cs" />
      <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\MouseLook.cs" />
+     <Compile Include="Assets\AgentSensor.cs" />
      <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
      <Compile Include="Assets\AgentBrain.cs" />
      <Compile Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Scripts\PT_Create_Prefab.cs" />
      <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\PlayerMovement.cs" />
+     <Compile Include="Assets\AgentInteractor.cs" />
      <Compile Include="Assets\MotionController.cs" />
      <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Water_Shader_WebGl.shader" />
      <None Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Modular_NPC\Shaders\PT_Modular_NPC_Shader_Toon.shader" />
@@ -789,11 +793,11 @@
     <Reference Include="Unity.VisualScripting.State">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.VSCode.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.AI.Navigation.Editor.ConversionSystem">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.AI.Navigation.Editor.ConversionSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VSCode.Editor">
+        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Editor">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Editor.dll</HintPath>
