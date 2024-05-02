@@ -9,11 +9,14 @@ public class MotionController : MonoBehaviour
     private AgentBrain agentBrain;
     private AgentStatus agentStatus;
 
+    private float runSpeed = 6f;
+
     private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         agentBrain = GetComponent<AgentBrain>();
         agentStatus = GetComponent<AgentStatus>();
+        // navMeshAgent.speed = agentStatus.walkSpeed;
     }
 
     private void Update()
@@ -38,6 +41,12 @@ public class MotionController : MonoBehaviour
 
         if(agentBrain.goal == AgentBrain.GoalName.MINE_DEPOSIT) {
             navMeshAgent.isStopped = true;
+        }
+
+        if(agentBrain.goal == AgentBrain.GoalName.RUN_FOR_YOUR_LIFE) {
+            // set destination to the opposite side of the nearest spotted undead
+            navMeshAgent.SetDestination(transform.position + (transform.position - agentStatus.nearestSpottedUndead.transform.position));
+            navMeshAgent.speed = runSpeed;
         }
 
         // When some of animations are interrupted, position and rotation of the avatar are changing. This is a workaround to fix it.

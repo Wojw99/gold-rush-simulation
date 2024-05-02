@@ -5,11 +5,9 @@ using UnityEngine;
 public class Deposit : MonoBehaviour
 {
     public GameObject sphere;
-
     public float maxOre = 6;
     private float currentOre;
     private AgentInteractor agentInteractor;
-
     public bool isOccupied = false;
 
     private void Start() {

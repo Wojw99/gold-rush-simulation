@@ -40,19 +40,27 @@
     <Analyzer Include="D:\Program Files\Unity\2022.3.4f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\AgentStatus.cs" />
-     <Compile Include="Assets\AgentVision.cs" />
-     <Compile Include="Assets\Deposit.cs" />
-     <Compile Include="Assets\AnimationController.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\UndeadInteractor.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\AgentStatus.cs" />
+     <Compile Include="Assets\RTS_Camera\Demo\DemoScene.cs" />
+     <Compile Include="Assets\RTS_Camera\Demo\TargetSelector.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\AgentInteractor.cs" />
      <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\MouseLook.cs" />
-     <Compile Include="Assets\AgentSensor.cs" />
      <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
-     <Compile Include="Assets\AgentBrain.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\MotionController.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\AgentBrain.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\MainCameraController.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\AgentSensor.cs" />
+     <Compile Include="Assets\RTS_Camera\Scripts\RTS_Camera.cs" />
      <Compile Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Scripts\PT_Create_Prefab.cs" />
      <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\PlayerMovement.cs" />
-     <Compile Include="Assets\AgentInteractor.cs" />
-     <Compile Include="Assets\MotionController.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\AgentVision.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\AnimationController.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\Deposit.cs" />
+     <None Include="Assets\RTS_Camera\Demo\Projectors\Shaders\ProjectorLight.shader" />
+     <None Include="Assets\RTS_Camera\Demo\Projectors\Shaders\ProjectorMultiply.shader" />
      <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Water_Shader_WebGl.shader" />
+     <None Include="Assets\RTS_Camera\Demo\Projectors\Guidelines.txt" />
      <None Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Modular_NPC\Shaders\PT_Modular_NPC_Shader_Toon.shader" />
      <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Plants_Shader.shader" />
      <None Include="Assets\Polytope Studio\Lowpoly_Weapons\Sources\Shaders\PT_Weapons_Shader_Toon.shader" />

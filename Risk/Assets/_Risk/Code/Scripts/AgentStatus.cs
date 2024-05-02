@@ -10,4 +10,9 @@ public class AgentStatus : MonoBehaviour
 
     public GameObject nearestSpottedDeposit;
     public GameObject collidedDeposit;
+    public GameObject nearestSpottedUndead;
+
+    private void Start() {
+
+    }
 }

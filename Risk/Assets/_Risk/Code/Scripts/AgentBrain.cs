@@ -31,6 +31,11 @@ public class AgentBrain : MonoBehaviour
             goal = GoalName.MINE_DEPOSIT;
             GoalChanged?.Invoke(goal);
         }
+
+        if(agentStatus.nearestSpottedUndead != null) {
+            goal = GoalName.RUN_FOR_YOUR_LIFE;
+            GoalChanged?.Invoke(goal);
+        }
     }
 
     private IEnumerator StartSitting()
