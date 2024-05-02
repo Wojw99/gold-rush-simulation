@@ -43,8 +43,10 @@
      <Compile Include="Assets\_Risk\Code\Scripts\UndeadInteractor.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentStatus.cs" />
      <Compile Include="Assets\RTS_Camera\Demo\DemoScene.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\Campfire.cs" />
      <Compile Include="Assets\RTS_Camera\Demo\TargetSelector.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentInteractor.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\StatusController.cs" />
      <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\MouseLook.cs" />
      <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\MotionController.cs" />

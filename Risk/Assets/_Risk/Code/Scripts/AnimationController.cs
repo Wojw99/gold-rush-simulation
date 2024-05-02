@@ -24,15 +24,22 @@ public class AnimationController : MonoBehaviour
     }
 
     private void ChangeAnimatorBasedOnGoal(AgentBrain.GoalName goal) {
-        if (goal == AgentBrain.GoalName.FREEZE) {
+        if (goal == AgentBrain.GoalName.FREEZE 
+            || goal == AgentBrain.GoalName.TAKE_REST) {
             animator.SetBool(IS_SITTING, true);
-        } else if (goal == AgentBrain.GoalName.SEARCH_FOR_DEPOSIT) {
+        } 
+        if (goal == AgentBrain.GoalName.SEARCH_FOR_DEPOSIT 
+            || goal == AgentBrain.GoalName.SEARCH_FOR_REST) {
             animator.SetBool(IS_WALKING, true);
-        } else if (goal == AgentBrain.GoalName.GO_TO_NEAREST_DEPOSIT) {
+        } 
+        if (goal == AgentBrain.GoalName.GO_TO_NEAREST_DEPOSIT 
+            || goal == AgentBrain.GoalName.GO_TO_NEAREST_REST) {
             animator.SetBool(IS_WALKING, true);
-        } else if (goal == AgentBrain.GoalName.MINE_DEPOSIT) {
+        } 
+        if (goal == AgentBrain.GoalName.MINE_DEPOSIT) {
             animator.SetBool(IS_DIGGING, true);
-        } else if (goal == AgentBrain.GoalName.RUN_FOR_YOUR_LIFE) {
+        } 
+        if (goal == AgentBrain.GoalName.RUN_FOR_YOUR_LIFE) {
             animator.SetBool(IS_RUNNING, true);
         }
     }

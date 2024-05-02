@@ -5,7 +5,7 @@ using UnityEngine;
 public class Deposit : MonoBehaviour
 {
     public GameObject sphere;
-    public float maxOre = 6;
+    public float maxOre = 5;
     private float currentOre;
     private AgentInteractor agentInteractor;
     public bool isOccupied = false;
@@ -23,13 +23,14 @@ public class Deposit : MonoBehaviour
             currentOre -= Time.deltaTime;
             if (currentOre <= 0) {
                 isOccupied = false;
-                agentInteractor.OnDepositRunOut();
+                agentInteractor.OnDepositExtracted();
                 Destroy(gameObject);
             }
         }
     }
 
     public void OnSeen() {
+        if(sphere.activeSelf) return;
         sphere.SetActive(true);
         StartCoroutine(DeactivateAfterSeconds(3));
     }
@@ -53,6 +54,7 @@ public class Deposit : MonoBehaviour
         if (isOccupied && other.TryGetComponent(out AgentInteractor agentInteractor))
         {
             isOccupied = false;
+            agentInteractor.OnDepositInterrupted();
             this.agentInteractor = null;
         }
     }
