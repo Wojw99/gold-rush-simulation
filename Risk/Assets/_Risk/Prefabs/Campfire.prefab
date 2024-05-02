@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7291121969212465065}
-  - component: {fileID: 7880473444315239454}
   - component: {fileID: 8409124243222855730}
   - component: {fileID: 4081143964244348964}
+  - component: {fileID: 392171571592329630}
+  - component: {fileID: 7376386241249372399}
   m_Layer: 0
   m_Name: Campfire
   m_TagString: Untagged
@@ -33,20 +34,8 @@ Transform:
   m_Children:
   - {fileID: 3239785949121654490}
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7880473444315239454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3681096033873725355}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ad580b7cc27fc64685b630e689de514, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &8409124243222855730
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -91,6 +80,33 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.47
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &392171571592329630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3681096033873725355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e195dcef8660a0d4d9773f8894d5eafe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionType: 1
+  isOccupied: 0
+--- !u!114 &7376386241249372399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3681096033873725355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bcd11b6b4d4e3540bd4c1f586ee3af5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visionType: 2
 --- !u!1001 &4165486755178164640
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -16,7 +17,6 @@ public class MotionController : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         agentBrain = GetComponent<AgentBrain>();
         agentStatus = GetComponent<AgentStatus>();
-        // navMeshAgent.speed = agentStatus.walkSpeed;
     }
 
     private void Update()
@@ -37,11 +37,13 @@ public class MotionController : MonoBehaviour
         }
 
         if(agentBrain.goal == AgentBrain.GoalName.GO_TO_NEAREST_DEPOSIT) {
-            navMeshAgent.SetDestination(agentStatus.nearestSpottedDeposit.transform.position);
+            var destination = GetTransformOfNearestVisible(agentStatus.visibles, VisionType.DEPOSIT);
+            navMeshAgent.SetDestination(destination.position);
         }
 
         if(agentBrain.goal == AgentBrain.GoalName.GO_TO_NEAREST_REST) {
-            navMeshAgent.SetDestination(agentStatus.nearestSpottedRest.transform.position);
+            var destination = GetTransformOfNearestVisible(agentStatus.visibles, VisionType.REST);
+            navMeshAgent.SetDestination(destination.position);
         }
 
         if(agentBrain.goal == AgentBrain.GoalName.MINE_DEPOSIT 
@@ -51,12 +53,21 @@ public class MotionController : MonoBehaviour
 
         if(agentBrain.goal == AgentBrain.GoalName.RUN_FOR_YOUR_LIFE) {
             // set destination to the opposite side of the nearest spotted undead
-            navMeshAgent.SetDestination(transform.position + (transform.position - agentStatus.nearestSpottedUndead.transform.position));
+            var nearestSpottedUndead = GetTransformOfNearestVisible(agentStatus.visibles, VisionType.UNDEAD);
+
+            navMeshAgent.SetDestination(transform.position + (transform.position - nearestSpottedUndead.transform.position));
             navMeshAgent.speed = runSpeed;
         }
 
         // When some of animations are interrupted, position and rotation of the avatar are changing. This is a workaround to fix it.
         EqialiseTransforms(transform, transform.GetChild(0)); // TODO: maybe should be used only once at the end of movement
+    }
+
+    private Transform GetTransformOfNearestVisible(List<VisionObject> visibles, VisionType visionType)
+    {
+        var visibleOrdered = visibles.OrderBy(v => Vector3.Distance(transform.position, v.gameObject.transform.position));
+        var nearestVisible = visibleOrdered.FirstOrDefault(v => v.visionType == visionType);
+        return nearestVisible.gameObject.transform;
     }
 
     private void EqialiseTransforms(Transform source, Transform target)

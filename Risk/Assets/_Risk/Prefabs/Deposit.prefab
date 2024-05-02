@@ -114,8 +114,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7451209281821562013}
-  - component: {fileID: 8903180747391558599}
   - component: {fileID: 6600353249734346980}
+  - component: {fileID: 6901664081356022419}
+  - component: {fileID: 5634022410354422315}
   - component: {fileID: 2522343932423495001}
   m_Layer: 0
   m_Name: Deposit
@@ -139,21 +140,8 @@ Transform:
   - {fileID: 476349385633470708}
   - {fileID: 4033909236072830221}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8903180747391558599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528804228097553254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7df959c6dfa08d1458840c56e5ae8f63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sphere: {fileID: 1412371516835153279}
 --- !u!136 &6600353249734346980
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -177,6 +165,33 @@ CapsuleCollider:
   m_Height: 4
   m_Direction: 1
   m_Center: {x: 0, y: 1.7, z: 0}
+--- !u!114 &6901664081356022419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528804228097553254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e195dcef8660a0d4d9773f8894d5eafe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionType: 0
+  isOccupied: 0
+--- !u!114 &5634022410354422315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528804228097553254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bcd11b6b4d4e3540bd4c1f586ee3af5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visionType: 0
 --- !u!135 &2522343932423495001
 SphereCollider:
   m_ObjectHideFlags: 0

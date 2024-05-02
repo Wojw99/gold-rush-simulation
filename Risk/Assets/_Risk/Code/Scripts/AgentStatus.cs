@@ -11,15 +11,6 @@ public class AgentStatus : MonoBehaviour
     public float maxOre = 10;
     public float ore;
 
-    public GameObject nearestSpottedDeposit;
-    public GameObject collidedDeposit;
-    public bool depositExtracted = false;
-
-    public GameObject nearestSpottedRest;
-    public GameObject collidedRest;
-
-    public GameObject nearestSpottedUndead;
-
     private void Start() {
         health = maxHealth;
         stamina = maxStamina;

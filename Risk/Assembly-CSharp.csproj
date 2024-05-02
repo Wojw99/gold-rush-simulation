@@ -45,6 +45,7 @@
      <Compile Include="Assets\RTS_Camera\Demo\DemoScene.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Campfire.cs" />
      <Compile Include="Assets\RTS_Camera\Demo\TargetSelector.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\EnvInteractible.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentInteractor.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\StatusController.cs" />
      <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\MouseLook.cs" />
@@ -54,8 +55,11 @@
      <Compile Include="Assets\_Risk\Code\Scripts\MainCameraController.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentSensor.cs" />
      <Compile Include="Assets\RTS_Camera\Scripts\RTS_Camera.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\EnvVisible.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\AgentVisionSensor.cs" />
      <Compile Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Scripts\PT_Create_Prefab.cs" />
      <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\PlayerMovement.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\AgentInteractionSensor.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentVision.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AnimationController.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Deposit.cs" />

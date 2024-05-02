@@ -12,61 +12,76 @@ public class AgentBrain : MonoBehaviour
     public event Action DamageTaken;
 
     private AgentStatus agentStatus;
+    private AgentVisionSensor agentVisionSensor;
+    private AgentInteractionSensor agentInteractionSensor;
     
     private void Start()
     {
         agentStatus = GetComponent<AgentStatus>();
-        StartCoroutine(StartSitting());
-        StartCoroutine(StartWalking());
+        agentVisionSensor = GetComponent<AgentVisionSensor>();
+        agentInteractionSensor = GetComponent<AgentInteractionSensor>();
     }
 
     private void Update() {
-        goal = GoalName.SEARCH_FOR_DEPOSIT;
+        var calculatedGoal = CalculateGoal();
+        
+        if (goal != calculatedGoal) {
+            goal = calculatedGoal;
+            GoalChanged?.Invoke(goal);
+        }
+    }
 
-        if(goal == GoalName.SEARCH_FOR_DEPOSIT && agentStatus.nearestSpottedDeposit != null) {
+    private GoalName CalculateGoal() {
+        var goal = GoalName.SEARCH_FOR_DEPOSIT;
+
+        if(IsVisible(VisionType.DEPOSIT)) {
             goal = GoalName.GO_TO_NEAREST_DEPOSIT;
         }
-        if(goal == GoalName.GO_TO_NEAREST_DEPOSIT && agentStatus.collidedDeposit != null) {
+        if(IsInteractible(InteractionType.DEPOSIT)) {
             goal = GoalName.MINE_DEPOSIT;
         }
 
-        if(agentStatus.stamina < 0f) {
+        if(agentStatus.stamina <= 0f) {
             goal = GoalName.SEARCH_FOR_REST;
-        }
-        if(goal == GoalName.SEARCH_FOR_REST && agentStatus.nearestSpottedRest != null) {
-            goal = GoalName.GO_TO_NEAREST_REST;
-        }
-        if(goal == GoalName.GO_TO_NEAREST_REST && agentStatus.collidedRest != null) {
-            goal = GoalName.TAKE_REST;
-        }
-        if(goal == GoalName.TAKE_REST && agentStatus.stamina >= agentStatus.maxStamina) {
-            goal = GoalName.SEARCH_FOR_DEPOSIT;
+
+            if(IsVisible(VisionType.REST)) {
+                goal = GoalName.GO_TO_NEAREST_REST;
+            }
+            if(IsInteractible(InteractionType.REST)) {
+                goal = GoalName.TAKE_REST;
+            }
         }
 
-        if(agentStatus.nearestSpottedUndead != null) {
-            goal = GoalName.RUN_FOR_YOUR_LIFE;
+        if(agentStatus.health <= agentStatus.maxHealth / 2f) {
+            goal = GoalName.SEARCH_FOR_HEALING;
+
+            if(IsVisible(VisionType.HEAL)) {
+                goal = GoalName.GO_TO_NEAREST_HEALING;
+            }
+            if(IsInteractible(InteractionType.HEAL)) {
+                goal = GoalName.TAKE_HEALING;
+            }
         }
 
-        if(agentStatus.depositExtracted) {
-            DepositExtracted?.Invoke();
-            agentStatus.depositExtracted = false; // can't be done here
-        }
-
-        GoalChanged?.Invoke(goal);
+        return goal;
     }
 
-    private IEnumerator StartSitting()
-    {
-        yield return new WaitForSeconds(1);
-        goal = GoalName.FREEZE;
-        GoalChanged?.Invoke(goal);
+    private bool IsInteractible(InteractionType interactionType) {
+        foreach (InteractionObject interactible in agentInteractionSensor.interactibles) {
+            if (interactible.interactionType == interactionType) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    private IEnumerator StartWalking()
-    {
-        yield return new WaitForSeconds(4);
-        goal = GoalName.SEARCH_FOR_DEPOSIT;
-        GoalChanged?.Invoke(goal);
+    private bool IsVisible(VisionType visionType) {
+        foreach (VisionObject visible in agentVisionSensor.visibles) {
+            if (visible.visionType == visionType) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public enum GoalName
