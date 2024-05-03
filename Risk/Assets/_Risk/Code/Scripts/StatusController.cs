@@ -17,11 +17,11 @@ public class StatusController : MonoBehaviour
         agentBrain = GetComponent<AgentBrain>();
 
         agentBrain.DepositExtracted += () => {
-            agentStatus.ore++;
+            agentStatus.Ore++;
         };
 
         agentBrain.DamageTaken += () => {
-            agentStatus.health--;
+            agentStatus.Health--;
         };
     }
 
@@ -36,14 +36,14 @@ public class StatusController : MonoBehaviour
     }
 
     private void IncreaseHealth() {
-        agentStatus.health += healthIncreaseRate * Time.deltaTime;
+        agentStatus.Health += healthIncreaseRate * Time.deltaTime;
     }
 
     private void DecreaseStamina() {
-        agentStatus.stamina -= staminaDecreaseRate * Time.deltaTime;
+        agentStatus.Stamina -= staminaDecreaseRate * Time.deltaTime;
     }
 
     private void IncreaseStamina() {
-        agentStatus.stamina += staminaIncreaseRate * Time.deltaTime;
+        agentStatus.Stamina += staminaIncreaseRate * Time.deltaTime;
     }
 }

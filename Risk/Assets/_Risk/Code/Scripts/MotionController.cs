@@ -9,6 +9,7 @@ public class MotionController : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private AgentBrain agentBrain;
     private AgentStatus agentStatus;
+    private AgentVisionSensor agentVisionSensor;
 
     private float runSpeed = 6f;
 
@@ -17,6 +18,7 @@ public class MotionController : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         agentBrain = GetComponent<AgentBrain>();
         agentStatus = GetComponent<AgentStatus>();
+        agentVisionSensor = GetComponent<AgentVisionSensor>();
     }
 
     private void Update()
@@ -37,12 +39,12 @@ public class MotionController : MonoBehaviour
         }
 
         if(agentBrain.goal == AgentBrain.GoalName.GO_TO_NEAREST_DEPOSIT) {
-            var destination = GetTransformOfNearestVisible(agentStatus.visibles, VisionType.DEPOSIT);
+            var destination = GetTransformOfNearestVisible(agentVisionSensor.visibles, VisionType.DEPOSIT);
             navMeshAgent.SetDestination(destination.position);
         }
 
         if(agentBrain.goal == AgentBrain.GoalName.GO_TO_NEAREST_REST) {
-            var destination = GetTransformOfNearestVisible(agentStatus.visibles, VisionType.REST);
+            var destination = GetTransformOfNearestVisible(agentVisionSensor.visibles, VisionType.REST);
             navMeshAgent.SetDestination(destination.position);
         }
 
@@ -53,7 +55,7 @@ public class MotionController : MonoBehaviour
 
         if(agentBrain.goal == AgentBrain.GoalName.RUN_FOR_YOUR_LIFE) {
             // set destination to the opposite side of the nearest spotted undead
-            var nearestSpottedUndead = GetTransformOfNearestVisible(agentStatus.visibles, VisionType.UNDEAD);
+            var nearestSpottedUndead = GetTransformOfNearestVisible(agentVisionSensor.visibles, VisionType.UNDEAD);
 
             navMeshAgent.SetDestination(transform.position + (transform.position - nearestSpottedUndead.transform.position));
             navMeshAgent.speed = runSpeed;

@@ -20,6 +20,31 @@ public class AgentBrain : MonoBehaviour
         agentStatus = GetComponent<AgentStatus>();
         agentVisionSensor = GetComponent<AgentVisionSensor>();
         agentInteractionSensor = GetComponent<AgentInteractionSensor>();
+
+        agentVisionSensor.EnemySpotted += OnEnemySpotted;
+        agentVisionSensor.DepositSpotted += OnDepositSpotted;
+        agentVisionSensor.HealSpotted += OnHealSpotted;
+        agentVisionSensor.RestSpotted += OnRestSpotted;
+    }
+
+    private void OnHealSpotted() {
+        goal = GoalName.GO_TO_NEAREST_HEALING;
+        GoalChanged?.Invoke(goal);
+    }
+
+    private void OnDepositSpotted() {
+        goal = GoalName.GO_TO_NEAREST_DEPOSIT;
+        GoalChanged?.Invoke(goal);
+    }
+
+    private void OnRestSpotted() {
+        goal = GoalName.GO_TO_NEAREST_REST;
+        GoalChanged?.Invoke(goal);
+    }
+
+    private void OnEnemySpotted() {
+        goal = GoalName.RUN_FOR_YOUR_LIFE;
+        GoalChanged?.Invoke(goal);
     }
 
     private void Update() {
@@ -41,7 +66,7 @@ public class AgentBrain : MonoBehaviour
             goal = GoalName.MINE_DEPOSIT;
         }
 
-        if(agentStatus.stamina <= 0f) {
+        if(agentStatus.Stamina <= 0f) {
             goal = GoalName.SEARCH_FOR_REST;
 
             if(IsVisible(VisionType.REST)) {
@@ -52,7 +77,7 @@ public class AgentBrain : MonoBehaviour
             }
         }
 
-        if(agentStatus.health <= agentStatus.maxHealth / 2f) {
+        if(agentStatus.Health <= agentStatus.MaxHealth / 2f) {
             goal = GoalName.SEARCH_FOR_HEALING;
 
             if(IsVisible(VisionType.HEAL)) {
