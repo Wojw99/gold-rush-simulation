@@ -25,26 +25,72 @@ public class AgentBrain : MonoBehaviour
         agentVisionSensor.DepositSpotted += OnDepositSpotted;
         agentVisionSensor.HealSpotted += OnHealSpotted;
         agentVisionSensor.RestSpotted += OnRestSpotted;
+
+        agentInteractionSensor.InteractionStarted += OnInteractionStarted;
+        agentInteractionSensor.InteractionEnded += OnInteractionEnded; 
+        agentInteractionSensor.InteractionExited += OnInteractionExited;
+
+        ConsiderGoalChanging();
+    }
+
+    private void OnInteractionStarted(InteractionType interactionType) {
+        Debug.Log("OnInteractionStarted: " + interactionType);
+        if(interactionType == InteractionType.DEPOSIT 
+            && (goal == GoalName.SEARCH_FOR_DEPOSIT || goal == GoalName.GO_TO_NEAREST_DEPOSIT)) 
+        {
+            Debug.Log("Mine");
+            goal = GoalName.MINE_DEPOSIT;
+            GoalChanged?.Invoke(goal);
+        }
+        if(interactionType == InteractionType.REST 
+            && (goal == GoalName.SEARCH_FOR_REST || goal == GoalName.GO_TO_NEAREST_REST)) 
+        {
+            goal = GoalName.TAKE_REST;
+            GoalChanged?.Invoke(goal);
+        }
+    }
+
+    private void OnInteractionEnded(InteractionType interactionType) {
+        Debug.Log("OnInteractionEnded: " + interactionType);
+        ConsiderGoalChanging();
+    }
+
+    private void OnInteractionExited(InteractionType interactionType) {
+        Debug.Log("OnInteractionExited: " + interactionType);
+        ConsiderGoalChanging();
     }
 
     private void OnHealSpotted() {
-        // ConsiderGoalChanging();
+        if(goal == GoalName.SEARCH_FOR_HEALING)
+        {
+            goal = GoalName.GO_TO_NEAREST_HEALING;
+            GoalChanged?.Invoke(goal);
+        }
     }
 
     private void OnDepositSpotted() {
-        // ConsiderGoalChanging();
+        if(goal == GoalName.SEARCH_FOR_DEPOSIT)
+        {
+            goal = GoalName.GO_TO_NEAREST_DEPOSIT;
+            GoalChanged?.Invoke(goal);
+        }
     }
 
     private void OnRestSpotted() {
-        // ConsiderGoalChanging();
+        if(goal == GoalName.SEARCH_FOR_REST)
+        {
+            goal = GoalName.GO_TO_NEAREST_REST;
+            GoalChanged?.Invoke(goal);
+        }
     }
 
     private void OnEnemySpotted() {
-        // ConsiderGoalChanging();
+        goal = GoalName.RUN_FOR_YOUR_LIFE;
+        GoalChanged?.Invoke(goal);
     }
 
     private void Update() {
-        ConsiderGoalChanging();
+        
     }
 
     private void ConsiderGoalChanging() {
@@ -59,56 +105,17 @@ public class AgentBrain : MonoBehaviour
     private GoalName CalculateGoal() {
         var goal = GoalName.SEARCH_FOR_DEPOSIT;
 
-        if(IsVisible(VisionType.DEPOSIT)) {
-            goal = GoalName.GO_TO_NEAREST_DEPOSIT;
-        }
-        if(IsInteractible(InteractionType.DEPOSIT)) {
-            goal = GoalName.MINE_DEPOSIT;
-        }
-
-        if(agentStatus.Stamina <= 0f) {
+        if(agentStatus.Stamina <= agentStatus.MaxStamina / 3f) {
             goal = GoalName.SEARCH_FOR_REST;
-
-            if(IsVisible(VisionType.REST)) {
-                goal = GoalName.GO_TO_NEAREST_REST;
-            }
-            if(IsInteractible(InteractionType.REST)) {
-                goal = GoalName.TAKE_REST;
-            }
         }
 
         if(agentStatus.Health <= agentStatus.MaxHealth / 2f) {
             goal = GoalName.SEARCH_FOR_HEALING;
-
-            if(IsVisible(VisionType.HEAL)) {
-                goal = GoalName.GO_TO_NEAREST_HEALING;
-            }
-            if(IsInteractible(InteractionType.HEAL)) {
-                goal = GoalName.TAKE_HEALING;
-            }
         }
 
         return goal;
     }
-
-    private bool IsInteractible(InteractionType interactionType) {
-        foreach (InteractionInfo interactible in agentInteractionSensor.interactibles) {
-            if (interactible.interactionType == interactionType) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private bool IsVisible(VisionType visionType) {
-        foreach (VisionInfo visible in agentVisionSensor.visibles) {
-            if (visible.visionType == visionType) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    
     public enum GoalName
     {
         FREEZE,

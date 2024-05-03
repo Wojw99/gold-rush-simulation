@@ -94,6 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionType: 1
   isOccupied: 0
+  interactionTime: 3
 --- !u!114 &7376386241249372399
 MonoBehaviour:
   m_ObjectHideFlags: 0
