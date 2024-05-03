@@ -26,11 +26,11 @@ public class StatusController : MonoBehaviour
     }
 
     private void Update() {
-        if(agentBrain.goal == AgentBrain.GoalName.MINE_DEPOSIT) {
+        if(agentBrain.Goal == AgentBrain.GoalName.MINE_DEPOSIT) {
             DecreaseStamina();
-        } else if (agentBrain.goal == AgentBrain.GoalName.TAKE_REST) {
+        } else if (agentBrain.Goal == AgentBrain.GoalName.TAKE_REST) {
             IncreaseStamina();
-        } else if (agentBrain.goal == AgentBrain.GoalName.TAKE_HEALING) {
+        } else if (agentBrain.Goal == AgentBrain.GoalName.TAKE_HEALING) {
             IncreaseHealth();
         }
     }

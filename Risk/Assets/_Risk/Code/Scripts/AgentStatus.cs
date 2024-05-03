@@ -9,7 +9,7 @@ public class AgentStatus : MonoBehaviour
     private float _health;
     [SerializeField] private float maxStamina = 20;
     private float _stamina;
-    [SerializeField] private float maxOre = 10;
+    [SerializeField] private float maxOre = 3;
     private float _ore;
 
     private string _name;

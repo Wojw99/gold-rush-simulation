@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8783593894193022065
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MagicShield
+  m_Shader: {fileID: -6465566751694194690, guid: 921abe09524bf7e48afb8479e6017b83,
+    type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _ALPHATEST_ON
+  - _SURFACE_TYPE_TRANSPARENT
+  m_InvalidKeywords:
+  - _RECEIVE_SHADOWS_OFF
+  - _SPECULAR_SETUP
+  m_LightmapFlags: 2
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3001
+  stringTagMap:
+    RenderType: Transparent
+  disabledShaderPasses:
+  - SHADOWCASTER
+  - DepthOnly
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DissolveTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_05c443f07f4a431a8a7312b073dfea3f_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: b2377c5920b3a8b4f9e683b0edbfa8f0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_3be1e5b0ce7542258f6720427dfde959_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 96bfd54ec2c2c3b4ea1c7b36a542f769, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_4536d59bbe394a4c9bbfccd0ac2ac80c_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 96bfd54ec2c2c3b4ea1c7b36a542f769, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_8b0f9c46d5a64a09b5cd2d803120a362_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: babdcbf57e33c794d906cedbe10e17e7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_9f2c25b14c13469489b44ad211232972_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: babdcbf57e33c794d906cedbe10e17e7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_b3441e25a712429998402671f6633aac_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: babdcbf57e33c794d906cedbe10e17e7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Alpha: 1
+    - _AlphaClip: 1
+    - _AlphaToMask: 0
+    - _Blend: 2
+    - _BlendModePreserveSpecular: 1
+    - _CastShadows: 0
+    - _Cull: 2
+    - _DissolveAmount: 0
+    - _DissolveEdgeWidth: 0.01
+    - _DissolveScale: 100
+    - _DstBlend: 1
+    - _Grow: 0
+    - _Power: 2.33
+    - _QueueControl: 0
+    - _QueueOffset: 1
+    - _ReceiveShadows: 0
+    - _SrcBlend: 5
+    - _Surface: 1
+    - _WorkflowMode: 0
+    - _ZTest: 4
+    - _ZWrite: 0
+    - _ZWriteControl: 0
+    m_Colors:
+    - _Color: {r: 3.688605, g: 2.881196, b: 0.057936076, a: 1}
+    - _DissolveTilling: {r: 10, g: 1, b: 0, a: 0}
+    - _Speed: {r: 0.1, g: 0.1, b: 0, a: 0}
+    - _Speed2: {r: 0.05, g: 0.03, b: 0, a: 0}
+  m_BuildTextureStacks: []

@@ -42,9 +42,12 @@
   <ItemGroup>
      <Compile Include="Assets\_Risk\Code\Scripts\UndeadInteractor.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentStatus.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\GravityHandler.cs" />
      <Compile Include="Assets\RTS_Camera\Demo\DemoScene.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\UtilitiesController.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Campfire.cs" />
      <Compile Include="Assets\RTS_Camera\Demo\TargetSelector.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\PlayerInteraction.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\EnvInteractible.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentInteractor.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\StatusController.cs" />
@@ -99,6 +102,7 @@
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
      <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Flowers_Shader_VS.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
+     <None Include="Assets\Hovl Studio\Procedural fire\Shaders\FireSphere.shader" />
      <None Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Modular_Armors\Shaders\PT_Armors_Shader_Toon.shader" />
      <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Rock_Shader.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
@@ -107,6 +111,7 @@
      <None Include="Assets\Polytope Studio\Lowpoly_Props\Sources\Shaders\PT_Props_Shader.shader" />
      <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
+     <None Include="Assets\Hovl Studio\Procedural fire\Demo scene\Readme.txt" />
      <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Foliage_Shader_VS.shader" />
      <None Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Modular_NPC\Shaders\PT_Modular_NPC_Shader_PBR.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />

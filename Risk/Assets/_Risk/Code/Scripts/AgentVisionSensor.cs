@@ -53,7 +53,6 @@ public class AgentVisionSensor : MonoBehaviour
 
 }
 
-
 public class VisionInfo {
     public VisionType visionType;
     public GameObject gameObject;

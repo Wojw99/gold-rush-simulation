@@ -23,37 +23,37 @@ public class MotionController : MonoBehaviour
 
     private void Update()
     {
-        if (agentBrain.goal == AgentBrain.GoalName.SEARCH_FOR_DEPOSIT 
-        || agentBrain.goal == AgentBrain.GoalName.SEARCH_FOR_REST) {
+        if (agentBrain.Goal == AgentBrain.GoalName.SEARCH_FOR_DEPOSIT 
+        || agentBrain.Goal == AgentBrain.GoalName.SEARCH_FOR_REST) {
             // move in random direction
             if (navMeshAgent.remainingDistance < 0.5f) {
                 navMeshAgent.SetDestination(transform.position + new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10)));
             }
         }
 
-        if (agentBrain.goal == AgentBrain.GoalName.FREEZE) {
+        if (agentBrain.Goal == AgentBrain.GoalName.FREEZE) {
             navMeshAgent.isStopped = true;
             navMeshAgent.destination = transform.position;
         } else {
             navMeshAgent.isStopped = false;
         }
 
-        if(agentBrain.goal == AgentBrain.GoalName.GO_TO_NEAREST_DEPOSIT) {
+        if(agentBrain.Goal == AgentBrain.GoalName.GO_TO_NEAREST_DEPOSIT) {
             var destination = GetTransformOfNearestVisible(agentVisionSensor.visibles, VisionType.DEPOSIT);
             navMeshAgent.SetDestination(destination.position);
         }
 
-        if(agentBrain.goal == AgentBrain.GoalName.GO_TO_NEAREST_REST) {
+        if(agentBrain.Goal == AgentBrain.GoalName.GO_TO_NEAREST_REST) {
             var destination = GetTransformOfNearestVisible(agentVisionSensor.visibles, VisionType.REST);
             navMeshAgent.SetDestination(destination.position);
         }
 
-        if(agentBrain.goal == AgentBrain.GoalName.MINE_DEPOSIT 
-        || agentBrain.goal == AgentBrain.GoalName.TAKE_REST) {
+        if(agentBrain.Goal == AgentBrain.GoalName.MINE_DEPOSIT 
+        || agentBrain.Goal == AgentBrain.GoalName.TAKE_REST) {
             navMeshAgent.isStopped = true;
         }
 
-        if(agentBrain.goal == AgentBrain.GoalName.RUN_FOR_YOUR_LIFE) {
+        if(agentBrain.Goal == AgentBrain.GoalName.RUN_FOR_YOUR_LIFE) {
             // set destination to the opposite side of the nearest spotted undead
             var nearestSpottedUndead = GetTransformOfNearestVisible(agentVisionSensor.visibles, VisionType.UNDEAD);
 

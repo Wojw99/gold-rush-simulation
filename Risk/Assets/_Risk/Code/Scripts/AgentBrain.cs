@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AgentBrain : MonoBehaviour
 {
-    public GoalName goal;
+    private GoalName _goal;
 
     public event Action<GoalName> GoalChanged;
     public event Action DepositExtracted;
@@ -34,59 +34,52 @@ public class AgentBrain : MonoBehaviour
     }
 
     private void OnInteractionStarted(InteractionType interactionType) {
-        Debug.Log("OnInteractionStarted: " + interactionType);
         if(interactionType == InteractionType.DEPOSIT 
-            && (goal == GoalName.SEARCH_FOR_DEPOSIT || goal == GoalName.GO_TO_NEAREST_DEPOSIT)) 
+            && (Goal == GoalName.SEARCH_FOR_DEPOSIT || Goal == GoalName.GO_TO_NEAREST_DEPOSIT)) 
         {
-            Debug.Log("Mine");
-            goal = GoalName.MINE_DEPOSIT;
-            GoalChanged?.Invoke(goal);
+            Goal = GoalName.MINE_DEPOSIT;
         }
         if(interactionType == InteractionType.REST 
-            && (goal == GoalName.SEARCH_FOR_REST || goal == GoalName.GO_TO_NEAREST_REST)) 
+            && (Goal == GoalName.SEARCH_FOR_REST || Goal == GoalName.GO_TO_NEAREST_REST)) 
         {
-            goal = GoalName.TAKE_REST;
-            GoalChanged?.Invoke(goal);
+            Goal = GoalName.TAKE_REST;
         }
     }
 
     private void OnInteractionEnded(InteractionType interactionType) {
-        Debug.Log("OnInteractionEnded: " + interactionType);
+        if(interactionType == InteractionType.DEPOSIT) {
+            DepositExtracted?.Invoke();
+        }
         ConsiderGoalChanging();
     }
 
     private void OnInteractionExited(InteractionType interactionType) {
-        Debug.Log("OnInteractionExited: " + interactionType);
         ConsiderGoalChanging();
     }
 
     private void OnHealSpotted() {
-        if(goal == GoalName.SEARCH_FOR_HEALING)
+        if(Goal == GoalName.SEARCH_FOR_HEALING)
         {
-            goal = GoalName.GO_TO_NEAREST_HEALING;
-            GoalChanged?.Invoke(goal);
+            Goal = GoalName.GO_TO_NEAREST_HEALING;
         }
     }
 
     private void OnDepositSpotted() {
-        if(goal == GoalName.SEARCH_FOR_DEPOSIT)
+        if(Goal == GoalName.SEARCH_FOR_DEPOSIT)
         {
-            goal = GoalName.GO_TO_NEAREST_DEPOSIT;
-            GoalChanged?.Invoke(goal);
+            Goal = GoalName.GO_TO_NEAREST_DEPOSIT;
         }
     }
 
     private void OnRestSpotted() {
-        if(goal == GoalName.SEARCH_FOR_REST)
+        if(Goal == GoalName.SEARCH_FOR_REST)
         {
-            goal = GoalName.GO_TO_NEAREST_REST;
-            GoalChanged?.Invoke(goal);
+            Goal = GoalName.GO_TO_NEAREST_REST;
         }
     }
 
     private void OnEnemySpotted() {
-        goal = GoalName.RUN_FOR_YOUR_LIFE;
-        GoalChanged?.Invoke(goal);
+        Goal = GoalName.RUN_FOR_YOUR_LIFE;
     }
 
     private void Update() {
@@ -96,9 +89,8 @@ public class AgentBrain : MonoBehaviour
     private void ConsiderGoalChanging() {
         var calculatedGoal = CalculateGoal();
         
-        if (goal != calculatedGoal) {
-            goal = calculatedGoal;
-            GoalChanged?.Invoke(goal);
+        if (Goal != calculatedGoal) {
+            Goal = calculatedGoal;
         }
     }
 
@@ -115,7 +107,15 @@ public class AgentBrain : MonoBehaviour
 
         return goal;
     }
-    
+
+    public GoalName Goal {
+        get => _goal;
+        set {
+            _goal = value;
+            GoalChanged?.Invoke(_goal);
+        }
+    }
+
     public enum GoalName
     {
         FREEZE,
