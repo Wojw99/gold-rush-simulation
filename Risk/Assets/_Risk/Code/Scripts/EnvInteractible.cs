@@ -6,20 +6,36 @@ public class EnvInteractible : MonoBehaviour
 {
     public InteractionType interactionType;
     public bool isOccupied = false;
+    public float interactionTime = 3f;
+    private AgentInteractionSensor agentInteractionSensor = null;
 
     private void OnTriggerEnter(Collider other)
     {
         if (!isOccupied && other.TryGetComponent(out AgentInteractionSensor agentInteractionSensor))
         {
-            agentInteractionSensor.OnEnter(interactionType, gameObject);
+            agentInteractionSensor.OnInteractionEnter(interactionType, gameObject);
+            this.agentInteractionSensor = agentInteractionSensor;
             isOccupied = true;
+            StartCoroutine(Interact());
+        }
+    }
+
+    private IEnumerator Interact()
+    {
+        yield return new WaitForSeconds(interactionTime);
+        if (isOccupied)
+        {
+            isOccupied = false;
+            agentInteractionSensor.OnInteractionEnd(interactionType, gameObject);
+            Destroy(gameObject);
         }
     }
 
     private void OnTriggerExit(Collider other) {
         if (isOccupied && other.TryGetComponent(out AgentInteractionSensor agentInteractionSensor))
         {
-            agentInteractionSensor.OnExit(gameObject);
+            agentInteractionSensor.OnInteractionExit(interactionType, gameObject);
+            this.agentInteractionSensor = null;
             isOccupied = false;
         }
     }

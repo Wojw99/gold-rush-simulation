@@ -5,19 +5,11 @@ using UnityEngine;
 
 public class AgentVisionSensor : MonoBehaviour
 {
-    private AgentBrain agentBrain;
-    private AgentStatus agentStatus;
-
-    public List<VisionObject> visibles = new List<VisionObject>();
+    public List<VisionInfo> visibles = new List<VisionInfo>();
     public event Action EnemySpotted;
     public event Action DepositSpotted;
     public event Action HealSpotted;
     public event Action RestSpotted;
-
-    private void Start() {
-        agentBrain = GetComponent<AgentBrain>();
-        agentStatus = GetComponent<AgentStatus>();
-    }
 
     private void Update() {
         SendSphereCastAll();
@@ -26,22 +18,47 @@ public class AgentVisionSensor : MonoBehaviour
     private void SendSphereCastAll() {
         RaycastHit[] hits = Physics.SphereCastAll(transform.position, 3, transform.forward, 10);
         Array.Sort(hits, (x, y) => x.distance.CompareTo(y.distance));
+
         visibles.Clear();
         foreach (var hit in hits) {
             if(hit.collider.TryGetComponent(out EnvVisible envVisible)) 
             {
-                var visionObject = new VisionObject(envVisible.visionType, hit.collider.gameObject);
-                visibles.Add(visionObject);
+                MakeSignal(envVisible.visionType);
+                AddToVisibles(envVisible.visionType, hit.collider.gameObject);
             } 
         }
     }
+
+    private void AddToVisibles(VisionType visionType, GameObject gameObject) {
+        var visionObject = new VisionInfo(visionType, gameObject);
+        visibles.Add(visionObject);
+    }
+
+    private void MakeSignal(VisionType visionType) {
+        switch (visionType) {
+            case VisionType.DEPOSIT:
+                DepositSpotted?.Invoke();
+                break;
+            case VisionType.HEAL:
+                HealSpotted?.Invoke();
+                break;
+            case VisionType.REST:
+                RestSpotted?.Invoke();
+                break;
+            case VisionType.UNDEAD:
+                EnemySpotted?.Invoke();
+                break;
+        }
+    }
+
 }
 
-public class VisionObject {
+
+public class VisionInfo {
     public VisionType visionType;
     public GameObject gameObject;
 
-    public VisionObject(VisionType visionType, GameObject gameObject) {
+    public VisionInfo(VisionType visionType, GameObject gameObject) {
         this.visionType = visionType;
         this.gameObject = gameObject;
     }

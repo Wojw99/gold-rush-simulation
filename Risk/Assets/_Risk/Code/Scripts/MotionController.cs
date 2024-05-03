@@ -65,7 +65,7 @@ public class MotionController : MonoBehaviour
         EqialiseTransforms(transform, transform.GetChild(0)); // TODO: maybe should be used only once at the end of movement
     }
 
-    private Transform GetTransformOfNearestVisible(List<VisionObject> visibles, VisionType visionType)
+    private Transform GetTransformOfNearestVisible(List<VisionInfo> visibles, VisionType visionType)
     {
         var visibleOrdered = visibles.OrderBy(v => Vector3.Distance(transform.position, v.gameObject.transform.position));
         var nearestVisible = visibleOrdered.FirstOrDefault(v => v.visionType == visionType);

@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class AgentStatus : MonoBehaviour
 {
-    [SerializeField] private readonly float maxHealth = 10;
+    [SerializeField] private float maxHealth = 10;
     private float _health;
-    [SerializeField] private readonly float maxStamina = 20;
+    [SerializeField] private float maxStamina = 20;
     private float _stamina;
-    [SerializeField] private readonly float maxOre = 10;
+    [SerializeField] private float maxOre = 10;
     private float _ore;
 
     private string _name;

@@ -1,35 +1,47 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AgentInteractionSensor : MonoBehaviour
 {
-    private AgentStatus agentStatus;
-    private AgentBrain agentBrain;
-    public List<InteractionObject> interactibles = new List<InteractionObject>();
+    public List<InteractionInfo> interactibles = new List<InteractionInfo>();
 
-    private void Start()
-    {
-        agentStatus = GetComponent<AgentStatus>();
-        agentBrain = GetComponent<AgentBrain>();
+    public event Action<InteractionType> InteractionStarted;
+    public event Action<InteractionType> InteractionEnded;
+    public event Action<InteractionType> InteractionExited;
+
+    public void OnInteractionEnter(InteractionType interactionType, GameObject gameObject) {
+        InteractionStarted?.Invoke(interactionType);
+        AddToInteractibles(interactionType, gameObject);
     }
 
-    public void OnEnter(InteractionType interactionType, GameObject gameObject) {
-        var interactible = new InteractionObject(interactionType, gameObject);
-        interactibles.Add(interactible);
+    public void OnInteractionEnd(InteractionType interactionType, GameObject gameObject) {
+        InteractionEnded?.Invoke(interactionType);
+        RemoveFromInteractibles(gameObject);
     }
 
-    public void OnExit(GameObject gameObject) {
+    public void OnInteractionExit(InteractionType interactionType, GameObject gameObject) {
+        InteractionExited?.Invoke(interactionType);
+        RemoveFromInteractibles(gameObject);
+    }
+
+    private void RemoveFromInteractibles(GameObject gameObject) {
         var interactible = interactibles.Find(i => i.gameObject == gameObject);
         interactibles.Remove(interactible);
     }
+
+    private void AddToInteractibles(InteractionType interactionType, GameObject gameObject) {
+        var interactible = new InteractionInfo(interactionType, gameObject);
+        interactibles.Add(interactible);
+    }
 }
 
-public class InteractionObject {
+public class InteractionInfo {
     public InteractionType interactionType;
     public GameObject gameObject;
 
-    public InteractionObject(InteractionType interactionType, GameObject gameObject) {
+    public InteractionInfo(InteractionType interactionType, GameObject gameObject) {
         this.interactionType = interactionType;
         this.gameObject = gameObject;
     }

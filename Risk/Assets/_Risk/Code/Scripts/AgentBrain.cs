@@ -28,26 +28,26 @@ public class AgentBrain : MonoBehaviour
     }
 
     private void OnHealSpotted() {
-        goal = GoalName.GO_TO_NEAREST_HEALING;
-        GoalChanged?.Invoke(goal);
+        // ConsiderGoalChanging();
     }
 
     private void OnDepositSpotted() {
-        goal = GoalName.GO_TO_NEAREST_DEPOSIT;
-        GoalChanged?.Invoke(goal);
+        // ConsiderGoalChanging();
     }
 
     private void OnRestSpotted() {
-        goal = GoalName.GO_TO_NEAREST_REST;
-        GoalChanged?.Invoke(goal);
+        // ConsiderGoalChanging();
     }
 
     private void OnEnemySpotted() {
-        goal = GoalName.RUN_FOR_YOUR_LIFE;
-        GoalChanged?.Invoke(goal);
+        // ConsiderGoalChanging();
     }
 
     private void Update() {
+        ConsiderGoalChanging();
+    }
+
+    private void ConsiderGoalChanging() {
         var calculatedGoal = CalculateGoal();
         
         if (goal != calculatedGoal) {
@@ -92,7 +92,7 @@ public class AgentBrain : MonoBehaviour
     }
 
     private bool IsInteractible(InteractionType interactionType) {
-        foreach (InteractionObject interactible in agentInteractionSensor.interactibles) {
+        foreach (InteractionInfo interactible in agentInteractionSensor.interactibles) {
             if (interactible.interactionType == interactionType) {
                 return true;
             }
@@ -101,7 +101,7 @@ public class AgentBrain : MonoBehaviour
     }
 
     private bool IsVisible(VisionType visionType) {
-        foreach (VisionObject visible in agentVisionSensor.visibles) {
+        foreach (VisionInfo visible in agentVisionSensor.visibles) {
             if (visible.visionType == visionType) {
                 return true;
             }
