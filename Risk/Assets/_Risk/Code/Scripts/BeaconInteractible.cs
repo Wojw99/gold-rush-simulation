@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnvInteractible : MonoBehaviour
+public class BeaconInteractible : MonoBehaviour
 {
     public InteractionType interactionType;
     public bool isOccupied = false;

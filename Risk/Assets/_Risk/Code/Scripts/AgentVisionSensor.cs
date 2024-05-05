@@ -21,7 +21,7 @@ public class AgentVisionSensor : MonoBehaviour
 
         visibles.Clear();
         foreach (var hit in hits) {
-            if(hit.collider.TryGetComponent(out EnvVisible envVisible)) 
+            if(hit.collider.TryGetComponent(out BeaconVisible envVisible)) 
             {
                 MakeSignal(envVisible.visionType);
                 AddToVisibles(envVisible.visionType, hit.collider.gameObject);

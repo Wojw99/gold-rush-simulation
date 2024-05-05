@@ -11,6 +11,13 @@ public class AgentInteractionSensor : MonoBehaviour
     public event Action<InteractionType> InteractionEnded;
     public event Action<InteractionType> InteractionExited;
 
+    public event Action<ModifierInfo> ModifierStarted;
+    // public event Action<ModifierInfo> ModifierEnded;
+
+    public void OnModifierEnter(ModifierInfo modifierInfo) {
+        ModifierStarted?.Invoke(modifierInfo);
+    }
+
     public void OnInteractionEnter(InteractionType interactionType, GameObject gameObject) {
         InteractionStarted?.Invoke(interactionType);
         AddToInteractibles(interactionType, gameObject);
@@ -52,4 +59,22 @@ public enum InteractionType {
     REST,
     HEAL,
     DAMAGE,
+}
+
+public class ModifierInfo {
+    public ModifierType modifierType;
+    public float modifierValue;
+    public float modifierLifetime;
+
+    public ModifierInfo(ModifierType modifierType, float modifierValue, float modifierLifetime) {
+        this.modifierType = modifierType;
+        this.modifierValue = modifierValue;
+        this.modifierLifetime = modifierLifetime;
+    }
+}
+
+public enum ModifierType
+{
+    HEAL,
+    DAMAGE
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GravityHandler : MonoBehaviour
+public class BeaconGravity : MonoBehaviour
 {
     private Rigidbody rb;
     private void Start() {

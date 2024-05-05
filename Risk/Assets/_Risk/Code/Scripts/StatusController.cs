@@ -10,6 +10,7 @@ public class StatusController : MonoBehaviour
     private readonly float staminaDecreaseRate = 1;
     private readonly float staminaIncreaseRate = 1;
     private readonly float healthIncreaseRate = 1;
+    private readonly float selfDamageValue = 5;
 
     private void Start()
     {
@@ -20,8 +21,8 @@ public class StatusController : MonoBehaviour
             agentStatus.Ore++;
         };
 
-        agentBrain.DamageTaken += () => {
-            agentStatus.Health--;
+        agentBrain.DamageTaken += (damageValue) => {
+            agentStatus.Health -= damageValue;
         };
     }
 

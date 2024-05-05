@@ -24,7 +24,8 @@ public class MotionController : MonoBehaviour
     private void Update()
     {
         if (agentBrain.Goal == AgentBrain.GoalName.SEARCH_FOR_DEPOSIT 
-        || agentBrain.Goal == AgentBrain.GoalName.SEARCH_FOR_REST) {
+        || agentBrain.Goal == AgentBrain.GoalName.SEARCH_FOR_REST
+        || agentBrain.Goal == AgentBrain.GoalName.SEARCH_FOR_HEALING) {
             // move in random direction
             if (navMeshAgent.remainingDistance < 0.5f) {
                 navMeshAgent.SetDestination(transform.position + new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10)));
@@ -49,7 +50,8 @@ public class MotionController : MonoBehaviour
         }
 
         if(agentBrain.Goal == AgentBrain.GoalName.MINE_DEPOSIT 
-        || agentBrain.Goal == AgentBrain.GoalName.TAKE_REST) {
+        || agentBrain.Goal == AgentBrain.GoalName.TAKE_REST 
+        || agentBrain.Goal == AgentBrain.GoalName.TAKE_DAMAGE) {
             navMeshAgent.isStopped = true;
         }
 

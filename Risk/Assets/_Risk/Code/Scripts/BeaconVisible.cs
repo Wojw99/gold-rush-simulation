@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AgentInteractor : MonoBehaviour
+public class BeaconVisible : MonoBehaviour
 {
-    
+    public VisionType visionType;
 }

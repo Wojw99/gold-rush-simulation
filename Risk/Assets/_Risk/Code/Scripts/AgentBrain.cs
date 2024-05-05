@@ -9,7 +9,7 @@ public class AgentBrain : MonoBehaviour
 
     public event Action<GoalName> GoalChanged;
     public event Action DepositExtracted;
-    public event Action DamageTaken;
+    public event Action<float> DamageTaken;
 
     private AgentStatus agentStatus;
     private AgentVisionSensor agentVisionSensor;
@@ -30,6 +30,14 @@ public class AgentBrain : MonoBehaviour
         agentInteractionSensor.InteractionEnded += OnInteractionEnded; 
         agentInteractionSensor.InteractionExited += OnInteractionExited;
 
+        agentInteractionSensor.ModifierStarted += OnModifierStarted;
+
+        // Give other components time to subscribe to the GoalChanged event
+        StartCoroutine(ConsiderGoalChanging(1f));
+    }
+
+    private IEnumerator ConsiderGoalChanging(float delay) {
+        yield return new WaitForSeconds(delay);
         ConsiderGoalChanging();
     }
 
@@ -43,6 +51,24 @@ public class AgentBrain : MonoBehaviour
             && (Goal == GoalName.SEARCH_FOR_REST || Goal == GoalName.GO_TO_NEAREST_REST)) 
         {
             Goal = GoalName.TAKE_REST;
+        }
+        if(interactionType == InteractionType.DAMAGE) 
+        {
+            Goal = GoalName.TAKE_DAMAGE;
+            // DamageTaken?.Invoke();
+        }
+    }
+
+    private void OnModifierStarted(ModifierInfo modifierInfo) {
+        if(modifierInfo.modifierType == ModifierType.DAMAGE) 
+        {
+            // Goal = GoalName.TAKE_DAMAGE;
+            DamageTaken?.Invoke(modifierInfo.modifierValue);
+            // StartCoroutine(ConsiderGoalChanging(0.5f));
+        } 
+        else if (modifierInfo.modifierType == ModifierType.HEAL) 
+        {
+            DamageTaken?.Invoke(modifierInfo.modifierValue * -1f);
         }
     }
 
@@ -92,6 +118,8 @@ public class AgentBrain : MonoBehaviour
         if (Goal != calculatedGoal) {
             Goal = calculatedGoal;
         }
+
+        Debug.Log($"Consider goal changing. Goal: {Goal}");
     }
 
     private GoalName CalculateGoal() {
@@ -121,6 +149,7 @@ public class AgentBrain : MonoBehaviour
         FREEZE,
         RUN_FOR_YOUR_LIFE,
         LEAVE_THE_AREA,
+        TAKE_DAMAGE,
         
         SEARCH_FOR_DEPOSIT,
         GO_TO_NEAREST_DEPOSIT,
