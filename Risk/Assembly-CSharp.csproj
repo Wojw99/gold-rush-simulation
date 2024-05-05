@@ -61,6 +61,7 @@
      <Compile Include="Assets\_Risk\Code\Scripts\RandomGenerator.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentInteractionSensor.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentUIController.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\Spawner.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AnimationController.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\BeaconVisible.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
