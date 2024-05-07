@@ -28,10 +28,20 @@ public class AgentUIController : MonoBehaviour
         agentStatus.NameChanged += OnNameChanged;
 
         agentBrain.GoalChanged += OnGoalChanged;
+
+        Initialize();
     }
 
     private void Update() {
         canvas.transform.rotation = GetLookAtCameraRotation();
+    }
+
+    private void Initialize() {
+        OnHealthChanged(agentStatus.Health);
+        OnStaminaChanged(agentStatus.Stamina);
+        OnOreChanged(agentStatus.Ore);
+        OnNameChanged(agentStatus.Name);
+        OnGoalChanged(agentBrain.Goal);
     }
 
     private Quaternion GetLookAtCameraRotation() {

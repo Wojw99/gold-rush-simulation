@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,8 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private GameObject restPrefab;
     [SerializeField] private GameObject[] prefabsArray = new GameObject[10];
     private GameObject selectedPrefab;
+
+    public event Action<GameObject[]> PrefabsArrayChanged;
 
     private void Start() {
         selectedPrefab = prefabsArray[0];
@@ -28,5 +31,9 @@ public class PlayerInteraction : MonoBehaviour
                 selectedPrefab = prefabsArray[i];
             }
         }
+    }
+
+    public GameObject[] PrefabsArray {
+        get => prefabsArray;
     }
 }

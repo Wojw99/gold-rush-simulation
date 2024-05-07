@@ -42,6 +42,7 @@
   <ItemGroup>
      <Compile Include="Assets\_Risk\Code\Scripts\AgentStatus.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Modifier.cs" />
+     <Compile Include="Assets\MenuItem.cs" />
      <Compile Include="Assets\RTS_Camera\Demo\DemoScene.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\BeaconGravity.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\UtilitiesController.cs" />
@@ -53,6 +54,7 @@
      <Compile Include="Assets\_Risk\Code\Scripts\MotionController.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentBrain.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\MainCameraController.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\UI.cs" />
      <Compile Include="Assets\RTS_Camera\Scripts\RTS_Camera.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentVisionSensor.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\BeaconInteractible.cs" />

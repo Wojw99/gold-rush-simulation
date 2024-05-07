@@ -40,13 +40,15 @@ public class MotionController : MonoBehaviour
         }
 
         if(agentBrain.Goal == AgentBrain.GoalName.GO_TO_NEAREST_DEPOSIT) {
-            var destination = GetTransformOfNearestVisible(agentVisionSensor.visibles, VisionType.DEPOSIT);
-            navMeshAgent.SetDestination(destination.position);
+            var destination = agentBrain.Destination;
+            if(destination != null)
+                navMeshAgent.SetDestination(destination.transform.position);
         }
 
         if(agentBrain.Goal == AgentBrain.GoalName.GO_TO_NEAREST_REST) {
-            var destination = GetTransformOfNearestVisible(agentVisionSensor.visibles, VisionType.REST);
-            navMeshAgent.SetDestination(destination.position);
+            var destination = agentBrain.Destination;
+            if(destination != null)
+                navMeshAgent.SetDestination(destination.transform.position);
         }
 
         if(agentBrain.Goal == AgentBrain.GoalName.MINE_DEPOSIT 
@@ -56,22 +58,14 @@ public class MotionController : MonoBehaviour
         }
 
         if(agentBrain.Goal == AgentBrain.GoalName.RUN_FOR_YOUR_LIFE) {
-            // set destination to the opposite side of the nearest spotted undead
-            var nearestSpottedUndead = GetTransformOfNearestVisible(agentVisionSensor.visibles, VisionType.UNDEAD);
-
-            navMeshAgent.SetDestination(transform.position + (transform.position - nearestSpottedUndead.transform.position));
-            navMeshAgent.speed = runSpeed;
+            // set destination in the opposite direction to the current target
+            var destination = agentBrain.Destination;
+            var direction = (transform.position - destination.transform.position).normalized;
+            navMeshAgent.SetDestination(transform.position + direction * 10);
         }
 
         // When some of animations are interrupted, position and rotation of the avatar are changing. This is a workaround to fix it.
         EqialiseTransforms(transform, transform.GetChild(0)); // TODO: maybe should be used only once at the end of movement
-    }
-
-    private Transform GetTransformOfNearestVisible(List<VisionInfo> visibles, VisionType visionType)
-    {
-        var visibleOrdered = visibles.OrderBy(v => Vector3.Distance(transform.position, v.gameObject.transform.position));
-        var nearestVisible = visibleOrdered.FirstOrDefault(v => v.visionType == visionType);
-        return nearestVisible.gameObject.transform;
     }
 
     private void EqialiseTransforms(Transform source, Transform target)

@@ -5,48 +5,48 @@ using UnityEngine;
 
 public class AgentVisionSensor : MonoBehaviour
 {
-    public List<VisionInfo> visibles = new List<VisionInfo>();
-    public event Action EnemySpotted;
-    public event Action DepositSpotted;
-    public event Action HealSpotted;
-    public event Action RestSpotted;
+    public event Action<VisionInfo> EnemySpotted;
+    public event Action<VisionInfo> DepositSpotted;
+    public event Action<VisionInfo> HealSpotted;
+    public event Action<VisionInfo> RestSpotted;
+    public event Action<VisionInfo> VisionLost;
 
     private void Update() {
         SendSphereCastAll();
     }
 
     private void SendSphereCastAll() {
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, 3, transform.forward, 10);
+        var hits = Physics.SphereCastAll(transform.position, 3, transform.forward, 10);
         Array.Sort(hits, (x, y) => x.distance.CompareTo(y.distance));
 
-        visibles.Clear();
         foreach (var hit in hits) {
-            if(hit.collider.TryGetComponent(out BeaconVisible envVisible)) 
+            if(hit.collider.TryGetComponent(out BeaconVisible beacon)) 
             {
-                MakeSignal(envVisible.visionType);
-                AddToVisibles(envVisible.visionType, hit.collider.gameObject);
+                var visionInfo = new VisionInfo(beacon.visionType, beacon.gameObject);
+                MakeSignal(visionInfo);
+                // beacon.Death += () => OnVisionLost(visionInfo.visionType, visionInfo.gameObject);
             } 
         }
     }
 
-    private void AddToVisibles(VisionType visionType, GameObject gameObject) {
-        var visionObject = new VisionInfo(visionType, gameObject);
-        visibles.Add(visionObject);
+    public void OnVisionLost(VisionType visionType, GameObject gameObject) {
+        var visionInfo = new VisionInfo(visionType, gameObject);
+        VisionLost?.Invoke(visionInfo);
     }
 
-    private void MakeSignal(VisionType visionType) {
-        switch (visionType) {
+    private void MakeSignal(VisionInfo visionInfo) {
+        switch (visionInfo.visionType) {
             case VisionType.DEPOSIT:
-                DepositSpotted?.Invoke();
+                DepositSpotted?.Invoke(visionInfo);
                 break;
             case VisionType.HEAL:
-                HealSpotted?.Invoke();
+                HealSpotted?.Invoke(visionInfo);
                 break;
             case VisionType.REST:
-                RestSpotted?.Invoke();
+                RestSpotted?.Invoke(visionInfo);
                 break;
             case VisionType.UNDEAD:
-                EnemySpotted?.Invoke();
+                EnemySpotted?.Invoke(visionInfo);
                 break;
         }
     }

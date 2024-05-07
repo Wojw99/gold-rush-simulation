@@ -6,8 +6,10 @@ using UnityEngine;
 public class AgentBrain : MonoBehaviour
 {
     private GoalName _goal;
+    private GameObject _destination;
 
     public event Action<GoalName> GoalChanged;
+    public event Action<GameObject> DestinationChanged;
     public event Action DepositExtracted;
     public event Action<float> DamageTaken;
 
@@ -25,6 +27,7 @@ public class AgentBrain : MonoBehaviour
         agentVisionSensor.DepositSpotted += OnDepositSpotted;
         agentVisionSensor.HealSpotted += OnHealSpotted;
         agentVisionSensor.RestSpotted += OnRestSpotted;
+        agentVisionSensor.VisionLost += OnVisionLost;
 
         agentInteractionSensor.InteractionStarted += OnInteractionStarted;
         agentInteractionSensor.InteractionEnded += OnInteractionEnded; 
@@ -34,6 +37,8 @@ public class AgentBrain : MonoBehaviour
 
         // Give other components time to subscribe to the GoalChanged event
         StartCoroutine(ConsiderGoalChanging(1f));
+
+        Destination = transform.gameObject;
     }
 
     private IEnumerator ConsiderGoalChanging(float delay) {
@@ -83,33 +88,48 @@ public class AgentBrain : MonoBehaviour
         ConsiderGoalChanging();
     }
 
-    private void OnHealSpotted() {
+    private void OnHealSpotted(VisionInfo visionInfo) {
         if(Goal == GoalName.SEARCH_FOR_HEALING)
         {
+            Destination = visionInfo.gameObject;
             Goal = GoalName.GO_TO_NEAREST_HEALING;
         }
     }
 
-    private void OnDepositSpotted() {
+    private void OnDepositSpotted(VisionInfo visionInfo) {
         if(Goal == GoalName.SEARCH_FOR_DEPOSIT)
         {
+            Destination = visionInfo.gameObject;
             Goal = GoalName.GO_TO_NEAREST_DEPOSIT;
         }
     }
 
-    private void OnRestSpotted() {
+    private void OnRestSpotted(VisionInfo visionInfo) {
         if(Goal == GoalName.SEARCH_FOR_REST)
         {
+            Destination = visionInfo.gameObject;
             Goal = GoalName.GO_TO_NEAREST_REST;
         }
     }
 
-    private void OnEnemySpotted() {
+    private void OnEnemySpotted(VisionInfo visionInfo) {
         Goal = GoalName.RUN_FOR_YOUR_LIFE;
     }
 
+    private void OnVisionLost(VisionInfo visionInfo) {
+        if(visionInfo.gameObject == Destination) {
+            Destination = transform.gameObject;
+            ConsiderGoalChanging();
+        }
+    }
+
     private void Update() {
-        
+        if(Goal == GoalName.GO_TO_NEAREST_DEPOSIT) {
+            if(Destination == null) {
+                Destination = transform.gameObject;
+                ConsiderGoalChanging();
+            }
+        }
     }
 
     private void ConsiderGoalChanging() {
@@ -118,8 +138,6 @@ public class AgentBrain : MonoBehaviour
         if (Goal != calculatedGoal) {
             Goal = calculatedGoal;
         }
-
-        Debug.Log($"Consider goal changing. Goal: {Goal}");
     }
 
     private GoalName CalculateGoal() {
@@ -141,6 +159,14 @@ public class AgentBrain : MonoBehaviour
         set {
             _goal = value;
             GoalChanged?.Invoke(_goal);
+        }
+    }
+
+    public GameObject Destination {
+        get => _destination;
+        set {
+            _destination = value;
+            DestinationChanged?.Invoke(_destination);
         }
     }
 
