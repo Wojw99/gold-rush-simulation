@@ -23,6 +23,8 @@ public class AgentBrain : MonoBehaviour
         agentVisionSensor = GetComponent<AgentVisionSensor>();
         agentInteractionSensor = GetComponent<AgentInteractionSensor>();
 
+        agentStatus.StaminaChanged += OnStaminaChanged;
+
         agentVisionSensor.EnemySpotted += OnEnemySpotted;
         agentVisionSensor.DepositSpotted += OnDepositSpotted;
         agentVisionSensor.HealSpotted += OnHealSpotted;
@@ -32,7 +34,6 @@ public class AgentBrain : MonoBehaviour
         agentInteractionSensor.InteractionStarted += OnInteractionStarted;
         agentInteractionSensor.InteractionEnded += OnInteractionEnded; 
         agentInteractionSensor.InteractionExited += OnInteractionExited;
-
         agentInteractionSensor.ModifierStarted += OnModifierStarted;
 
         // Give other components time to subscribe to the GoalChanged event
@@ -60,7 +61,12 @@ public class AgentBrain : MonoBehaviour
         if(interactionType == InteractionType.DAMAGE) 
         {
             Goal = GoalName.TAKE_DAMAGE;
-            // DamageTaken?.Invoke();
+        }
+    }
+
+    private void OnStaminaChanged(float stamina) {
+        if(stamina >= agentStatus.MaxStamina) {
+            ConsiderGoalChanging();
         }
     }
 

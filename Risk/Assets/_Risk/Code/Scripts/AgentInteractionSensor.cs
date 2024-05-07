@@ -76,5 +76,6 @@ public class ModifierInfo {
 public enum ModifierType
 {
     HEAL,
-    DAMAGE
+    DAMAGE,
+    STAMINA
 }
