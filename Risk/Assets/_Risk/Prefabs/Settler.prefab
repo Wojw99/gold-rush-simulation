@@ -762,7 +762,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 13
   maxStamina: 5
-  maxOre: 3
+  maxOre: 20
 --- !u!114 &217613465237962836
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,7 +14,13 @@ public class UtilitiesController : MonoBehaviour
     private void Start()
     {
         agentBrain = GetComponent<AgentBrain>();
-        // agentBrain.GoalChanged += OnGoalChanged;
+        agentBrain.GoalChanged += OnGoalChanged2;
+    }
+
+    private void OnGoalChanged2(AgentBrain.GoalName goal) {
+        if (goal == AgentBrain.GoalName.DIE) {
+            // gameObject.SetActive(false);
+        }
     }
 
     private void OnGoalChanged(AgentBrain.GoalName goal)

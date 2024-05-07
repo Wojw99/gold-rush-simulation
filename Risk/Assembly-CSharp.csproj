@@ -47,6 +47,7 @@
      <Compile Include="Assets\_Risk\Code\Scripts\BeaconGravity.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\UtilitiesController.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Campfire.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\Shrine.cs" />
      <Compile Include="Assets\RTS_Camera\Demo\TargetSelector.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\PlayerInteraction.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\StatusController.cs" />

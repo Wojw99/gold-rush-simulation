@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modifierType: 1
-  modifierValue: 1
+  modifierValue: 5
   modifierLifetime: 1
 --- !u!1001 &2084834910487588911
 PrefabInstance:

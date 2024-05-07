@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Campfire : MonoBehaviour
+public class Shrine : MonoBehaviour
 {
-    private InteractionType interactionType = InteractionType.REST;
+    private InteractionType interactionType = InteractionType.HEAL;
 
     private void OnTriggerEnter(Collider other)
     {

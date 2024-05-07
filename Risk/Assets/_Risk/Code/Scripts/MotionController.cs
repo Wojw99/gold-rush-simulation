@@ -39,13 +39,9 @@ public class MotionController : MonoBehaviour
             navMeshAgent.isStopped = false;
         }
 
-        if(agentBrain.Goal == AgentBrain.GoalName.GO_TO_NEAREST_DEPOSIT) {
-            var destination = agentBrain.Destination;
-            if(destination != null)
-                navMeshAgent.SetDestination(destination.transform.position);
-        }
-
-        if(agentBrain.Goal == AgentBrain.GoalName.GO_TO_NEAREST_REST) {
+        if(agentBrain.Goal == AgentBrain.GoalName.GO_TO_NEAREST_DEPOSIT
+        || agentBrain.Goal == AgentBrain.GoalName.GO_TO_NEAREST_REST
+        || agentBrain.Goal == AgentBrain.GoalName.GO_TO_NEAREST_HEALING) {
             var destination = agentBrain.Destination;
             if(destination != null)
                 navMeshAgent.SetDestination(destination.transform.position);
@@ -53,7 +49,9 @@ public class MotionController : MonoBehaviour
 
         if(agentBrain.Goal == AgentBrain.GoalName.MINE_DEPOSIT 
         || agentBrain.Goal == AgentBrain.GoalName.TAKE_REST 
-        || agentBrain.Goal == AgentBrain.GoalName.TAKE_DAMAGE) {
+        || agentBrain.Goal == AgentBrain.GoalName.TAKE_HEALING
+        || agentBrain.Goal == AgentBrain.GoalName.TAKE_DAMAGE
+        || agentBrain.Goal == AgentBrain.GoalName.DIE) {
             navMeshAgent.isStopped = true;
         }
 
@@ -70,7 +68,9 @@ public class MotionController : MonoBehaviour
 
     private void EqialiseTransforms(Transform source, Transform target)
     {
-        target.position = source.position;
-        target.rotation = source.rotation;
+        if(agentBrain.Goal != AgentBrain.GoalName.DIE) {
+            target.position = source.position;
+            target.rotation = source.rotation;
+        }
     }
 }

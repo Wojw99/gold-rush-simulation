@@ -12,7 +12,6 @@ public class AgentInteractionSensor : MonoBehaviour
     public event Action<InteractionType> InteractionExited;
 
     public event Action<ModifierInfo> ModifierStarted;
-    // public event Action<ModifierInfo> ModifierEnded;
 
     public void OnModifierEnter(ModifierInfo modifierInfo) {
         ModifierStarted?.Invoke(modifierInfo);

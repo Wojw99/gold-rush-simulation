@@ -24,6 +24,7 @@ public class AgentBrain : MonoBehaviour
         agentInteractionSensor = GetComponent<AgentInteractionSensor>();
 
         agentStatus.StaminaChanged += OnStaminaChanged;
+        agentStatus.HealthChanged += OnHealChanged;
 
         agentVisionSensor.EnemySpotted += OnEnemySpotted;
         agentVisionSensor.DepositSpotted += OnDepositSpotted;
@@ -61,6 +62,18 @@ public class AgentBrain : MonoBehaviour
         if(interactionType == InteractionType.DAMAGE) 
         {
             Goal = GoalName.TAKE_DAMAGE;
+        }
+        if(interactionType == InteractionType.HEAL) 
+        {
+            Goal = GoalName.TAKE_HEALING;
+        }
+    }
+
+    private void OnHealChanged(float heal) {
+        if(heal >= agentStatus.MaxHealth) {
+            ConsiderGoalChanging();
+        } else if(heal <= 0) {
+            Goal = GoalName.DIE;
         }
     }
 
@@ -139,6 +152,10 @@ public class AgentBrain : MonoBehaviour
     }
 
     private void ConsiderGoalChanging() {
+        if(Goal == GoalName.DIE) {
+            return;
+        }
+
         var calculatedGoal = CalculateGoal();
         
         if (Goal != calculatedGoal) {
@@ -182,6 +199,7 @@ public class AgentBrain : MonoBehaviour
         RUN_FOR_YOUR_LIFE,
         LEAVE_THE_AREA,
         TAKE_DAMAGE,
+        DIE,
         
         SEARCH_FOR_DEPOSIT,
         GO_TO_NEAREST_DEPOSIT,
