@@ -5,35 +5,64 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    [SerializeField] private GameObject depositPrefab;
-    [SerializeField] private GameObject restPrefab;
+    #region Singleton
+
+    public static PlayerInteraction instance;
+
+    private void Awake() {
+        instance = this;
+    }
+
+    private PlayerInteraction() {
+
+    }
+
+    #endregion
+
     [SerializeField] private GameObject[] prefabsArray = new GameObject[10];
-    private GameObject selectedPrefab;
+    [SerializeField] private int selectedPrefabIndex = 0;
 
     public event Action<GameObject[]> PrefabsArrayChanged;
 
     private void Start() {
-        selectedPrefab = prefabsArray[0];
+        InitializeSelectedPrefabIndex();
     }
 
     private void Update() {
+        ChangeSelectedIndexOnInput();
+        SpawnPrefabOnInput();
+    }
+
+    private void InitializeSelectedPrefabIndex() {
+        selectedPrefabIndex = 0;
+        PrefabsArrayChanged?.Invoke(prefabsArray);
+    }
+
+    private void SpawnPrefabOnInput() {
         if (Input.GetMouseButtonDown(0)) {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit)) {
+            if (Physics.Raycast(ray, out RaycastHit hit)) {
                 var spawnPoint = new Vector3(hit.point.x, hit.point.y + 1f, hit.point.z);
-                Instantiate(selectedPrefab, spawnPoint, Quaternion.identity);
+                var prefab = prefabsArray[selectedPrefabIndex];
+                Instantiate(prefab, spawnPoint, Quaternion.identity);
             }
         }
+    }
 
-        for (int i = 0; i < 9; i++) {
-            if (Input.GetKeyDown((i + 1).ToString())) {
-                selectedPrefab = prefabsArray[i];
+    private void ChangeSelectedIndexOnInput() {
+        for (int i = 0; i < prefabsArray.Length; i++) {
+            if (Input.GetKeyDown(i.ToString())) {
+                selectedPrefabIndex = i;
+                PrefabsArrayChanged?.Invoke(prefabsArray);
             }
         }
     }
 
     public GameObject[] PrefabsArray {
         get => prefabsArray;
+    }
+
+    public int SelectedPrefabIndex {
+        get => selectedPrefabIndex;
     }
 }
