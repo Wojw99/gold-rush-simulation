@@ -36,11 +36,30 @@ public class AgentBrain : MonoBehaviour
         agentInteractionSensor.InteractionEnded += OnInteractionEnded; 
         agentInteractionSensor.InteractionExited += OnInteractionExited;
         agentInteractionSensor.ModifierStarted += OnModifierStarted;
+        agentInteractionSensor.PlayerSelect += OnPlayerSelect;
+        agentInteractionSensor.PlayerDeselect += OnPlayerDeselect;
+        agentInteractionSensor.PlayerOrder += OnPlayerOrder;
 
         // Give other components time to subscribe to the GoalChanged event
         StartCoroutine(ConsiderGoalChanging(1f));
 
         Destination = transform.gameObject;
+    }
+
+    private void OnPlayerSelect() {
+        Goal = GoalName.FREEZE;
+        Destination = transform.gameObject;
+        Debug.Log("Selected");
+    }
+
+    private void OnPlayerDeselect() {
+        ConsiderGoalChanging();
+    }
+
+    private void OnPlayerOrder(GameObject destination) {
+        Goal = GoalName.GO_TO_DESTINATION;
+        Destination = destination;
+        Debug.Log("Ordered");
     }
 
     private IEnumerator ConsiderGoalChanging(float delay) {
@@ -200,6 +219,7 @@ public class AgentBrain : MonoBehaviour
         LEAVE_THE_AREA,
         TAKE_DAMAGE,
         DIE,
+        GO_TO_DESTINATION,
         
         SEARCH_FOR_DEPOSIT,
         GO_TO_NEAREST_DEPOSIT,

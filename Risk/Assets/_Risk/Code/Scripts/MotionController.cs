@@ -11,6 +11,7 @@ public class MotionController : MonoBehaviour
     private AgentStatus agentStatus;
     private AgentVisionSensor agentVisionSensor;
 
+    private float walkSpeed = 2.5f;
     private float runSpeed = 6f;
 
     private void Start()
@@ -41,10 +42,18 @@ public class MotionController : MonoBehaviour
 
         if(agentBrain.Goal == AgentBrain.GoalName.GO_TO_NEAREST_DEPOSIT
         || agentBrain.Goal == AgentBrain.GoalName.GO_TO_NEAREST_REST
-        || agentBrain.Goal == AgentBrain.GoalName.GO_TO_NEAREST_HEALING) {
+        || agentBrain.Goal == AgentBrain.GoalName.GO_TO_NEAREST_HEALING
+        || agentBrain.Goal == AgentBrain.GoalName.GO_TO_DESTINATION) {
             var destination = agentBrain.Destination;
             if(destination != null)
                 navMeshAgent.SetDestination(destination.transform.position);
+        }
+
+        if (agentBrain.Goal == AgentBrain.GoalName.RUN_FOR_YOUR_LIFE 
+        || agentBrain.Goal == AgentBrain.GoalName.GO_TO_DESTINATION) {
+            navMeshAgent.speed = runSpeed;
+        } else {
+            navMeshAgent.speed = walkSpeed;
         }
 
         if(agentBrain.Goal == AgentBrain.GoalName.MINE_DEPOSIT 

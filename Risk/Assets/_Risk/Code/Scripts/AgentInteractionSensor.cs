@@ -11,10 +11,26 @@ public class AgentInteractionSensor : MonoBehaviour
     public event Action<InteractionType> InteractionEnded;
     public event Action<InteractionType> InteractionExited;
 
+    public event Action PlayerSelect;
+    public event Action PlayerDeselect;
+    public event Action<GameObject> PlayerOrder;
+
     public event Action<ModifierInfo> ModifierStarted;
 
     public void OnModifierEnter(ModifierInfo modifierInfo) {
         ModifierStarted?.Invoke(modifierInfo);
+    }
+
+    public void OnPlayerSelect() {
+        PlayerSelect?.Invoke();
+    }
+
+    public void OnPlayerDeselect() {
+        PlayerDeselect?.Invoke();
+    }
+
+    public void OnPlayerOrder(GameObject destination) {
+        PlayerOrder?.Invoke(destination);
     }
 
     public void OnInteractionEnter(InteractionType interactionType, GameObject gameObject) {

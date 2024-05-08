@@ -7678,6 +7678,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4565fa611d4013641959029316d26de8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fancySpherePrefab: {fileID: 1643771108068043612, guid: 2e43231a563fddc4d849754dc0d8b05e,
+    type: 3}
   prefabsArray:
   - {fileID: 8528804228097553254, guid: 384ffe357d83ff340989839af5945365, type: 3}
   - {fileID: 3681096033873725355, guid: f4b105089bcd87b47988293b94c8ffee, type: 3}

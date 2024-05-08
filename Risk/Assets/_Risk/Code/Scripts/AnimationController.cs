@@ -44,7 +44,8 @@ public class AnimationController : MonoBehaviour
         if (goal == AgentBrain.GoalName.MINE_DEPOSIT) {
             animator.SetBool(IS_DIGGING, true);
         } 
-        if (goal == AgentBrain.GoalName.RUN_FOR_YOUR_LIFE) {
+        if (goal == AgentBrain.GoalName.RUN_FOR_YOUR_LIFE 
+            || goal == AgentBrain.GoalName.GO_TO_DESTINATION) {
             animator.SetBool(IS_RUNNING, true);
         }
         if(goal == AgentBrain.GoalName.TAKE_DAMAGE) {
