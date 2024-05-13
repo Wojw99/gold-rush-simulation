@@ -173,6 +173,8 @@ public class AgentBrain : MonoBehaviour
             Destination = visionInfo.gameObject;
             Goal = GoalName.GO_TO_NEAREST_AGENT;
         }
+
+        Debug.Log("$Agent spotted");
     }
 
     private void OnAgentApproached(GameObject otherAgent) {
@@ -198,10 +200,12 @@ public class AgentBrain : MonoBehaviour
             Destination = otherAgent;
             Goal = GoalName.ATTACK;
         }
+
+        Debug.Log("$Agent approached");
     }
-
+ 
     private void OnAgentLeft(GameObject otherAgent) {
-
+        Debug.Log("$Agent left");
     }
 
 
@@ -210,6 +214,7 @@ public class AgentBrain : MonoBehaviour
             Destination = transform.gameObject;
             ConsiderGoalChanging();
         }
+        Debug.Log("$Vision lost");
     }
 
     private void Update() {
@@ -261,6 +266,13 @@ public class AgentBrain : MonoBehaviour
             _destination = value;
             DestinationChanged?.Invoke(_destination);
         }
+    }
+
+    private void OnDestroy() {
+        GoalChanged = null;
+        DestinationChanged = null;
+        DepositExtracted = null;
+        DamageTaken = null;
     }
 
     public enum GoalName

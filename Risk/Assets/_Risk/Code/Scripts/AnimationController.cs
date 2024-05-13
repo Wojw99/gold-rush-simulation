@@ -17,7 +17,7 @@ public class AnimationController : MonoBehaviour
 
     private void Start()
     {
-        animator = GetComponentInChildren<Animator>();
+        animator = GetComponent<Animator>();
         agentBrain = GetComponent<AgentBrain>();
         agentBrain.GoalChanged += OnGoalChanged;
     }
@@ -74,9 +74,5 @@ public class AnimationController : MonoBehaviour
         animator.SetBool(IS_PRAYING, false);
         animator.SetBool(IS_DYING, false);
         animator.SetBool(IS_ATTACKING, false);
-    }
-
-    private void OnDestroy() {
-        agentBrain.GoalChanged -= OnGoalChanged;
     }
 }

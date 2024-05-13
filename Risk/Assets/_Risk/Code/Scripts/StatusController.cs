@@ -18,15 +18,19 @@ public class StatusController : MonoBehaviour
         agentStatus = GetComponent<AgentStatus>();
         agentBrain = GetComponent<AgentBrain>();
 
-        agentBrain.DepositExtracted += () => {
-            agentStatus.Ore++;
-        };
-
-        agentBrain.DamageTaken += (damageValue) => {
-            agentStatus.Health -= damageValue;
-        };
-
+        agentBrain.DepositExtracted += OnDepositExtracted;
+        agentBrain.DamageTaken += OnDamageTaken;
         agentBrain.GoalChanged += OnGoalChanged;
+    }
+
+    private void OnDepositExtracted()
+    {
+        agentStatus.Ore++;
+    }
+
+    private void OnDamageTaken(float damageValue)
+    {
+        agentStatus.Health -= damageValue;
     }
 
     private void OnGoalChanged(AgentBrain.GoalName goal)
@@ -63,5 +67,12 @@ public class StatusController : MonoBehaviour
 
     private void IncreaseStamina() {
         agentStatus.Stamina += staminaIncreaseRate;
+    }
+
+    private void OnDestroy()
+    {
+        agentBrain.GoalChanged -= OnGoalChanged;
+        agentBrain.DepositExtracted -= OnDepositExtracted;
+        agentBrain.DamageTaken -= OnDamageTaken;
     }
 }

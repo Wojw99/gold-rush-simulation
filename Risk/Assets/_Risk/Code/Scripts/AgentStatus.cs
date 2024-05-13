@@ -65,4 +65,11 @@ public class AgentStatus : MonoBehaviour
     public float MaxOre => maxOre;
     public bool IsAgressive => isAgressive;
     public AgentType AgentType => agentType;
+
+    private void OnDestroy() {
+        HealthChanged = null;
+        StaminaChanged = null;
+        OreChanged = null;
+        NameChanged = null;
+    }
 }

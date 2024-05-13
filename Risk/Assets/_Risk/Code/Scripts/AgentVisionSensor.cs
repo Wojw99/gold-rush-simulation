@@ -50,6 +50,13 @@ public class AgentVisionSensor : MonoBehaviour
         }
     }
 
+    private void OnDestroy() {
+        VisionLost = null;
+        AgentSpotted = null;
+        DepositSpotted = null;
+        HealSpotted = null;
+        RestSpotted = null;
+    }
 }
 
 public class VisionInfo {

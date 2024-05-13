@@ -62,7 +62,6 @@ public class AgentInteractionSensor : MonoBehaviour
     }
     
     private void OnAgentApproached(GameObject gameObject) {
-        Debug.Log("Agent approached invoke");
         AgentApproached?.Invoke(gameObject);
     }
 
@@ -72,10 +71,8 @@ public class AgentInteractionSensor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Triggered");
         if (other.TryGetComponent(out AgentInteractionSensor agentInteractionSensor))
         {
-            Debug.Log("Agent approached");
             agentInteractionSensor.OnAgentApproached(gameObject);
         }
     }
@@ -86,5 +83,17 @@ public class AgentInteractionSensor : MonoBehaviour
         {
             agentInteractionSensor.OnAgentLeft(gameObject);
         }
+    }
+
+    private void OnDestroy() {
+        InteractionStarted = null;
+        InteractionEnded = null;
+        InteractionExited = null;
+        AgentApproached = null;
+        AgentLeft = null;
+        PlayerSelect = null;
+        PlayerDeselect = null;
+        PlayerOrder = null;
+        ModifierStarted = null;
     }
 }

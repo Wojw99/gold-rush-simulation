@@ -699,6 +699,7 @@ GameObject:
   - component: {fileID: 8161517707976803744}
   - component: {fileID: 3711718997779677575}
   - component: {fileID: 2899414556275459463}
+  - component: {fileID: 2337278621507855832}
   m_Layer: 0
   m_Name: Settler
   m_TagString: Untagged
@@ -721,7 +722,7 @@ Transform:
   - {fileID: 2359374093343897342}
   - {fileID: 5380839707142522840}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &7653694410184969418
 Rigidbody:
@@ -949,6 +950,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visionType: 3
+--- !u!95 &2337278621507855832
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7269895200048330999}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: bd83b7da59c20464288209a8d297eb23, type: 3}
+  m_Controller: {fileID: 9100000, guid: f605ead8f38878146af8ed16565ca3da, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8039256337678273124
 GameObject:
   m_ObjectHideFlags: 0
@@ -1276,7 +1298,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8867372405804473313, guid: d3f87f114f86a3b4f88996e8d2e99fd8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1934106266700811706, guid: d3f87f114f86a3b4f88996e8d2e99fd8,

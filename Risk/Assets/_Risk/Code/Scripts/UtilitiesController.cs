@@ -29,7 +29,7 @@ public class UtilitiesController : MonoBehaviour
         }
 
         if(goal == AgentBrain.GoalName.DIE) {
-
+            Destroy(gameObject);
         }
     }
 }

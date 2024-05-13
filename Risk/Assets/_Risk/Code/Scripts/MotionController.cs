@@ -84,9 +84,7 @@ public class MotionController : MonoBehaviour
 
     private void EqialiseTransforms(Transform source, Transform target)
     {
-        if(agentBrain.Goal != AgentBrain.GoalName.DIE) {
-            target.position = source.position;
-            target.rotation = source.rotation;
-        }
+        target.position = source.position;
+        target.rotation = source.rotation;
     }
 }
