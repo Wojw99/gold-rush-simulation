@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class AgentVisionSensor : MonoBehaviour
 {
-    public event Action<VisionInfo> AgentSpotted;
-    public event Action<VisionInfo> DepositSpotted;
-    public event Action<VisionInfo> HealSpotted;
-    public event Action<VisionInfo> RestSpotted;
-    public event Action<VisionInfo> VisionLost;
+    public event Action<BeaconInfo> AgentSpotted;
+    public event Action<BeaconInfo> DepositSpotted;
+    public event Action<BeaconInfo> HealSpotted;
+    public event Action<BeaconInfo> RestSpotted;
+    public event Action<BeaconInfo> BeaconLost;
+
+    private List<GameObject> historyBeacons = new List<GameObject>();
 
     private void Update() {
         SendSphereCastAll();
@@ -19,39 +21,66 @@ public class AgentVisionSensor : MonoBehaviour
         var hits = Physics.SphereCastAll(transform.position, 3, transform.forward, 10);
         Array.Sort(hits, (x, y) => x.distance.CompareTo(y.distance));
 
+        var newBeacons = SearchForBeacons(hits);
+        MakeSpottedSignals(newBeacons);
+        historyBeacons = newBeacons;
+    }
+
+    private List<GameObject> SearchForBeacons(RaycastHit[] hits) {
+        var newBeacons = new List<GameObject>();
         foreach (var hit in hits) {
             if(hit.collider.TryGetComponent(out BeaconVisible beacon)) 
             {
-                var visionInfo = new VisionInfo(beacon.visionType, beacon.gameObject);
-                MakeSignal(visionInfo);
+                if(beacon.gameObject != gameObject) {
+                    newBeacons.Add(beacon.gameObject);
+                }
             } 
+        }
+        return newBeacons;
+    }
+
+    private void MakeSpottedSignals(List<GameObject> newBeacons) {
+        foreach (var beacon in newBeacons) {
+            if (!historyBeacons.Contains(beacon)) {
+                var type = beacon.GetComponent<BeaconVisible>().beaconType;
+                MakeSignal(new BeaconInfo(type, beacon));
+            }
         }
     }
 
-    public void OnVisionLost(VisionType visionType, GameObject gameObject) {
-        var visionInfo = new VisionInfo(visionType, gameObject);
-        VisionLost?.Invoke(visionInfo);
+    private void MakeLostSignals(List<GameObject> newBeacons) {
+        foreach (var beacon in historyBeacons) {
+            if (!newBeacons.Contains(beacon)) {
+                var beaconType = beacon.GetComponent<BeaconVisible>().beaconType;
+                // OnVisionLost(visionType, beacon);
+            }
+        }
     }
 
-    private void MakeSignal(VisionInfo visionInfo) {
-        switch (visionInfo.visionType) {
-            case VisionType.DEPOSIT:
-                DepositSpotted?.Invoke(visionInfo);
+    public void OnVisionLost(BeaconType visionType, GameObject gameObject) {
+        var beaconInfo = new BeaconInfo(visionType, gameObject);
+        BeaconLost?.Invoke(beaconInfo);
+    }
+
+    private void MakeSignal(BeaconInfo becaonInfo) {
+        switch (becaonInfo.beaconType) {
+            case BeaconType.DEPOSIT:
+                DepositSpotted?.Invoke(becaonInfo);
                 break;
-            case VisionType.HEAL:
-                HealSpotted?.Invoke(visionInfo);
+            case BeaconType.HEAL:
+                HealSpotted?.Invoke(becaonInfo);
                 break;
-            case VisionType.REST:
-                RestSpotted?.Invoke(visionInfo);
+            case BeaconType.REST:
+                RestSpotted?.Invoke(becaonInfo);
                 break;
-            case VisionType.AGENT:
-                AgentSpotted?.Invoke(visionInfo);
+            case BeaconType.AGENT:
+                AgentSpotted?.Invoke(becaonInfo);
                 break;
         }
     }
 
     private void OnDestroy() {
-        VisionLost = null;
+        BeaconLost = null;
         AgentSpotted = null;
         DepositSpotted = null;
         HealSpotted = null;
@@ -59,17 +88,17 @@ public class AgentVisionSensor : MonoBehaviour
     }
 }
 
-public class VisionInfo {
-    public VisionType visionType;
+public class BeaconInfo {
+    public BeaconType beaconType;
     public GameObject gameObject;
 
-    public VisionInfo(VisionType visionType, GameObject gameObject) {
-        this.visionType = visionType;
+    public BeaconInfo(BeaconType visionType, GameObject gameObject) {
+        this.beaconType = visionType;
         this.gameObject = gameObject;
     }
 }
 
-public enum VisionType {
+public enum BeaconType {
     DEPOSIT,
     HEAL,
     REST,

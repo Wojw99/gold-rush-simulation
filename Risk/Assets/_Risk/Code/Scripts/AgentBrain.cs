@@ -30,7 +30,7 @@ public class AgentBrain : MonoBehaviour
         agentVisionSensor.DepositSpotted += OnDepositSpotted;
         agentVisionSensor.HealSpotted += OnHealSpotted;
         agentVisionSensor.RestSpotted += OnRestSpotted;
-        agentVisionSensor.VisionLost += OnVisionLost;
+        agentVisionSensor.BeaconLost += OnBeaconLost;
 
         agentInteractionSensor.InteractionStarted += OnInteractionStarted;
         agentInteractionSensor.InteractionEnded += OnInteractionEnded; 
@@ -126,81 +126,35 @@ public class AgentBrain : MonoBehaviour
         ConsiderGoalChanging();
     }
 
-    private void OnHealSpotted(VisionInfo visionInfo) {
+    private void OnHealSpotted(BeaconInfo beaconInfo) {
         if(Goal == GoalName.SEARCH_FOR_HEALING)
         {
-            Destination = visionInfo.gameObject;
+            Destination = beaconInfo.gameObject;
             Goal = GoalName.GO_TO_NEAREST_HEALING;
         }
     }
 
-    private void OnDepositSpotted(VisionInfo visionInfo) {
+    private void OnDepositSpotted(BeaconInfo beaconInfo) {
         if(Goal == GoalName.SEARCH_FOR_DEPOSIT)
         {
-            Destination = visionInfo.gameObject;
+            Destination = beaconInfo.gameObject;
             Goal = GoalName.GO_TO_NEAREST_DEPOSIT;
         }
     }
 
-    private void OnRestSpotted(VisionInfo visionInfo) {
+    private void OnRestSpotted(BeaconInfo beaconInfo) {
         if(Goal == GoalName.SEARCH_FOR_REST)
         {
-            Destination = visionInfo.gameObject;
+            Destination = beaconInfo.gameObject;
             Goal = GoalName.GO_TO_NEAREST_REST;
         }
     }
 
-    private void OnAgentSpotted(VisionInfo visionInfo) {
-        var otherAgentStatus = visionInfo.gameObject.GetComponent<AgentStatus>();
-        var otherAgentBrain = visionInfo.gameObject.GetComponent<AgentBrain>();
-
-        if(otherAgentBrain.Goal == GoalName.DIE) {
-            ConsiderGoalChanging();
-            return;
-        }
-
-        if(Goal == GoalName.ATTACK || Goal == GoalName.DIE) {
-            return;
-        }
-
-        if(otherAgentStatus.AgentType == agentStatus.AgentType) {
-            return;
-        }
-
-        if(!agentStatus.IsAgressive) {
-            Goal = GoalName.RUN_FOR_YOUR_LIFE;
-        } else {
-            Destination = visionInfo.gameObject;
-            Goal = GoalName.GO_TO_NEAREST_AGENT;
-        }
-
+    private void OnAgentSpotted(BeaconInfo beaconInfo) {
         Debug.Log("$Agent spotted");
     }
 
     private void OnAgentApproached(GameObject otherAgent) {
-        var otherAgentStatus = otherAgent.GetComponent<AgentStatus>();
-        var otherAgentBrain = otherAgent.GetComponent<AgentBrain>();
-
-        if(otherAgentBrain.Goal == GoalName.DIE) {
-            ConsiderGoalChanging();
-            return;
-        }
-
-        if(Goal == GoalName.ATTACK || Goal == GoalName.DIE) {
-            return;
-        }
-
-        if(otherAgentStatus.AgentType == agentStatus.AgentType) {
-            return;
-        }
-
-        if(!agentStatus.IsAgressive) {
-            Goal = GoalName.RUN_FOR_YOUR_LIFE;
-        } else {
-            Destination = otherAgent;
-            Goal = GoalName.ATTACK;
-        }
-
         Debug.Log("$Agent approached");
     }
  
@@ -209,12 +163,12 @@ public class AgentBrain : MonoBehaviour
     }
 
 
-    private void OnVisionLost(VisionInfo visionInfo) {
-        if(visionInfo.gameObject == Destination) {
+    private void OnBeaconLost(BeaconInfo beaconInfo) {
+        if(beaconInfo.gameObject == Destination) {
             Destination = transform.gameObject;
             ConsiderGoalChanging();
         }
-        Debug.Log("$Vision lost");
+        Debug.Log("$Agent vision lost");
     }
 
     private void Update() {

@@ -5,5 +5,5 @@ using UnityEngine;
 
 public class BeaconVisible : MonoBehaviour
 {
-    public VisionType visionType;
+    public BeaconType beaconType;
 }
