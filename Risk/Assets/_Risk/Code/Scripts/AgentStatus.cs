@@ -13,6 +13,8 @@ public class AgentStatus : MonoBehaviour
     private float _ore;
 
     private string _name;
+    [SerializeField] private bool isAgressive;
+    [SerializeField] private AgentType agentType;
 
     public event Action<float> HealthChanged;
     public event Action<float> StaminaChanged;
@@ -61,4 +63,6 @@ public class AgentStatus : MonoBehaviour
     public float MaxHealth => maxHealth;
     public float MaxStamina => maxStamina;
     public float MaxOre => maxOre;
+    public bool IsAgressive => isAgressive;
+    public AgentType AgentType => agentType;
 }

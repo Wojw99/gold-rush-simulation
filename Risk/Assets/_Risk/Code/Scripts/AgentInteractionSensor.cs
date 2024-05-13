@@ -11,6 +11,9 @@ public class AgentInteractionSensor : MonoBehaviour
     public event Action<InteractionType> InteractionEnded;
     public event Action<InteractionType> InteractionExited;
 
+    public event Action<GameObject> AgentApproached;
+    public event Action<GameObject> AgentLeft;
+
     public event Action PlayerSelect;
     public event Action PlayerDeselect;
     public event Action<GameObject> PlayerOrder;
@@ -57,40 +60,31 @@ public class AgentInteractionSensor : MonoBehaviour
         var interactible = new InteractionInfo(interactionType, gameObject);
         interactibles.Add(interactible);
     }
-}
-
-public class InteractionInfo {
-    public InteractionType interactionType;
-    public GameObject gameObject;
-
-    public InteractionInfo(InteractionType interactionType, GameObject gameObject) {
-        this.interactionType = interactionType;
-        this.gameObject = gameObject;
+    
+    private void OnAgentApproached(GameObject gameObject) {
+        Debug.Log("Agent approached invoke");
+        AgentApproached?.Invoke(gameObject);
     }
-}
 
-public enum InteractionType {
-    DEPOSIT,
-    REST,
-    HEAL,
-    DAMAGE,
-}
-
-public class ModifierInfo {
-    public ModifierType modifierType;
-    public float modifierValue;
-    public float modifierLifetime;
-
-    public ModifierInfo(ModifierType modifierType, float modifierValue, float modifierLifetime) {
-        this.modifierType = modifierType;
-        this.modifierValue = modifierValue;
-        this.modifierLifetime = modifierLifetime;
+    private void OnAgentLeft(GameObject gameObject) {
+        AgentLeft?.Invoke(gameObject);
     }
-}
 
-public enum ModifierType
-{
-    HEAL,
-    DAMAGE,
-    STAMINA
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Triggered");
+        if (other.TryGetComponent(out AgentInteractionSensor agentInteractionSensor))
+        {
+            Debug.Log("Agent approached");
+            agentInteractionSensor.OnAgentApproached(gameObject);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out AgentInteractionSensor agentInteractionSensor))
+        {
+            agentInteractionSensor.OnAgentLeft(gameObject);
+        }
+    }
 }

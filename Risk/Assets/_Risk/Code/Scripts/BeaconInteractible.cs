@@ -27,8 +27,10 @@ public class BeaconInteractible : MonoBehaviour
         if (isOccupied)
         {
             isOccupied = false;
-            agentInteractionSensor.OnInteractionEnd(interactionType, gameObject);
-            Destroy(gameObject);
+            if(agentInteractionSensor != null) {
+                agentInteractionSensor.OnInteractionEnd(interactionType, gameObject);
+                Destroy(gameObject);
+            }
         }
     }
 

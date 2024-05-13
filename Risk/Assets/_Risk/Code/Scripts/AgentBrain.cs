@@ -26,7 +26,7 @@ public class AgentBrain : MonoBehaviour
         agentStatus.StaminaChanged += OnStaminaChanged;
         agentStatus.HealthChanged += OnHealChanged;
 
-        agentVisionSensor.EnemySpotted += OnEnemySpotted;
+        agentVisionSensor.AgentSpotted += OnAgentSpotted;
         agentVisionSensor.DepositSpotted += OnDepositSpotted;
         agentVisionSensor.HealSpotted += OnHealSpotted;
         agentVisionSensor.RestSpotted += OnRestSpotted;
@@ -39,6 +39,8 @@ public class AgentBrain : MonoBehaviour
         agentInteractionSensor.PlayerSelect += OnPlayerSelect;
         agentInteractionSensor.PlayerDeselect += OnPlayerDeselect;
         agentInteractionSensor.PlayerOrder += OnPlayerOrder;
+        agentInteractionSensor.AgentApproached += OnAgentApproached;
+        agentInteractionSensor.AgentLeft += OnAgentLeft;
 
         // Give other components time to subscribe to the GoalChanged event
         StartCoroutine(ConsiderGoalChanging(1f));
@@ -49,7 +51,6 @@ public class AgentBrain : MonoBehaviour
     private void OnPlayerSelect() {
         Goal = GoalName.FREEZE;
         Destination = transform.gameObject;
-        Debug.Log("Selected");
     }
 
     private void OnPlayerDeselect() {
@@ -59,7 +60,6 @@ public class AgentBrain : MonoBehaviour
     private void OnPlayerOrder(GameObject destination) {
         Goal = GoalName.GO_TO_DESTINATION;
         Destination = destination;
-        Debug.Log("Ordered");
     }
 
     private IEnumerator ConsiderGoalChanging(float delay) {
@@ -150,9 +150,60 @@ public class AgentBrain : MonoBehaviour
         }
     }
 
-    private void OnEnemySpotted(VisionInfo visionInfo) {
-        Goal = GoalName.RUN_FOR_YOUR_LIFE;
+    private void OnAgentSpotted(VisionInfo visionInfo) {
+        var otherAgentStatus = visionInfo.gameObject.GetComponent<AgentStatus>();
+        var otherAgentBrain = visionInfo.gameObject.GetComponent<AgentBrain>();
+
+        if(otherAgentBrain.Goal == GoalName.DIE) {
+            ConsiderGoalChanging();
+            return;
+        }
+
+        if(Goal == GoalName.ATTACK || Goal == GoalName.DIE) {
+            return;
+        }
+
+        if(otherAgentStatus.AgentType == agentStatus.AgentType) {
+            return;
+        }
+
+        if(!agentStatus.IsAgressive) {
+            Goal = GoalName.RUN_FOR_YOUR_LIFE;
+        } else {
+            Destination = visionInfo.gameObject;
+            Goal = GoalName.GO_TO_NEAREST_AGENT;
+        }
     }
+
+    private void OnAgentApproached(GameObject otherAgent) {
+        var otherAgentStatus = otherAgent.GetComponent<AgentStatus>();
+        var otherAgentBrain = otherAgent.GetComponent<AgentBrain>();
+
+        if(otherAgentBrain.Goal == GoalName.DIE) {
+            ConsiderGoalChanging();
+            return;
+        }
+
+        if(Goal == GoalName.ATTACK || Goal == GoalName.DIE) {
+            return;
+        }
+
+        if(otherAgentStatus.AgentType == agentStatus.AgentType) {
+            return;
+        }
+
+        if(!agentStatus.IsAgressive) {
+            Goal = GoalName.RUN_FOR_YOUR_LIFE;
+        } else {
+            Destination = otherAgent;
+            Goal = GoalName.ATTACK;
+        }
+    }
+
+    private void OnAgentLeft(GameObject otherAgent) {
+
+    }
+
 
     private void OnVisionLost(VisionInfo visionInfo) {
         if(visionInfo.gameObject == Destination) {
@@ -220,6 +271,10 @@ public class AgentBrain : MonoBehaviour
         TAKE_DAMAGE,
         DIE,
         GO_TO_DESTINATION,
+
+        SEARCH_FOR_AGENT,
+        GO_TO_NEAREST_AGENT,
+        ATTACK,
         
         SEARCH_FOR_DEPOSIT,
         GO_TO_NEAREST_DEPOSIT,

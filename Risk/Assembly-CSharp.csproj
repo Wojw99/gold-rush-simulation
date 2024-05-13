@@ -41,11 +41,13 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\_Risk\Code\Scripts\AgentStatus.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\Sword.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Modifier.cs" />
      <Compile Include="Assets\MenuItem.cs" />
      <Compile Include="Assets\RTS_Camera\Demo\DemoScene.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\BeaconGravity.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\UtilitiesController.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\Utilities.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Campfire.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Shrine.cs" />
      <Compile Include="Assets\RTS_Camera\Demo\TargetSelector.cs" />

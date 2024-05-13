@@ -13,6 +13,7 @@ public class AnimationController : MonoBehaviour
     private const string IS_DAMAGED = "IsDamaged";
     private const string IS_PRAYING = "IsPraying";
     private const string IS_DYING = "IsDying";
+    private const string IS_ATTACKING = "IsAttacking";
 
     private void Start()
     {
@@ -33,7 +34,8 @@ public class AnimationController : MonoBehaviour
         } 
         if (goal == AgentBrain.GoalName.SEARCH_FOR_DEPOSIT 
             || goal == AgentBrain.GoalName.SEARCH_FOR_REST
-            || goal == AgentBrain.GoalName.SEARCH_FOR_HEALING) {
+            || goal == AgentBrain.GoalName.SEARCH_FOR_HEALING 
+            || goal == AgentBrain.GoalName.SEARCH_FOR_AGENT) {
             animator.SetBool(IS_WALKING, true);
         } 
         if (goal == AgentBrain.GoalName.GO_TO_NEAREST_DEPOSIT 
@@ -45,7 +47,8 @@ public class AnimationController : MonoBehaviour
             animator.SetBool(IS_DIGGING, true);
         } 
         if (goal == AgentBrain.GoalName.RUN_FOR_YOUR_LIFE 
-            || goal == AgentBrain.GoalName.GO_TO_DESTINATION) {
+            || goal == AgentBrain.GoalName.GO_TO_DESTINATION
+            || goal == AgentBrain.GoalName.GO_TO_NEAREST_AGENT) {
             animator.SetBool(IS_RUNNING, true);
         }
         if(goal == AgentBrain.GoalName.TAKE_DAMAGE) {
@@ -56,7 +59,9 @@ public class AnimationController : MonoBehaviour
         }
         if(goal == AgentBrain.GoalName.DIE) {
             animator.SetBool(IS_DYING, true);
-            Debug.Log("Dying");
+        }
+        if(goal == AgentBrain.GoalName.ATTACK) {
+            animator.SetBool(IS_ATTACKING, true);
         }
     }
 
@@ -68,6 +73,7 @@ public class AnimationController : MonoBehaviour
         animator.SetBool(IS_DAMAGED, false);
         animator.SetBool(IS_PRAYING, false);
         animator.SetBool(IS_DYING, false);
+        animator.SetBool(IS_ATTACKING, false);
     }
 
     private void OnDestroy() {

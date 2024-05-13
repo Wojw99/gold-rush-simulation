@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AgentVisionSensor : MonoBehaviour
 {
-    public event Action<VisionInfo> EnemySpotted;
+    public event Action<VisionInfo> AgentSpotted;
     public event Action<VisionInfo> DepositSpotted;
     public event Action<VisionInfo> HealSpotted;
     public event Action<VisionInfo> RestSpotted;
@@ -24,7 +24,6 @@ public class AgentVisionSensor : MonoBehaviour
             {
                 var visionInfo = new VisionInfo(beacon.visionType, beacon.gameObject);
                 MakeSignal(visionInfo);
-                // beacon.Death += () => OnVisionLost(visionInfo.visionType, visionInfo.gameObject);
             } 
         }
     }
@@ -45,8 +44,8 @@ public class AgentVisionSensor : MonoBehaviour
             case VisionType.REST:
                 RestSpotted?.Invoke(visionInfo);
                 break;
-            case VisionType.UNDEAD:
-                EnemySpotted?.Invoke(visionInfo);
+            case VisionType.AGENT:
+                AgentSpotted?.Invoke(visionInfo);
                 break;
         }
     }
@@ -67,5 +66,5 @@ public enum VisionType {
     DEPOSIT,
     HEAL,
     REST,
-    UNDEAD,
+    AGENT,
 }
