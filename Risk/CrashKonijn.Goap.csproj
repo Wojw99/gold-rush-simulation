@@ -9,10 +9,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{4d053094-62af-f828-f8cc-74e90df8c4e2}</ProjectGuid>
+    <ProjectGuid>{d24187f6-0fdf-f32e-50a6-ebd001f9c3dc}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>CrashKonijn.Goap</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -40,92 +40,146 @@
     <Analyzer Include="D:\Program Files\Unity\2022.3.4f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\_Risk\Code\Scripts\AgentStatus.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\Sword.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\Modifier.cs" />
-     <Compile Include="Assets\_Risk\Code\GOAP\GoapPlanner.cs" />
-     <Compile Include="Assets\MenuItem.cs" />
-     <Compile Include="Assets\RTS_Camera\Demo\DemoScene.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\BeaconGravity.cs" />
-     <Compile Include="Assets\_Risk\Code\GOAP\GoapAgent.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\UtilitiesController.cs" />
-     <Compile Include="Assets\_Risk\Code\GOAP\Beliefs.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\Utilities.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\Campfire.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\Shrine.cs" />
-     <Compile Include="Assets\RTS_Camera\Demo\TargetSelector.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\PlayerInteraction.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\StatusController.cs" />
-     <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\MouseLook.cs" />
-     <Compile Include="Assets\_Risk\Code\GOAP\Detectable.cs" />
-     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\MotionController.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\AgentBrain.cs" />
-     <Compile Include="Assets\_Risk\Code\Utilities\Timer.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\MainCameraController.cs" />
-     <Compile Include="Assets\_Risk\Code\GOAP\Sensor.cs" />
-     <Compile Include="Assets\_Risk\Code\GOAP\Strategies.cs" />
-     <Compile Include="Assets\RTS_Camera\Scripts\RTS_Camera.cs" />
-     <Compile Include="Assets\_Risk\Code\GOAP\Actions.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\AgentVisionSensor.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\BeaconInteractible.cs" />
-     <Compile Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Scripts\PT_Create_Prefab.cs" />
-     <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\PlayerMovement.cs" />
-     <Compile Include="Assets\_Risk\Code\GOAP\Goals.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\RandomGenerator.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\AgentInteractionSensor.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\AgentUIController.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\Spawner.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\AnimationController.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\BeaconVisible.cs" />
-     <Compile Include="Assets\_Risk\Code\Scripts\UIBottomMenuBuilder.cs" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
-     <None Include="Assets\RTS_Camera\Demo\Projectors\Shaders\ProjectorLight.shader" />
-     <None Include="Assets\RTS_Camera\Demo\Projectors\Shaders\ProjectorMultiply.shader" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Water_Shader_WebGl.shader" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
-     <None Include="Assets\RTS_Camera\Demo\Projectors\Guidelines.txt" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Modular_NPC\Shaders\PT_Modular_NPC_Shader_Toon.shader" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Plants_Shader.shader" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Weapons\Sources\Shaders\PT_Weapons_Shader_Toon.shader" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Village\Sources\Shaders\PT_Buildings_Shader_PBR.shader" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Weapons\Sources\Shaders\PT_Weapons_Shader_PBR.shader" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Modular_Armors\Shaders\PT_Armors_Shader_PBR.shader" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Opaque_Shader_VS.shader" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Opaque_Shader.shader" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Foliage_Shader.shader" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
-     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
-     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Water_Shader.shader" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Flowers_Shader.shader" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Rock_Shader_VS.shader" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Plants_Shader_VS.shader" />
-     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Flowers_Shader_VS.shader" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
-     <None Include="Assets\Hovl Studio\Procedural fire\Shaders\FireSphere.shader" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Modular_Armors\Shaders\PT_Armors_Shader_Toon.shader" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Rock_Shader.shader" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\VS_indirect.cginc" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Props\Sources\Shaders\PT_Props_Shader.shader" />
-     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
-     <None Include="Assets\Hovl Studio\Procedural fire\Demo scene\Readme.txt" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Foliage_Shader_VS.shader" />
-     <None Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Modular_NPC\Shaders\PT_Modular_NPC_Shader_PBR.shader" />
-     <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Sensors\LocalTargetSensorBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Resolvers\KeyResolverBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Attributes\AgentDebuggerClass.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\TargetSensorKeyValidator.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\Interfaces\IGoapSetConfig.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Sensors\GlobalTargetSensorBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\WorldDataBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Observers\ConditionObserverBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Resolvers\ClassResolver.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IGoapInjector.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Behaviours\AgentDebugGraph.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IValidator.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Sensors\LocalWorldSensorBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IActionBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\Interfaces\IHasConfig.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Builders\GoalBuilder.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\ActionClassTypeValidator.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Behaviours\GoapRunnerBehaviour.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IWorldData.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\PositionTarget.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Builders\KeyBuilderBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Sensors\GlobalWorldSensorBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IAgent.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\References\GetComponentAttribute.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\References\GetComponentInChildrenAttribute.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Attributes\WorldSensorAttribute.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Builders\WorldKeyBuilder.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\ActionTargetValidator.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\ActionEffectKeyValidator.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Serializables\SerializableCondition.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\ICondition.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\References\GetComponentInParentAttribute.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Scriptables\WorldKeyScriptable.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IGoapSetConfigValidatorRunner.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IActionData.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IGoalBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\GoapConfig.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Scriptables\GoapSetConfigScriptable.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\WorldSensorBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Scriptables\ActionConfigScriptable.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IEffect.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\GoalConditionsValidator.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Extensions.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Serializables\SerializableEffect.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\TransformTarget.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Behaviours\AgentBehaviour.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IMonoBehaviour.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IMonoAgent.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\Interfaces\IWorldSensorConfig.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\Interfaces\IWorldKey.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Behaviours\GoapConfigBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Builders\TargetSensorBuilder.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IGlobalWorldSensor.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\ActionEffectsValidator.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\GoapSetConfigValidatorRunner.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\Interfaces\IConfig.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Enums\AgentMoveState.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Resolvers\KeyResolver.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Runners\GoapRunner.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IAgentCollection.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\GoalConditionKeyValidator.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Injectors\GoapInjector.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Enums\ActionRunState.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Condition.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Behaviours\AgentEvents.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\WorldKey.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Behaviours\GoalBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Behaviours\WorldKeyBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\WorldSensorClassTypeValidator.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IAgentDistanceObserver.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Behaviours\GoapSetBehaviour.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Effect.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IGoapConfig.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Enums\AgentState.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Behaviours\Delegates.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\GlobalWorldData.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\LocalWorldData.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Exceptions\GoapException.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\ITargetSensor.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Behaviours\GoapSetFactoryBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\ILocalTargetSensor.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Builders\WorldSensorBuilder.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\Interfaces\IClassConfig.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Behaviours\ActionBase.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Attributes\TargetSensorAttribute.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IGlobalTargetSensor.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Runners\SensorRunner.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IDataReferenceInjector.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\Interfaces\IGoalConfig.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\GoapSet.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IWorldSensor.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\SenseValue.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\ICostObserver.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\Interfaces\ITargetKey.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Attributes\ActionClassAttribute.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IGoapSet.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IGoapResolver.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\GoapSetFactory.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\Interfaces\IActionConfig.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\TargetKeySensorsValidator.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Observers\VectorDistanceObserver.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\TargetKey.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IKeyResolver.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\ILocalWorldSensor.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\Extensions.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Observers\ConditionObserver.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\WorldKeySensorsValidator.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Builders\GoapSetBuilder.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Builders\ActionBuilder.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Enums\EffectType.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Scriptables\TargetKeyScriptable.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\WorldSensorKeyValidator.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IAgentDebugger.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\WorldSensorConfig.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Runners\GoapSetJobRunner.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\GoalClassTypeValidator.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\ActionConfig.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Enums\ActionMoveMode.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\ActionConditionKeyValidator.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Scriptables\GoalConfigScriptable.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Behaviours\AgentCollection.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\ActionContext.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\References\DataReferenceInjector.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Scriptables\TargetSensorConfigScriptable.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\TargetSensorClassTypeValidator.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IAgentEvents.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\GoapSetConfig.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Scriptables\WorldSensorConfigScriptable.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\Interfaces\ITargetSensorConfig.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Validators\ValidationResults.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IGoapRunner.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Attributes\GoalClassAttribute.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\ITarget.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\IComponentReference.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Classes\Builders\TargetKeyBuilder.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\GoalConfig.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Configs\TargetSensorConfig.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Interfaces\ISensorRunner.cs" />
+     <Compile Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\Behaviours\TargetKeyBase.cs" />
+     <None Include="Assets\CrashKonijn\GOAP\Runtime\CrashKonijn.Goap\com.crashkonijn.goap.asmdef" />
     <Reference Include="UnityEngine">
         <HintPath>D:\Program Files\Unity\2022.3.4f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
@@ -375,11 +429,38 @@
     <Reference Include="UnityEditor.UnityConnectModule">
         <HintPath>D:\Program Files\Unity\2022.3.4f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.Graphs">
+        <HintPath>D:\Program Files\Unity\2022.3.4f1\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
+        <HintPath>D:\Program Files\Unity\2022.3.4f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.YamlDotNet">
+        <HintPath>D:\git-repos\risk\Risk\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Collections.LowLevel.ILSupport">
         <HintPath>D:\git-repos\risk\Risk\Library\PackageCache\com.unity.collections@1.2.4\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
     </Reference>
+    <Reference Include="unityplastic">
+        <HintPath>D:\git-repos\risk\Risk\Library\PackageCache\com.unity.collab-proxy@2.3.1\Lib\Editor\PlasticSCM\unityplastic.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Plastic.Antlr3.Runtime">
+        <HintPath>D:\git-repos\risk\Risk\Library\PackageCache\com.unity.collab-proxy@2.3.1\Lib\Editor\PlasticSCM\Unity.Plastic.Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Plastic.Newtonsoft.Json">
+        <HintPath>D:\git-repos\risk\Risk\Library\PackageCache\com.unity.collab-proxy@2.3.1\Lib\Editor\PlasticSCM\Unity.Plastic.Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="log4netPlastic">
+        <HintPath>D:\git-repos\risk\Risk\Library\PackageCache\com.unity.collab-proxy@2.3.1\Lib\Editor\PlasticSCM\log4netPlastic.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.IonicZip">
+        <HintPath>D:\git-repos\risk\Risk\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VisualScripting.Antlr3.Runtime">
         <HintPath>D:\git-repos\risk\Risk\Library\PackageCache\com.unity.visualscripting@1.8.0\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.TextureAssets">
+        <HintPath>D:\git-repos\risk\Risk\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\EditorAssetResources\Unity.VisualScripting.TextureAssets.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
         <HintPath>D:\Program Files\Unity\2022.3.4f1\Editor\Data\NetStandard\ref\2.1.0\netstandard.dll</HintPath>
@@ -747,125 +828,21 @@
     <Reference Include="System.Xml.Serialization">
         <HintPath>D:\Program Files\Unity\2022.3.4f1\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.Xml.Serialization.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Core.Runtime">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.Runtime">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.AI.Navigation">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.AI.Navigation.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Burst.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Burst">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.PlasticSCM.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Timeline.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.Shared.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualScripting.Shared.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ShaderGraph.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.ShaderGraph.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualStudio.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
+    <Reference Include="Unity.Mathematics">
+        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.VisualScripting.Core">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.Core.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualScripting.Core.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Rider.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityUtils">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\UnityUtils.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.RenderPipelines.Core.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.Flow">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualScripting.Flow.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.Flow.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualScripting.Flow.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Mathematics.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Timeline">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.SettingsProvider.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualScripting.SettingsProvider.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Collections">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.Collections.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.AI.Navigation.Updater">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.AI.Navigation.Updater.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.State.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualScripting.State.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="PPv2URPConverters">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\PPv2URPConverters.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Mathematics">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Searcher.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.Searcher.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.Shaders">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.AI.Navigation.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.AI.Navigation.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.State">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.AI.Navigation.Editor.ConversionSystem">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.AI.Navigation.Editor.ConversionSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VSCode.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Editor.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="CrashKonijn.Goap.Resolver.csproj">
+      <Project>{46e94ec6-7848-23b8-7fd1-4c00c93536ec}</Project>
+      <Name>CrashKonijn.Goap.Resolver</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
