@@ -98,9 +98,3 @@ public class BeaconInfo {
     }
 }
 
-public enum BeaconType {
-    DEPOSIT,
-    HEAL,
-    REST,
-    AGENT,
-}

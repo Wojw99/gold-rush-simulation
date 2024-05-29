@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AgentBrain : MonoBehaviour
+public class AgentBrain2 : MonoBehaviour
 {
     private GoalName _goal;
     private GameObject _destination;

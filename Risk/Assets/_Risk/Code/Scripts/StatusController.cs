@@ -18,9 +18,9 @@ public class StatusController : MonoBehaviour
         agentStatus = GetComponent<AgentStatus>();
         agentBrain = GetComponent<AgentBrain>();
 
-        agentBrain.DepositExtracted += OnDepositExtracted;
-        agentBrain.DamageTaken += OnDamageTaken;
-        agentBrain.GoalChanged += OnGoalChanged;
+        // agentBrain.DepositExtracted += OnDepositExtracted;
+        // agentBrain.DamageTaken += OnDamageTaken;
+        // agentBrain.GoalChanged += OnGoalChanged;
     }
 
     private void OnDepositExtracted()
@@ -71,8 +71,8 @@ public class StatusController : MonoBehaviour
 
     private void OnDestroy()
     {
-        agentBrain.GoalChanged -= OnGoalChanged;
-        agentBrain.DepositExtracted -= OnDepositExtracted;
-        agentBrain.DamageTaken -= OnDamageTaken;
+        // agentBrain.GoalChanged -= OnGoalChanged;
+        // agentBrain.DepositExtracted -= OnDepositExtracted;
+        // agentBrain.DamageTaken -= OnDamageTaken;
     }
 }

@@ -12,7 +12,7 @@ public class UtilitiesController : MonoBehaviour
     private void Start()
     {
         agentBrain = GetComponent<AgentBrain>();
-        agentBrain.GoalChanged += OnGoalChanged;
+        // agentBrain.GoalChanged += OnGoalChanged;
     }
 
     private void OnGoalChanged(AgentBrain.GoalName goal)

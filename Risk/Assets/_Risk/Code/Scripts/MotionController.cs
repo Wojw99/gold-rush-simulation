@@ -42,11 +42,11 @@ public class MotionController : MonoBehaviour
         || agentBrain.Goal == AgentBrain.GoalName.GO_TO_NEAREST_HEALING
         || agentBrain.Goal == AgentBrain.GoalName.GO_TO_DESTINATION
         || agentBrain.Goal == AgentBrain.GoalName.GO_TO_NEAREST_AGENT) {
-            var destination = agentBrain.Destination;
-            if(destination != null) {
-                navMeshAgent.SetDestination(destination.transform.position);
-                Debug.Log("Destination: " + destination.transform.position);
-            }
+            // var destination = agentBrain.Destination;
+            // if(destination != null) {
+            //     navMeshAgent.SetDestination(destination.transform.position);
+            //     Debug.Log("Destination: " + destination.transform.position);
+            // }
         }
 
         if (agentBrain.Goal == AgentBrain.GoalName.RUN_FOR_YOUR_LIFE 
@@ -66,12 +66,12 @@ public class MotionController : MonoBehaviour
         }
 
         if(agentBrain.Goal == AgentBrain.GoalName.ATTACK) {
-            navMeshAgent.isStopped = true;
-            var destination = agentBrain.Destination;
-            if(destination != null) {
-                var direction = destination.transform.position - transform.position;
-                transform.rotation = Quaternion.LookRotation(direction);
-            }
+            // navMeshAgent.isStopped = true;
+            // var destination = agentBrain.Destination;
+            // if(destination != null) {
+            //     var direction = destination.transform.position - transform.position;
+            //     transform.rotation = Quaternion.LookRotation(direction);
+            // }
         }
 
         if(agentBrain.Goal == AgentBrain.GoalName.RUN_FOR_YOUR_LIFE) {

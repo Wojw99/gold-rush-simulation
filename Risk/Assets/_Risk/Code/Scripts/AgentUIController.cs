@@ -11,23 +11,29 @@ public class AgentUIController : MonoBehaviour
     [SerializeField] private Image oreBar;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI goalText;
+    [SerializeField] private TextMeshProUGUI actionText;
     private AgentStatus agentStatus;
     private AgentBrain agentBrain;
     private Camera mainCamera;
     private Canvas canvas;
 
     private void Start() {
-        agentStatus = GetComponent<AgentStatus>();
-        agentBrain = GetComponent<AgentBrain>();
-        canvas = GetComponentInChildren<Canvas>();
+        agentStatus = GetComponentInParent<AgentStatus>();
+        agentBrain = GetComponentInParent<AgentBrain>();
+        canvas = GetComponent<Canvas>();
         mainCamera = Camera.main;
 
-        agentStatus.HealthChanged += OnHealthChanged;
-        agentStatus.StaminaChanged += OnStaminaChanged;
-        agentStatus.OreChanged += OnOreChanged;
-        agentStatus.NameChanged += OnNameChanged;
+        if(agentStatus != null) {
+            agentStatus.HealthChanged += OnHealthChanged;
+            agentStatus.StaminaChanged += OnStaminaChanged;
+            agentStatus.OreChanged += OnOreChanged;
+            agentStatus.NameChanged += OnNameChanged;
+        }
 
-        agentBrain.GoalChanged += OnGoalChanged;
+        if(agentBrain != null) {
+            agentBrain.GoalChanged += OnGoalChanged;
+            agentBrain.ActionChanged += OnActionChanged;
+        }
 
         Initialize();
     }
@@ -41,7 +47,7 @@ public class AgentUIController : MonoBehaviour
         OnStaminaChanged(agentStatus.Stamina);
         OnOreChanged(agentStatus.Ore);
         OnNameChanged(agentStatus.Name);
-        OnGoalChanged(agentBrain.Goal);
+        OnGoalChanged(agentBrain.CurrentGoal);
     }
 
     private Quaternion GetLookAtCameraRotation() {
@@ -53,8 +59,14 @@ public class AgentUIController : MonoBehaviour
         nameText.text = name;
     }
 
-    private void OnGoalChanged(AgentBrain.GoalName goal) {
-        goalText.text = goal.ToString();
+    private void OnActionChanged(AgentAction action) {
+        if (action != null)
+            actionText.text = action.Name;
+    }
+
+    private void OnGoalChanged(AgentGoal goal) {
+        if (goal != null)
+            goalText.text = goal.Name;
     }
 
     private void OnHealthChanged(float health) {

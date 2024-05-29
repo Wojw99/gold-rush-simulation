@@ -4,75 +4,35 @@ using UnityEngine;
 
 public class AnimationController : MonoBehaviour
 {
-    private Animator animator;
-    private AgentBrain agentBrain;
-    private const string IS_DIGGING = "IsDigging";
-    private const string IS_SITTING = "IsSitting";
-    private const string IS_WALKING = "IsWalking";
-    private const string IS_RUNNING = "IsRunning";
-    private const string IS_DAMAGED = "IsDamaged";
-    private const string IS_PRAYING = "IsPraying";
-    private const string IS_DYING = "IsDying";
-    private const string IS_ATTACKING = "IsAttacking";
+    public static string IS_DIGGING = "IsDigging";
+    public static string IS_SITTING = "IsSitting";
+    public static string IS_WALKING = "IsWalking";
+    public static string IS_RUNNING = "IsRunning";
+    public static string IS_DAMAGED = "IsDamaged";
+    public static string IS_PRAYING = "IsPraying";
+    public static string IS_DYING = "IsDying";
+    public static string IS_ATTACKING = "IsAttacking";
 
-    private void Start()
+    Animator animator;
+    string currentAnimation = null;
+
+    void Start()
     {
         animator = GetComponent<Animator>();
-        agentBrain = GetComponent<AgentBrain>();
-        agentBrain.GoalChanged += OnGoalChanged;
     }
 
-    private void OnGoalChanged(AgentBrain.GoalName goal) {
-        ClearAnimatorBools();
-        ChangeAnimatorBasedOnGoal(goal);
+    public void StartAnimating(string animationName) {
+        animator.SetBool(animationName, true);
+        if(currentAnimation != null) {
+            animator.SetBool(currentAnimation, false);
+        }
+        currentAnimation = animationName;
     }
 
-    private void ChangeAnimatorBasedOnGoal(AgentBrain.GoalName goal) {
-        if (goal == AgentBrain.GoalName.FREEZE 
-            || goal == AgentBrain.GoalName.TAKE_REST) {
-            animator.SetBool(IS_SITTING, true);
-        } 
-        if (goal == AgentBrain.GoalName.SEARCH_FOR_DEPOSIT 
-            || goal == AgentBrain.GoalName.SEARCH_FOR_REST
-            || goal == AgentBrain.GoalName.SEARCH_FOR_HEALING 
-            || goal == AgentBrain.GoalName.SEARCH_FOR_AGENT) {
-            animator.SetBool(IS_WALKING, true);
-        } 
-        if (goal == AgentBrain.GoalName.GO_TO_NEAREST_DEPOSIT 
-            || goal == AgentBrain.GoalName.GO_TO_NEAREST_REST
-            || goal == AgentBrain.GoalName.GO_TO_NEAREST_HEALING) {
-            animator.SetBool(IS_WALKING, true);
-        } 
-        if (goal == AgentBrain.GoalName.MINE_DEPOSIT) {
-            animator.SetBool(IS_DIGGING, true);
-        } 
-        if (goal == AgentBrain.GoalName.RUN_FOR_YOUR_LIFE 
-            || goal == AgentBrain.GoalName.GO_TO_DESTINATION
-            || goal == AgentBrain.GoalName.GO_TO_NEAREST_AGENT) {
-            animator.SetBool(IS_RUNNING, true);
+    public void StopAnimating() {
+        if(currentAnimation != null) {
+            animator.SetBool(currentAnimation, false);
+            currentAnimation = null;
         }
-        if(goal == AgentBrain.GoalName.TAKE_DAMAGE) {
-            animator.SetBool(IS_DAMAGED, true);
-        }
-        if(goal == AgentBrain.GoalName.TAKE_HEALING) {
-            animator.SetBool(IS_SITTING, true);
-        }
-        if(goal == AgentBrain.GoalName.DIE) {
-            animator.SetBool(IS_DYING, true);
-        }
-        if(goal == AgentBrain.GoalName.ATTACK) {
-            animator.SetBool(IS_ATTACKING, true);
-        }
-    }
-
-    private void ClearAnimatorBools() {
-        animator.SetBool(IS_SITTING, false);
-        animator.SetBool(IS_WALKING, false);
-        animator.SetBool(IS_RUNNING, false);
-        animator.SetBool(IS_DIGGING, false);
-        animator.SetBool(IS_DAMAGED, false);
-        animator.SetBool(IS_PRAYING, false);
-        animator.SetBool(IS_DYING, false);
-        animator.SetBool(IS_ATTACKING, false);
     }
 }
