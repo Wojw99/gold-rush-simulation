@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class AgentStatus : MonoBehaviour
 {
-    [SerializeField] private float maxHealth = 10;
-    private float _health;
-    [SerializeField] private float maxStamina = 20;
-    private float _stamina;
-    [SerializeField] private float maxOre = 20;
-    private float _ore;
+    [SerializeField] float maxHealth = 10;
+    float _health;
+    [SerializeField] float maxStamina = 20;
+    float _stamina;
+    [SerializeField] float maxOre = 20;
+    float _ore;
 
     private string _name;
     [SerializeField] private bool isAgressive;
@@ -21,11 +21,74 @@ public class AgentStatus : MonoBehaviour
     public event Action<float> OreChanged;
     public event Action<string> NameChanged;
 
-    private void Start() {
+    void Start() {
         Health = maxHealth;
         Stamina = maxStamina;
         Ore = 0;
         Name = RandomGenerator.Instance.GenerateName();
+    }
+
+    Coroutine staminaCoroutine;
+    Coroutine healthCoroutine;
+    Coroutine oreCoroutine;
+
+    public void StartDrawing(AttributeName attributeName, float costPerSecond = 2, float interval = 0.05f) 
+    {
+        var costPerInterval = costPerSecond * interval;
+
+        if(attributeName == AttributeName.Health) {
+            healthCoroutine = StartCoroutine(DrawHealth(costPerInterval, interval));
+        }
+        else if(attributeName == AttributeName.Stamina) {
+            staminaCoroutine = StartCoroutine(DrawStamina(costPerInterval, interval));
+        } 
+        else if(attributeName == AttributeName.Ore) {
+            oreCoroutine = StartCoroutine(DrawOre(costPerInterval, interval));
+        }    
+    }
+
+    public void StopDrawing(AttributeName attributeName) 
+    {
+        try {
+            if(attributeName == AttributeName.Health) {
+                StopCoroutine(healthCoroutine);
+            }
+            else if(attributeName == AttributeName.Stamina) {
+                StopCoroutine(staminaCoroutine);
+            } 
+            else if(attributeName == AttributeName.Ore) {
+                StopCoroutine(oreCoroutine);
+            }
+        } catch (Exception e) {
+            Debug.LogError(e);
+        }
+    }
+
+    IEnumerator DrawStamina(float costPerInterval, float interval) 
+    {
+        while(true) 
+        {
+            Stamina -= costPerInterval;
+            yield return new WaitForSeconds(interval);
+        }
+    }
+
+    IEnumerator DrawHealth(float costPerInterval, float interval) 
+    {
+        while(true) 
+        {
+            Health -= costPerInterval;
+            yield return new WaitForSeconds(interval);
+        }
+    }
+
+    IEnumerator DrawOre(float costPerInterval, float interval) 
+    {
+        while(true) 
+        {
+            Ore -= costPerInterval;
+            yield return new WaitForSeconds(interval);
+        }
     }
 
     public float Health {
@@ -66,10 +129,16 @@ public class AgentStatus : MonoBehaviour
     public bool IsAgressive => isAgressive;
     public AgentType AgentType => agentType;
 
-    private void OnDestroy() {
+    void OnDestroy() {
         HealthChanged = null;
         StaminaChanged = null;
         OreChanged = null;
         NameChanged = null;
     }
+}
+
+public enum AttributeName {
+    Health,
+    Stamina,
+    Ore
 }

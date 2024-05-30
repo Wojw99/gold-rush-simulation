@@ -34,12 +34,12 @@ public class AgentBrain : MonoBehaviour
                 priority: 1, 
                 canStart: (agentBrain) => true
             ),
-            // new AgentGoal(
-            //     name: "hang_around",
-            //     actions: new List<string> { "move_randomly" }, 
-            //     priority: 2,
-            //     canStart: (agentBrain) => agentBrain.AgentStatus.Ore > 5
-            // ),
+            new AgentGoal(
+                name: "hang_around",
+                actions: new List<string> { "move_randomly" }, 
+                priority: 2,
+                canStart: (agentBrain) => agentBrain.AgentStatus.Ore > 5
+            ),
         };
         actions = new List<AgentAction>() {
             new MoveRandomlyAction(),

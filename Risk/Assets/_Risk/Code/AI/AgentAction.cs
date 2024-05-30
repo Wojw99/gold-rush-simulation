@@ -63,40 +63,40 @@ public class GoToDepositAction : AgentAction
 {
     public override string Name { get; } = "go_to_deposit";
 
-    public override bool CanStart(AgentBrain agentBrain) {
-        if (agentBrain.VisionSensor.IsBeaconSensible(BeaconType.DEPOSIT)) {
+    public override bool CanStart(AgentBrain ab) {
+        if (ab.VisionSensor.IsBeaconSensible(BeaconType.DEPOSIT)) {
             return true;
         }
         return false;
     }
 
-    public override bool IsFinished(AgentBrain agentBrain) {
-        return agentBrain.NavMeshAgent.remainingDistance < 1.5f;
+    public override bool IsFinished(AgentBrain ab) {
+        return ab.NavMeshAgent.remainingDistance < 1.5f;
     }
 
-    public override void Execute(AgentBrain agentBrain) {
-        agentBrain.NavMeshAgent.isStopped = false;
-        var deposit = agentBrain.VisionSensor.GetNearestBeacon(BeaconType.DEPOSIT);
-        agentBrain.NavMeshAgent.SetDestination(deposit.Position);
-        agentBrain.AnimationController.StartAnimating(AnimationController.IS_WALKING);
+    public override void Execute(AgentBrain ab) {
+        ab.NavMeshAgent.isStopped = false;
+        var deposit = ab.VisionSensor.GetNearestBeacon(BeaconType.DEPOSIT);
+        ab.NavMeshAgent.SetDestination(deposit.Position);
+        ab.AnimationController.StartAnimating(AnimationController.IS_WALKING);
     }
 
-    public override void Update(AgentBrain agentBrain) {
+    public override void Update(AgentBrain ab) {
         
     }
 
-    public override void ExecuteBreak(AgentBrain agentBrain) {
-        StopMoving(agentBrain);
+    public override void ExecuteBreak(AgentBrain ab) {
+        StopMoving(ab);
     }
 
-    public override void ExecuteConsequences(AgentBrain agentBrain) {
-        StopMoving(agentBrain);
+    public override void ExecuteConsequences(AgentBrain ab) {
+        StopMoving(ab);
     }
 
-    void StopMoving(AgentBrain agentBrain) {
-        agentBrain.NavMeshAgent.isStopped = true;
-        agentBrain.NavMeshAgent.destination = agentBrain.transform.position;
-        agentBrain.AnimationController.StopAnimating();
+    void StopMoving(AgentBrain ab) {
+        ab.NavMeshAgent.isStopped = true;
+        ab.NavMeshAgent.destination = ab.transform.position;
+        ab.AnimationController.StopAnimating();
     }
 }
 
@@ -106,14 +106,14 @@ public class MineDepositAction : AgentAction {
 
     public override string Name { get; } = "mine_deposit";
 
-    public override bool CanStart(AgentBrain agentBrain) {
-        if (agentBrain.InteractionSensor.IsBeaconSensible(BeaconType.DEPOSIT)) {
+    public override bool CanStart(AgentBrain ab) {
+        if (ab.InteractionSensor.IsBeaconSensible(BeaconType.DEPOSIT)) {
             return true;
         }
         return false;
     }
 
-    public override bool IsFinished(AgentBrain agentBrain) {
+    public override bool IsFinished(AgentBrain ab) {
         var currentTime = Time.time;
         if (currentTime - startTime > durationSec) {
             return true;
@@ -121,23 +121,26 @@ public class MineDepositAction : AgentAction {
         return false;
     }
 
-    public override void Execute(AgentBrain agentBrain) {
+    public override void Execute(AgentBrain ab) {
         startTime = Time.time;
-        agentBrain.AnimationController.StartAnimating(AnimationController.IS_DIGGING);
+        ab.AnimationController.StartAnimating(AnimationController.IS_DIGGING);
+        ab.AgentStatus.StartDrawing(AttributeName.Stamina, 2, 0.05f);
     }
 
-    public override void Update(AgentBrain agentBrain) {
+    public override void Update(AgentBrain ab) {
         
     }
 
-    public override void ExecuteBreak(AgentBrain agentBrain) {
+    public override void ExecuteBreak(AgentBrain ab) {
         
     }
 
-    public override void ExecuteConsequences(AgentBrain agentBrain) {
-        agentBrain.AgentStatus.Ore += 10;
-        agentBrain.AgentStatus.Stamina -= 10;
-        var beacon = agentBrain.InteractionSensor.GetAndRemoveNearestBeacon(BeaconType.DEPOSIT);
+    public override void ExecuteConsequences(AgentBrain ab) {
+        ab.AgentStatus.Ore += 10;
+
+        var beacon = ab.InteractionSensor.GetAndRemoveNearestBeacon(BeaconType.DEPOSIT);
         beacon.Destroy();
+
+        ab.AgentStatus.StopDrawing(AttributeName.Stamina);
     }
 }
