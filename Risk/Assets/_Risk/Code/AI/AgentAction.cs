@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -5,7 +6,8 @@ using UnityEngine;
 
 public abstract class AgentAction
 {
-    public abstract string Name { get; }
+    protected string name;
+    public string Name => name;
     public abstract bool CanStart(AgentBrain agentBrain);
     public abstract bool IsFinished(AgentBrain agentBrain);
     public abstract void Execute(AgentBrain agentBrain);
@@ -16,73 +18,38 @@ public abstract class AgentAction
 
 public class MoveRandomlyAction : AgentAction
 {
-    private readonly int moveRange = 8; 
-    public override string Name => "move_randomly";
+    private int moveRange; 
+    private float speed;
+    private float previousSpeed;
+    private string animationName;
 
-    public override bool CanStart(AgentBrain agentBrain) {
+    public MoveRandomlyAction(string name, int moveRange = 8, float speed = 2.5f, string animationName = "IsWalking") {
+        base.name = name;
+        this.moveRange = moveRange;
+        this.speed = speed;
+        this.animationName = animationName;
+    }
+
+    public override bool CanStart(AgentBrain ab) {
         return true;
     }
 
-    public override bool IsFinished(AgentBrain agentBrain) {
-        return false;
-    }
-
-    public override void Execute(AgentBrain agentBrain) {
-        agentBrain.NavMeshAgent.isStopped = false;
-        GoToRandomDestination(agentBrain);
-        agentBrain.AnimationController.StartAnimating(AnimationController.IS_WALKING);
-    }
-
-    public override void Update(AgentBrain agentBrain) {
-        if (agentBrain.NavMeshAgent.remainingDistance < 0.5f) {
-            GoToRandomDestination(agentBrain);
-        }
-    }
-
-    public override void ExecuteBreak(AgentBrain agentBrain) {
-        StopMoving(agentBrain);
-    }
-
-    public override void ExecuteConsequences(AgentBrain agentBrain) {
-        StopMoving(agentBrain);
-    }
-
-    void StopMoving(AgentBrain agentBrain) {
-        agentBrain.NavMeshAgent.isStopped = true;
-        agentBrain.NavMeshAgent.destination = agentBrain.transform.position;
-        agentBrain.AnimationController.StopAnimating();
-    }
-
-    void GoToRandomDestination(AgentBrain agentBrain) {
-        agentBrain.NavMeshAgent.SetDestination(agentBrain.transform.position + new Vector3(Random.Range(-moveRange, moveRange), 0, Random.Range(-moveRange, moveRange)));
-    }
-}
-
-
-public class GoToDepositAction : AgentAction
-{
-    public override string Name { get; } = "go_to_deposit";
-
-    public override bool CanStart(AgentBrain ab) {
-        if (ab.VisionSensor.IsBeaconSensible(BeaconType.DEPOSIT)) {
-            return true;
-        }
-        return false;
-    }
-
     public override bool IsFinished(AgentBrain ab) {
-        return ab.NavMeshAgent.remainingDistance < 1.5f;
+        return false;
     }
 
     public override void Execute(AgentBrain ab) {
         ab.NavMeshAgent.isStopped = false;
-        var deposit = ab.VisionSensor.GetNearestBeacon(BeaconType.DEPOSIT);
-        ab.NavMeshAgent.SetDestination(deposit.Position);
-        ab.AnimationController.StartAnimating(AnimationController.IS_WALKING);
+        previousSpeed = ab.NavMeshAgent.speed;
+        ab.NavMeshAgent.speed = speed;
+        GoToRandomDestination(ab);
+        ab.AnimationController.StartAnimating(animationName);
     }
 
     public override void Update(AgentBrain ab) {
-        
+        if (ab.NavMeshAgent.remainingDistance < 0.5f) {
+            GoToRandomDestination(ab);
+        }
     }
 
     public override void ExecuteBreak(AgentBrain ab) {
@@ -95,19 +62,102 @@ public class GoToDepositAction : AgentAction
 
     void StopMoving(AgentBrain ab) {
         ab.NavMeshAgent.isStopped = true;
+        ab.NavMeshAgent.speed = previousSpeed;
+        ab.NavMeshAgent.destination = ab.transform.position;
+        ab.AnimationController.StopAnimating();
+    }
+
+    void GoToRandomDestination(AgentBrain ab) {
+        ab.NavMeshAgent.SetDestination(ab.transform.position + new Vector3(UnityEngine.Random.Range(-moveRange, moveRange), 0, UnityEngine.Random.Range(-moveRange, moveRange)));
+    }
+}
+
+public class GoToBeaconAction : AgentAction
+{
+    private BeaconType beaconType;
+    private float lowestDistance;
+    private string animationName;
+    private float speed;
+    private float previousSpeed;
+
+    public GoToBeaconAction(string name, BeaconType beaconType, string animationName = "IsWalking", float lowestDistance = 1.5f, float speed = 2.5f) {
+        this.beaconType = beaconType;
+        base.name = name;
+        this.lowestDistance = lowestDistance;
+        this.animationName = animationName;
+        this.speed = speed;
+    }
+
+    public override bool CanStart(AgentBrain ab) {
+        if (ab.VisionSensor.IsBeaconSensible(beaconType)) {
+            return true;
+        }
+        return false;
+    }
+
+    public override bool IsFinished(AgentBrain ab) {
+        return ab.NavMeshAgent.remainingDistance < lowestDistance;
+    }
+
+    public override void Execute(AgentBrain ab) {
+        ab.NavMeshAgent.isStopped = false;
+        previousSpeed = ab.NavMeshAgent.speed;
+        ab.NavMeshAgent.speed = speed;
+
+        var deposit = ab.VisionSensor.GetNearestBeacon(beaconType);
+        ab.NavMeshAgent.SetDestination(deposit.Position);
+
+        ab.AnimationController.StartAnimating(animationName);
+    }
+
+    public override void Update(AgentBrain ab) { }
+
+    public override void ExecuteBreak(AgentBrain ab) {
+        StopMoving(ab);
+    }
+
+    public override void ExecuteConsequences(AgentBrain ab) {
+        StopMoving(ab);
+    }
+
+    void StopMoving(AgentBrain ab) {
+        ab.NavMeshAgent.isStopped = true;
+        ab.NavMeshAgent.speed = previousSpeed; 
         ab.NavMeshAgent.destination = ab.transform.position;
         ab.AnimationController.StopAnimating();
     }
 }
 
-public class MineDepositAction : AgentAction {
+public class InteractAction : AgentAction {
     private float startTime;
-    private float durationSec = 3f;
+    private float duration;
+    private string animationName;
+    private BeaconType beaconType;
+    private bool removeInteractedBeacon;
+    private AttributeName requiredAttribute;
+    private float attributeCostPerSecond;
+    private Action<AgentStatus> statusConsequences;
+    private float fullAttributeCost;
 
-    public override string Name { get; } = "mine_deposit";
+    private readonly float attributeDrawingInterval = 0.05f;
+
+    public InteractAction(string name, float duration, string animationName, BeaconType beaconType, bool removeInteractedBeacon = true, Action<AgentStatus> statusConsequences = null, AttributeName requiredAttribute = AttributeName.Stamina, float attributeCostPerSecond = 2f) {
+        base.name = name;
+        this.duration = duration;
+        this.animationName = animationName;
+        this.beaconType = beaconType;
+        this.removeInteractedBeacon = removeInteractedBeacon;
+        this.statusConsequences = statusConsequences;
+        this.requiredAttribute = requiredAttribute;
+        this.attributeCostPerSecond = attributeCostPerSecond;
+
+        fullAttributeCost = duration * attributeCostPerSecond;
+    }
 
     public override bool CanStart(AgentBrain ab) {
-        if (ab.InteractionSensor.IsBeaconSensible(BeaconType.DEPOSIT)) {
+        if (ab.InteractionSensor.IsBeaconSensible(beaconType) && 
+            ab.AgentStatus.GetAttribute(requiredAttribute) > fullAttributeCost
+        ) {
             return true;
         }
         return false;
@@ -115,7 +165,7 @@ public class MineDepositAction : AgentAction {
 
     public override bool IsFinished(AgentBrain ab) {
         var currentTime = Time.time;
-        if (currentTime - startTime > durationSec) {
+        if (currentTime - startTime > duration) {
             return true;
         }
         return false;
@@ -123,24 +173,30 @@ public class MineDepositAction : AgentAction {
 
     public override void Execute(AgentBrain ab) {
         startTime = Time.time;
-        ab.AnimationController.StartAnimating(AnimationController.IS_DIGGING);
-        ab.AgentStatus.StartDrawing(AttributeName.Stamina, 2, 0.05f);
+        ab.AnimationController.StartAnimating(animationName);
+        if(attributeCostPerSecond > 0f) {
+            ab.AgentStatus.StartDrawing(requiredAttribute, attributeCostPerSecond, attributeDrawingInterval);
+        }
     }
 
-    public override void Update(AgentBrain ab) {
-        
-    }
+    public override void Update(AgentBrain ab) { }
 
-    public override void ExecuteBreak(AgentBrain ab) {
-        
+    public override void ExecuteBreak(AgentBrain ab) { 
+        if(attributeCostPerSecond > 0f) {
+            ab.AgentStatus.StopDrawing(requiredAttribute);
+        }
     }
 
     public override void ExecuteConsequences(AgentBrain ab) {
-        ab.AgentStatus.Ore += 10;
+        statusConsequences?.Invoke(ab.AgentStatus);
 
-        var beacon = ab.InteractionSensor.GetAndRemoveNearestBeacon(BeaconType.DEPOSIT);
-        beacon.Destroy();
+        if(removeInteractedBeacon) {
+            var beacon = ab.InteractionSensor.GetAndRemoveNearestBeacon(beaconType);
+            beacon.Destroy();
+        }
 
-        ab.AgentStatus.StopDrawing(AttributeName.Stamina);
+        if(attributeCostPerSecond > 0f) {
+            ab.AgentStatus.StopDrawing(requiredAttribute);
+        }
     }
 }

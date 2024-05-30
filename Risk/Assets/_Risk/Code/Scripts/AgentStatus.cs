@@ -123,6 +123,19 @@ public class AgentStatus : MonoBehaviour
         }
     }
 
+    public float GetAttribute(AttributeName attributeName) {
+        if(attributeName == AttributeName.Health) {
+            return Health;
+        }
+        else if(attributeName == AttributeName.Stamina) {
+            return Stamina;
+        }
+        else if(attributeName == AttributeName.Ore) {
+            return Ore;
+        }
+        throw new Exception("Attribute not found");
+    }
+
     public float MaxHealth => maxHealth;
     public float MaxStamina => maxStamina;
     public float MaxOre => maxOre;

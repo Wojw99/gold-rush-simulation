@@ -35,16 +35,50 @@ public class AgentBrain : MonoBehaviour
                 canStart: (agentBrain) => true
             ),
             new AgentGoal(
+                name: "keep_stamina",
+                actions: new List<string> { "move_randomly", "go_to_rest", "take_rest" }, 
+                priority: 2,
+                canStart: (agentBrain) => agentBrain.AgentStatus.Stamina < agentBrain.AgentStatus.MaxStamina / 3
+            ),
+            new AgentGoal(
                 name: "hang_around",
                 actions: new List<string> { "move_randomly" }, 
-                priority: 2,
-                canStart: (agentBrain) => agentBrain.AgentStatus.Ore > 5
+                priority: 0,
+                canStart: (agentBrain) => agentBrain.AgentStatus.Ore == agentBrain.AgentStatus.MaxOre
             ),
         };
         actions = new List<AgentAction>() {
-            new MoveRandomlyAction(),
-            new GoToDepositAction(),
-            new MineDepositAction(),
+            new MoveRandomlyAction(
+                name: "move_randomly"
+            ),
+            new GoToBeaconAction(
+                name: "go_to_deposit", 
+                beaconType: BeaconType.DEPOSIT
+            ),
+            new InteractAction(
+                name: "mine_deposit", 
+                duration: 3,
+                animationName: AnimationController.IS_DIGGING,
+                beaconType: BeaconType.DEPOSIT,
+                removeInteractedBeacon: true,
+                statusConsequences: (agentStatus) => agentStatus.Ore += 1,
+                requiredAttribute: AttributeName.Stamina,
+                attributeCostPerSecond: 2
+            ),
+            new GoToBeaconAction(
+                name: "go_to_rest", 
+                beaconType: BeaconType.REST
+            ),
+            new InteractAction(
+                name: "take_rest", 
+                duration: 3,
+                animationName: AnimationController.IS_SITTING,
+                beaconType: BeaconType.REST,
+                removeInteractedBeacon: false,
+                statusConsequences: (agentStatus) => agentStatus.Stamina = agentStatus.MaxStamina,
+                requiredAttribute: AttributeName.Stamina,
+                attributeCostPerSecond: 0f
+            ),
         };
 
         GoalChanged += OnGoalChanged;
