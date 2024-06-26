@@ -9,6 +9,7 @@ public abstract class AgentAction
     protected string name;
     public string Name => name;
     public abstract bool CanStart(AgentBrain agentBrain);
+    public abstract bool CanBreak();
     public abstract bool IsFinished(AgentBrain agentBrain);
     public abstract void Execute(AgentBrain agentBrain);
     public abstract void Update(AgentBrain agentBrain);
@@ -31,6 +32,10 @@ public class MoveRandomlyAction : AgentAction
     }
 
     public override bool CanStart(AgentBrain ab) {
+        return true;
+    }
+
+    public override bool CanBreak() {
         return true;
     }
 
@@ -95,8 +100,12 @@ public class GoToBeaconAction : AgentAction
         return false;
     }
 
+    public override bool CanBreak() {
+        return true;
+    }
+
     public override bool IsFinished(AgentBrain ab) {
-        return ab.NavMeshAgent.remainingDistance < lowestDistance;
+        return false;
     }
 
     public override void Execute(AgentBrain ab) {
@@ -108,16 +117,19 @@ public class GoToBeaconAction : AgentAction
         ab.NavMeshAgent.SetDestination(deposit.Position);
 
         ab.AnimationController.StartAnimating(animationName);
+        Debug.Log($"Execute {this.GetType()} action: {Name}");
     }
 
     public override void Update(AgentBrain ab) { }
 
     public override void ExecuteBreak(AgentBrain ab) {
         StopMoving(ab);
+        Debug.Log($"ExecuteBreak {this.GetType()} action: {Name}");
     }
 
     public override void ExecuteConsequences(AgentBrain ab) {
         StopMoving(ab);
+        Debug.Log($"ExecuteConsequences {this.GetType()} action: {Name}");
     }
 
     void StopMoving(AgentBrain ab) {
@@ -138,10 +150,11 @@ public class InteractAction : AgentAction {
     private float attributeCostPerSecond;
     private Action<AgentStatus> statusConsequences;
     private float fullAttributeCost;
+    private bool canBreak;
 
     private readonly float attributeDrawingInterval = 0.05f;
 
-    public InteractAction(string name, float duration, string animationName, BeaconType beaconType, bool removeInteractedBeacon = true, Action<AgentStatus> statusConsequences = null, AttributeName requiredAttribute = AttributeName.Stamina, float attributeCostPerSecond = 2f) {
+    public InteractAction(string name, float duration, string animationName, BeaconType beaconType, bool removeInteractedBeacon = true, Action<AgentStatus> statusConsequences = null, AttributeName requiredAttribute = AttributeName.Stamina, float attributeCostPerSecond = 2f, bool canBreak = true) {
         base.name = name;
         this.duration = duration;
         this.animationName = animationName;
@@ -161,6 +174,10 @@ public class InteractAction : AgentAction {
             return true;
         }
         return false;
+    }
+
+    public override bool CanBreak() {
+        return canBreak;
     }
 
     public override bool IsFinished(AgentBrain ab) {
@@ -192,7 +209,11 @@ public class InteractAction : AgentAction {
 
         if(removeInteractedBeacon) {
             var beacon = ab.InteractionSensor.GetAndRemoveNearestBeacon(beaconType);
-            beacon.Destroy();
+
+            if(beacon != null) {
+                Debug.Log($"Beacon {beacon.BeaconType} destroyed");
+                beacon.Destroy();
+            }
         }
 
         if(attributeCostPerSecond > 0f) {

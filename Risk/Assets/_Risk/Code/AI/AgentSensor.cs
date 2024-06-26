@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class AgentSensor : MonoBehaviour
 {
     [SerializeField] GameObject testVisual;
     public List<Beacon> beacons = new List<Beacon>();
+    public event Action BeaconSensed;
 
     void Start()
     {
@@ -53,6 +55,7 @@ public class AgentSensor : MonoBehaviour
             var beacon = other.gameObject.GetComponent<Beacon>();
             beacons.Add(beacon);
             beacon.BeaconDestroyed += OnBeaconDestroyed;
+            BeaconSensed?.Invoke();
             // SpawnTestVisual(other.gameObject);
         }
     }

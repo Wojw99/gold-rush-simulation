@@ -19,6 +19,7 @@ public class PlayerInteraction : MonoBehaviour
 
     #endregion
 
+    [SerializeField] private Camera mainCamera;
     [SerializeField] private GameObject fancySpherePrefab;
     [SerializeField] private GameObject[] prefabsArray = new GameObject[10];
     [SerializeField] private int selectedPrefabIndex = -1;
@@ -89,17 +90,27 @@ public class PlayerInteraction : MonoBehaviour
         PrefabsArrayChanged?.Invoke(prefabsArray);
     }
 
+    private Vector3 GetMouseGroundPosition() {
+        var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit)) {
+            var groundPosition = 0f;
+            var mousePosition = hit.point;
+            mousePosition.y = groundPosition;
+            return mousePosition;
+        }
+        return Input.mousePosition;
+    }
+
     private void SpawnPrefabOnInput() {
         if(selectedPrefabIndex == -1) {
             return;
         }
         if (Input.GetMouseButtonDown(0)) {
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit)) {
-                var spawnPoint = new Vector3(hit.point.x, hit.point.y + 1f, hit.point.z);
-                var prefab = prefabsArray[selectedPrefabIndex];
-                Instantiate(prefab, spawnPoint, Quaternion.identity);
-            }
+            var mouseGroundPosition = GetMouseGroundPosition();
+            var spawnPosition = mouseGroundPosition + Vector3.up * 0.01f;
+            spawnPosition.y = 0.01f;
+            var prefab = prefabsArray[selectedPrefabIndex];
+            Instantiate(prefab, spawnPosition, Quaternion.identity);
         }
     }
 

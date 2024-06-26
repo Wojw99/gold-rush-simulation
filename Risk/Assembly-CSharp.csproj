@@ -60,6 +60,7 @@
      <Compile Include="Assets\_Risk\Code\Scripts\MotionController.cs" />
      <Compile Include="Assets\_Risk\Code\Utilities\Timer.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\MainCameraController.cs" />
+     <Compile Include="Assets\_Risk\Code\Scripts\Autodestruction.cs" />
      <Compile Include="Assets\RTS_Camera\Scripts\RTS_Camera.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentVisionSensor.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\BeaconInteractible.cs" />

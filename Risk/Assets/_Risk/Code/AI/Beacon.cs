@@ -27,4 +27,5 @@ public enum BeaconType {
     HEAL,
     REST,
     AGENT,
+    DAMAGE,
 }

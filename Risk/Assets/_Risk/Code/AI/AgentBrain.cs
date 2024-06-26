@@ -16,11 +16,29 @@ public class AgentBrain : MonoBehaviour
 
     AgentGoal _currentGoal;
     AgentAction _currentAction;
-    List<AgentGoal> goals; // sorted from highest to lowest priority
+    List<AgentGoal> goals;
     List<AgentAction> actions;
 
     public event Action<AgentGoal> GoalChanged;
     public event Action<AgentAction> ActionChanged;
+    private event Action ActionFinished;
+
+    /*
+    Search for a new goal if: 
+        - sensors detect a new beacon
+        - status reports a significant change
+        - action is finished
+    
+    Current action can be break or finish:
+
+    Break action if (if current action can end, otherwise wait for the action to finish): 
+        - there is a new goal
+        - found a more suitable action based on sensors
+        - found a more suitable action based on status
+
+    Finish action if:
+        - action is finished
+    */
 
     void Start() {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -29,22 +47,40 @@ public class AgentBrain : MonoBehaviour
 
         goals = new List<AgentGoal>() {
             new AgentGoal(
+                name: "hang_around",
+                actions: new List<GoalAction> { 
+                    new("move_randomly", 1), 
+                    },
+                priority: 2,
+                canStart: (agentBrain) => agentBrain.AgentStatus.Ore == agentBrain.AgentStatus.MaxOre
+            ),
+            new AgentGoal(
                 name: "search",
-                actions: new List<string> { "move_randomly", "go_to_deposit", "mine_deposit" }, 
+                actions: new List<GoalAction> { 
+                    new("move_randomly", 1), 
+                    new("go_to_deposit", 2), 
+                    new("mine_deposit", 3) 
+                    }, 
                 priority: 1, 
                 canStart: (agentBrain) => true
             ),
             new AgentGoal(
                 name: "keep_stamina",
-                actions: new List<string> { "move_randomly", "go_to_rest", "take_rest" }, 
-                priority: 2,
+                actions: new List<GoalAction> { 
+                    new("move_randomly", 1), 
+                    new("go_to_rest", 2), 
+                    new("take_rest", 3) 
+                    },
+                priority: 5,
                 canStart: (agentBrain) => agentBrain.AgentStatus.Stamina < agentBrain.AgentStatus.MaxStamina / 3
             ),
             new AgentGoal(
-                name: "hang_around",
-                actions: new List<string> { "move_randomly" }, 
-                priority: 0,
-                canStart: (agentBrain) => agentBrain.AgentStatus.Ore == agentBrain.AgentStatus.MaxOre
+                name: "die",
+                actions: new List<GoalAction> { 
+                    new("take_damage", 1), 
+                    },
+                priority: 10,
+                canStart: (agentBrain) => agentBrain.interactionSensor.IsBeaconSensible(BeaconType.DAMAGE)
             ),
         };
         actions = new List<AgentAction>() {
@@ -79,25 +115,35 @@ public class AgentBrain : MonoBehaviour
                 requiredAttribute: AttributeName.Stamina,
                 attributeCostPerSecond: 0f
             ),
+            new InteractAction(
+                name: "take_damage", 
+                duration: 0.5f,
+                animationName: AnimationController.IS_DAMAGED,
+                beaconType: BeaconType.DAMAGE,
+                removeInteractedBeacon: false,
+                requiredAttribute: AttributeName.Health,
+                attributeCostPerSecond: 3f
+            ),
         };
 
-        GoalChanged += OnGoalChanged;
+        CurrentGoal = goals[0];
+        CurrentAction = actions[0];
+        
+        visionSensor.BeaconSensed += SearchForGoal;
+        interactionSensor.BeaconSensed += SearchForGoal;
+        agentStatus.StateChange += SearchForGoal;
+        ActionFinished += SearchForGoal;
+
+        GoalChanged += BreakAction;
+        visionSensor.BeaconSensed += BreakAction;
+        interactionSensor.BeaconSensed += BreakAction;
+        agentStatus.StateChange += BreakAction;
+
+        ActionFinished += FinishAction;
     }
+    
 
-    void Update() {
-        UpdateCurrentGoal();
-
-        if (CurrentAction != null) {
-            CurrentAction.Update(this);
-            if (CurrentAction.IsFinished(this)) {
-                CurrentAction.ExecuteConsequences(this);
-                // UpdateCurrentGoal();
-                UpdateCurrentAction(CurrentGoal);
-            }
-        }
-    }
-
-    void UpdateCurrentGoal() {
+    void SearchForGoal() {
         goals.Sort((a, b) => b.Priority - a.Priority);
         foreach (var goal in goals) {
             if (goal.CanStart(this)) {
@@ -110,25 +156,43 @@ public class AgentBrain : MonoBehaviour
         }
     }
 
-    void OnGoalChanged(AgentGoal newGoal) {
-        UpdateCurrentAction(newGoal);
+    void FinishAction() {
+        CurrentAction.ExecuteConsequences(this);
+        UpdateAction();
     }
 
-    void UpdateCurrentAction(AgentGoal goal) {
-        if (CurrentAction != null) {
-            CurrentAction.ExecuteBreak(this);
-        }
-        // Search from last to first action
-        for (int i = goal.Actions.Count - 1; i >= 0; i--) {
-            var action = actions.Find(a => a.Name == goal.Actions[i]);
-            if(action == null) {
-                Debug.LogError($"Agent: Action \"{goal.Actions[i]}\" not found");
-                continue;
-            }
-            if (action.CanStart(this)) {
+    void BreakAction(AgentGoal newGoal) {
+        BreakAction();
+    }
+
+    void BreakAction() {
+        if(CurrentAction.CanBreak()) {
+            var action = GetSuitableAction();
+            if(action != null) {
+                CurrentAction.ExecuteBreak(this);
                 StartNewAction(action);
-                break;
             }
+        }
+    }
+
+
+    void Update() {
+        CurrentAction.Update(this);
+        if (CurrentAction.IsFinished(this)) {
+            ActionFinished?.Invoke();
+        }
+    }
+
+    void UpdateAction() {
+        try {
+            (GoalAction goalAction, AgentAction action) = FindSuitableAction();
+            var currentGoalAction = CurrentGoal.Actions.Find(a => a.Name == CurrentAction.Name);
+            if (action == CurrentAction || goalAction.Order < currentGoalAction.Order) {
+                return;
+            }
+            StartNewAction(action);            
+        } catch (Exception e) {
+            Debug.LogError(e);
         }
     }
 
@@ -138,18 +202,34 @@ public class AgentBrain : MonoBehaviour
         Debug.Log($"Agent: Changing the current action to \"{action.Name}\"");
     }
 
-    void UpdateCurrentAction() {
-        if (CurrentAction != null && !CurrentAction.IsFinished(this)) {
-            CurrentAction.ExecuteBreak(this);
+    AgentAction GetSuitableAction() {
+        try {
+            (GoalAction goalAction, AgentAction action) = FindSuitableAction();
+            var currentGoalAction = CurrentGoal.Actions.Find(a => a.Name == CurrentAction.Name);
+            if (action == CurrentAction || goalAction.Order < currentGoalAction.Order) {
+                return null;
+            }
+            return action;          
+        } catch (Exception e) {
+            Debug.LogError(e);
+            return null;
         }
-        foreach (var actionName in CurrentGoal.Actions) {
-            var action = actions.Find(a => a.Name == actionName);
+    }
+
+    (GoalAction, AgentAction) FindSuitableAction() {
+        CurrentGoal.Actions.Sort((a, b) => b.Order - a.Order);
+
+        foreach(var goalAction in CurrentGoal.Actions) {
+            var action = actions.Find(a => a.Name == goalAction.Name);
+            if(action == null) {
+                throw new Exception($"There is no action that matches the \"{goalAction.Name}\" action defined by the current goal.");
+            }
             if (action.CanStart(this)) {
-                CurrentAction = action;
-                CurrentAction.Execute(this);
-                break;
+                return (goalAction, action);
             }
         }
+
+        throw new Exception($"There is no action that can be started for the current goal \"{CurrentGoal.Name}\".");
     }
 
     public AgentGoal CurrentGoal {

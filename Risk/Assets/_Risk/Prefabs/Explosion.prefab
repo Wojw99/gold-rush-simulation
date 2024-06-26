@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1385228897116274370}
   - component: {fileID: 3804918473359789830}
-  - component: {fileID: 6471161745388795025}
+  - component: {fileID: 1270408040383288294}
+  - component: {fileID: 3801328067754406967}
   m_Layer: 0
   m_Name: Explosion
   m_TagString: Untagged
@@ -32,7 +33,7 @@ Transform:
   m_Children:
   - {fileID: 3152258700005093746}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &3804918473359789830
 SphereCollider:
@@ -55,7 +56,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.05
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6471161745388795025
+--- !u!114 &1270408040383288294
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -64,12 +65,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 7589322315697367990}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc5dee367eae51e4e9256d9783d30794, type: 3}
+  m_Script: {fileID: 11500000, guid: 05ac0a6f76adb3240a05576c2df5ee7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modifierType: 1
-  modifierValue: 5
-  modifierLifetime: 1
+  beaconType: 4
+--- !u!114 &3801328067754406967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7589322315697367990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 329fd22f04a80a8409e9825957de24e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifetime: 1
 --- !u!1001 &2084834910487588911
 PrefabInstance:
   m_ObjectHideFlags: 0

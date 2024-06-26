@@ -21,6 +21,12 @@ public class AgentStatus : MonoBehaviour
     public event Action<float> OreChanged;
     public event Action<string> NameChanged;
 
+    HealthState _healthState;
+    StaminaState _staminaState;
+    OreState _oreState;
+
+    public event Action StateChange;
+
     void Start() {
         Health = maxHealth;
         Stamina = maxStamina;
@@ -91,11 +97,69 @@ public class AgentStatus : MonoBehaviour
         }
     }
 
+    void UpdateHealthState() {
+        if(Health == 0) {
+            HealthState = HealthState.Died;
+        }
+        else if(Health < maxHealth / 3) {
+            HealthState = HealthState.Dying;
+        }
+        else if(Health < maxHealth) {
+            HealthState = HealthState.Injured;
+        }
+        else {
+            HealthState = HealthState.Healthy;
+        }
+    }
+
+    void UpdateStaminaState() {
+        if(Stamina < maxStamina / 3) {
+            StaminaState = StaminaState.Exhausted;
+        }
+        else {
+            StaminaState = StaminaState.Rested;
+        }
+    }
+
+    void UpdateOreState() {
+        if(Ore == maxOre) {
+            OreState = OreState.Full;
+        }
+        else {
+            OreState = OreState.NotFull;
+        }
+    }
+
+    public HealthState HealthState {
+        get => _healthState;
+        set {
+            _healthState = value;
+            StateChange?.Invoke();
+        }
+    }
+
+    public StaminaState StaminaState {
+        get => _staminaState;
+        set {
+            _staminaState = value;
+            StateChange?.Invoke();
+        }
+    }
+
+    public OreState OreState {
+        get => _oreState;
+        set {
+            _oreState = value;
+            StateChange?.Invoke();
+        }
+    }
+
     public float Health {
         get => _health;
         set {
             _health = Mathf.Clamp(value, 0, maxHealth);
             HealthChanged?.Invoke(_health);
+            UpdateHealthState();
         }
     }
 
@@ -104,6 +168,7 @@ public class AgentStatus : MonoBehaviour
         set {
             _stamina = Mathf.Clamp(value, 0, maxStamina);
             StaminaChanged?.Invoke(_stamina);
+            UpdateStaminaState();
         }
     }
 
@@ -112,6 +177,7 @@ public class AgentStatus : MonoBehaviour
         set {
             _ore = Mathf.Clamp(value, 0, maxOre);
             OreChanged?.Invoke(_ore);
+            UpdateOreState();
         }
     }
 
@@ -154,4 +220,21 @@ public enum AttributeName {
     Health,
     Stamina,
     Ore
+}
+
+public enum HealthState {
+    Died,
+    Dying,
+    Injured,
+    Healthy
+}
+
+public enum StaminaState {
+    Exhausted,
+    Rested
+}
+
+public enum OreState {
+    NotFull,
+    Full
 }
