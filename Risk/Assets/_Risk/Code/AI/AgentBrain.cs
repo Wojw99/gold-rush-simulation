@@ -126,112 +126,41 @@ public class AgentBrain : MonoBehaviour
             ),
         };
 
-        CurrentGoal = goals[0];
-        CurrentAction = actions[0];
-        
-        visionSensor.BeaconSensed += SearchForGoal;
-        interactionSensor.BeaconSensed += SearchForGoal;
-        agentStatus.StateChange += SearchForGoal;
-        ActionFinished += SearchForGoal;
-
-        GoalChanged += BreakAction;
-        visionSensor.BeaconSensed += BreakAction;
-        interactionSensor.BeaconSensed += BreakAction;
-        agentStatus.StateChange += BreakAction;
-
-        ActionFinished += FinishAction;
+        goals.Sort((goal1, goal2) => goal1.Priority.CompareTo(goal2.Priority));
     }
     
-
-    void SearchForGoal() {
-        goals.Sort((a, b) => b.Priority - a.Priority);
-        foreach (var goal in goals) {
-            if (goal.CanStart(this)) {
-                if(goal != CurrentGoal) {
-                    CurrentGoal = goal;
-                    Debug.Log($"Agent: Changing the current goal to \"{goal.Name}\"");
-                }  
-                break;
-            }
-        }
-    }
-
-    void FinishAction() {
-        CurrentAction.ExecuteConsequences(this);
-        UpdateAction();
-    }
-
-    void BreakAction(AgentGoal newGoal) {
-        BreakAction();
-    }
-
-    void BreakAction() {
-        if(CurrentAction.CanBreak()) {
-            var action = GetSuitableAction();
-            if(action != null) {
-                CurrentAction.ExecuteBreak(this);
-                StartNewAction(action);
-            }
-        }
-    }
-
-
     void Update() {
-        CurrentAction.Update(this);
-        if (CurrentAction.IsFinished(this)) {
-            ActionFinished?.Invoke();
+        var newGoal = FindNewGoal();
+        if(newGoal != null && newGoal != CurrentGoal) {
+            CurrentGoal = newGoal;
+        }
+
+        var newAction = FindActionForCurrentGoal();
+        if(newAction != null && newAction != CurrentAction) {
+            CurrentAction = newAction;
         }
     }
 
-    void UpdateAction() {
-        try {
-            (GoalAction goalAction, AgentAction action) = FindSuitableAction();
-            var currentGoalAction = CurrentGoal.Actions.Find(a => a.Name == CurrentAction.Name);
-            if (action == CurrentAction || goalAction.Order < currentGoalAction.Order) {
-                return;
+    AgentGoal FindNewGoal() {
+        for(int i = 0; i < goals.Count; i++) {
+            if(goals[i].CanStart(this)) {
+                return goals[i];
             }
-            StartNewAction(action);            
-        } catch (Exception e) {
-            Debug.LogError(e);
         }
+        return null;
     }
 
-    void StartNewAction(AgentAction action) {
-        CurrentAction = action;
-        CurrentAction.Execute(this);
-        Debug.Log($"Agent: Changing the current action to \"{action.Name}\"");
-    }
-
-    AgentAction GetSuitableAction() {
-        try {
-            (GoalAction goalAction, AgentAction action) = FindSuitableAction();
-            var currentGoalAction = CurrentGoal.Actions.Find(a => a.Name == CurrentAction.Name);
-            if (action == CurrentAction || goalAction.Order < currentGoalAction.Order) {
-                return null;
-            }
-            return action;          
-        } catch (Exception e) {
-            Debug.LogError(e);
-            return null;
-        }
-    }
-
-    (GoalAction, AgentAction) FindSuitableAction() {
-        CurrentGoal.Actions.Sort((a, b) => b.Order - a.Order);
-
-        foreach(var goalAction in CurrentGoal.Actions) {
+    AgentAction FindActionForCurrentGoal() {
+        for(int i = 0; i < CurrentGoal.Actions.Count; i++) {
+            var goalAction = CurrentGoal.Actions[i];
             var action = actions.Find(a => a.Name == goalAction.Name);
-            if(action == null) {
-                throw new Exception($"There is no action that matches the \"{goalAction.Name}\" action defined by the current goal.");
-            }
-            if (action.CanStart(this)) {
-                return (goalAction, action);
+            if(action.CanStart(this)) {
+                return action;
             }
         }
-
-        throw new Exception($"There is no action that can be started for the current goal \"{CurrentGoal.Name}\".");
+        return null;
     }
-
+   
     public AgentGoal CurrentGoal {
         get => _currentGoal;
         set {

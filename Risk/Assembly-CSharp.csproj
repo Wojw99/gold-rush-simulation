@@ -42,7 +42,10 @@
   <ItemGroup>
      <Compile Include="Assets\_Risk\Code\Scripts\AgentStatus.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Sword.cs" />
+     <Compile Include="Assets\_Risk\Code\GOAP\GAgentGoal.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Modifier.cs" />
+     <Compile Include="Assets\_Risk\Code\GOAP\GoapPlanner.cs" />
+     <Compile Include="Assets\_Risk\Code\GOAP\AgentBelief.cs" />
      <Compile Include="Assets\MenuItem.cs" />
      <Compile Include="Assets\RTS_Camera\Demo\DemoScene.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\BeaconGravity.cs" />
@@ -52,6 +55,8 @@
      <Compile Include="Assets\_Risk\Code\Scripts\Shrine.cs" />
      <Compile Include="Assets\RTS_Camera\Demo\TargetSelector.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\PlayerInteraction.cs" />
+     <Compile Include="Assets\_Risk\Code\GOAP\GAgent.cs" />
+     <Compile Include="Assets\_Risk\Code\GOAP\GAgentAction.cs" />
      <Compile Include="Assets\_Risk\Code\AI\AgentGoal.cs" />
      <Compile Include="Assets\_Risk\Code\AI\AgentBrain.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\StatusController.cs" />
@@ -61,6 +66,8 @@
      <Compile Include="Assets\_Risk\Code\Utilities\Timer.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\MainCameraController.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Autodestruction.cs" />
+     <Compile Include="Assets\_Risk\Code\GOAP\Sensor.cs" />
+     <Compile Include="Assets\_Risk\Code\GOAP\GActionStrategies.cs" />
      <Compile Include="Assets\RTS_Camera\Scripts\RTS_Camera.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentVisionSensor.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\BeaconInteractible.cs" />
