@@ -44,13 +44,12 @@
      <Compile Include="Assets\_Risk\Code\Scripts\Sword.cs" />
      <Compile Include="Assets\_Risk\Code\GOAP\GAgentGoal.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Modifier.cs" />
-     <Compile Include="Assets\_Risk\Code\GOAP\GoapPlanner.cs" />
-     <Compile Include="Assets\_Risk\Code\GOAP\AgentBelief.cs" />
      <Compile Include="Assets\MenuItem.cs" />
      <Compile Include="Assets\RTS_Camera\Demo\DemoScene.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\BeaconGravity.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\UtilitiesController.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Utilities.cs" />
+     <Compile Include="Assets\_Risk\Code\GOAP\GPlanner.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Campfire.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Shrine.cs" />
      <Compile Include="Assets\RTS_Camera\Demo\TargetSelector.cs" />
@@ -72,6 +71,7 @@
      <Compile Include="Assets\_Risk\Code\Scripts\AgentVisionSensor.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\BeaconInteractible.cs" />
      <Compile Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Scripts\PT_Create_Prefab.cs" />
+     <Compile Include="Assets\_Risk\Code\GOAP\GAgentBelief.cs" />
      <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\PlayerMovement.cs" />
      <Compile Include="Assets\_Risk\Code\NewBehaviourScript.cs" />
      <Compile Include="Assets\_Risk\Code\AI\Beacon.cs" />
@@ -83,6 +83,7 @@
      <Compile Include="Assets\_Risk\Code\AI\AgentSensor.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\BeaconVisible.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\UIBottomMenuBuilder.cs" />
+     <Compile Include="Assets\_Risk\Code\GOAP\AgentStats.cs" />
      <Compile Include="Assets\_Risk\Code\AI\AgentAction.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentBrain2.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

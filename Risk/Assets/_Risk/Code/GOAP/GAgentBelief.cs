@@ -8,21 +8,21 @@ using UnityEngine;
 /// </summary>
 public class BeliefFactory {
     readonly GAgent agent;
-    readonly Dictionary<string, AgentBelief> beliefs;
+    readonly Dictionary<string, GAgentBelief> beliefs;
 
-    public BeliefFactory(GAgent agent, Dictionary<string, AgentBelief> beliefs) {
+    public BeliefFactory(GAgent agent, Dictionary<string, GAgentBelief> beliefs) {
         this.agent = agent;
         this.beliefs = beliefs;
     }
 
     public void AddBelief(string key, Func<bool> condition) {
-        beliefs.Add(key, new AgentBelief.Builder(key)
+        beliefs.Add(key, new GAgentBelief.Builder(key)
             .WithCondition(condition)
             .Build());
     }
 
     public void AddSensorBelief(string key, Sensor sensor) {
-        beliefs.Add(key, new AgentBelief.Builder(key)
+        beliefs.Add(key, new GAgentBelief.Builder(key)
             .WithCondition(() => sensor.IsTargetInRange)
             .WithLocation(() => sensor.TargetPosition)
             .Build());
@@ -33,7 +33,7 @@ public class BeliefFactory {
     }
 
     public void AddLocationBelief(string key, float distance, Vector3 locationCondition) {
-        beliefs.Add(key, new AgentBelief.Builder(key)
+        beliefs.Add(key, new GAgentBelief.Builder(key)
             .WithCondition(() => InRangeOf(locationCondition, distance))
             .WithLocation(() => locationCondition)
             .Build());
@@ -47,24 +47,24 @@ public class BeliefFactory {
     }
 }
 
-public class AgentBelief
+public class GAgentBelief
 {
     public string Name { get; }
 
     Func<bool> condition = () => false;
     Func<Vector3> observedLocation = () => Vector3.zero;
 
-    AgentBelief(string name) {
+    GAgentBelief(string name) {
         Name = name;
     }
 
     public bool Evaluate() => condition();
 
     public class Builder {
-        readonly AgentBelief belief;
+        readonly GAgentBelief belief;
 
         public Builder(string name) {
-            belief = new AgentBelief(name);
+            belief = new GAgentBelief(name);
         }
 
         public Builder WithCondition(Func<bool> condition) {
@@ -77,6 +77,6 @@ public class AgentBelief
             return this;
         }
 
-        public AgentBelief Build() => belief;
+        public GAgentBelief Build() => belief;
     }
 }

@@ -7,7 +7,7 @@ public class GAgentGoal
     public string Name { get; }
     public float Priority { get; private set; }
 
-    public HashSet<AgentBelief> DesiredEffects { get; } = new();
+    public HashSet<GAgentBelief> DesiredEffects { get; } = new();
 
     public GAgentGoal(string name) {
         Name = name;
@@ -25,7 +25,7 @@ public class GAgentGoal
             return this;
         }
 
-        public Builder WithDesiredEffect(AgentBelief belief) {
+        public Builder WithDesiredEffect(GAgentBelief belief) {
             goal.DesiredEffects.Add(belief);
             return this;
         }

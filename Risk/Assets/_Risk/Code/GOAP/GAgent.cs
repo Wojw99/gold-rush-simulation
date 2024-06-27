@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,15 +33,15 @@ public class GAgent : MonoBehaviour
     GameObject target;
     Vector3 destination;
 
-    public GAgentGoal lastGoal; 
-    public GAgentGoal currentGoal; // TODO: Make private
-    public ActionPlan actionPlan;
-    public GAgentAction currentAction;
+    GAgentGoal lastGoal; 
+    GAgentGoal _currentGoal;
+    ActionPlan actionPlan;
+    GAgentAction _currentAction;
 
-    public Dictionary<string, AgentBelief> beliefs;
-    public HashSet<GAgentGoal> goals;
-    public HashSet<GAgentAction> actions;
-    IGoapPlanner goapPlanner;
+    Dictionary<string, GAgentBelief> beliefs;
+    HashSet<GAgentGoal> goals;
+    HashSet<GAgentAction> actions;
+    IGPlanner goapPlanner;
 
     void Awake() {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -48,7 +49,7 @@ public class GAgent : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
-        goapPlanner = new GoapPlanner();
+        goapPlanner = new GPlanner();
     }
 
     void Start() {
@@ -59,7 +60,7 @@ public class GAgent : MonoBehaviour
     }
 
     void SetupBeliefs() {
-        beliefs = new Dictionary<string, AgentBelief>();
+        beliefs = new Dictionary<string, GAgentBelief>();
         var factory = new BeliefFactory(this, beliefs);
 
         factory.AddBelief("Nothing", () => false);
@@ -117,7 +118,7 @@ public class GAgent : MonoBehaviour
         goals = new HashSet<GAgentGoal>();
 
         goals.Add(new GAgentGoal.Builder("ChillOut")
-            .WithPriority(1)
+            .WithPriority(0)
             .WithDesiredEffect(beliefs["Nothing"])
             .Build());
 
@@ -164,60 +165,60 @@ public class GAgent : MonoBehaviour
     void OnTargetChanged() {
         Debug.Log("Target changed, clearing current goal and action");
         // Force the planner to re-evaluate the plan
-        currentGoal = null;
-        currentAction = null;
+        CurrentGoal = null;
+        CurrentAction = null;
     }
 
     void Update() {
         statsTimer.Tick(Time.deltaTime);
 
         // Update the plan and current action if there is one
-        if(currentAction == null) {
+        if(CurrentAction == null) {
             Debug.Log("Calculating any potential new plan");
             CalculatePlan();
 
             if(actionPlan != null && actionPlan.Actions.Count > 0) {
                 navMeshAgent.ResetPath();
 
-                currentGoal = actionPlan.AgentGoal;
-                Debug.Log($"Goal: {currentGoal.Name} with {actionPlan.Actions.Count} actions in plan");
-                currentAction = actionPlan.Actions.Pop();
-                Debug.Log($"Popped action: {currentAction.Name}");
+                CurrentGoal = actionPlan.AgentGoal;
+                Debug.Log($"Goal: {CurrentGoal.Name} with {actionPlan.Actions.Count} actions in plan");
+                CurrentAction = actionPlan.Actions.Pop();
+                Debug.Log($"Popped action: {CurrentAction.Name}");
 
-                if (currentAction.Preconditions.All(b => b.Evaluate())) {
-                    currentAction.Start();
+                if (CurrentAction.Preconditions.All(b => b.Evaluate())) {
+                    CurrentAction.Start();
                 } else {
                     Debug.Log("Preconditions not met, clearing current action and goal");
-                    currentAction = null;
-                    currentGoal = null;
+                    CurrentAction = null;
+                    CurrentGoal = null;
                 }
             }
         }
 
         // If we have a current action, execute it
-        if (actionPlan != null && currentAction != null) {
-            currentAction.Update(Time.deltaTime);
+        if (actionPlan != null && CurrentAction != null) {
+            CurrentAction.Update(Time.deltaTime);
 
-            if (currentAction.Completed) {
-                Debug.Log($"{currentAction.Name} complete");
-                currentAction.Stop();
-                currentAction = null;
+            if (CurrentAction.Completed) {
+                Debug.Log($"{CurrentAction.Name} complete");
+                CurrentAction.Stop();
+                CurrentAction = null;
 
                 if (actionPlan.Actions.Count == 0) {
                     Debug.Log("Plan complete");
-                    lastGoal = currentGoal;
-                    currentGoal = null;
+                    lastGoal = CurrentGoal;
+                    CurrentGoal = null;
                 }
             }
         }
     }
 
     void CalculatePlan() {
-        var priorityLevel = currentGoal?.Priority ?? 0;
+        var priorityLevel = CurrentGoal?.Priority ?? 0;
         var goalsToConsider = goals;
 
         // If we have a current goal, we only want to consider goals with a higher priority
-        if(currentGoal != null) {
+        if(CurrentGoal != null) {
             Debug.Log("Current goal exists, checking goals with higher priority");
             goalsToConsider = new HashSet<GAgentGoal>(goals.Where(g => g.Priority > priorityLevel));
         }
@@ -225,6 +226,26 @@ public class GAgent : MonoBehaviour
         var potentialPlan = goapPlanner.Plan(this, goalsToConsider, lastGoal);
         if(potentialPlan != null) {
             actionPlan = potentialPlan;
+        }
+    }
+
+    public event Action<GAgentGoal> GoalChanged;
+    public event Action<GAgentAction> ActionChanged;
+
+    public HashSet<GAgentAction> Actions => actions;
+
+    public GAgentGoal CurrentGoal {
+        get => _currentGoal;
+        set {
+            _currentGoal = value;
+            GoalChanged?.Invoke(_currentGoal);
+        }
+    }
+    public GAgentAction CurrentAction {
+        get => _currentAction;
+        set {
+            _currentAction = value;
+            ActionChanged?.Invoke(_currentAction);
         }
     }
 }

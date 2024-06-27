@@ -7,8 +7,8 @@ public class GAgentAction
     public string Name { get; }
     public float Cost { get; private set; }
 
-    public HashSet<AgentBelief> Preconditions { get; } = new();
-    public HashSet<AgentBelief> Effects { get; } = new();
+    public HashSet<GAgentBelief> Preconditions { get; } = new();
+    public HashSet<GAgentBelief> Effects { get; } = new();
 
     IActionStrategy strategy;
     public bool Completed => strategy.Completed;
@@ -57,12 +57,12 @@ public class GAgentAction
             return this;
         }
 
-        public Builder AddPrecondition(AgentBelief belief) {
+        public Builder AddPrecondition(GAgentBelief belief) {
             action.Preconditions.Add(belief);
             return this;
         }
 
-        public Builder AddEffect(AgentBelief belief) {
+        public Builder AddEffect(GAgentBelief belief) {
             action.Effects.Add(belief);
             return this;
         }

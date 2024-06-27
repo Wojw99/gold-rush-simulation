@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public interface IGoapPlanner {
+public interface IGPlanner {
     ActionPlan Plan(GAgent agent, HashSet<GAgentGoal> goals, GAgentGoal mostRecentGoal = null);
 }
 
-public class GoapPlanner : IGoapPlanner
+public class GPlanner : IGPlanner
 {
     public ActionPlan Plan(GAgent agent, HashSet<GAgentGoal> goals, GAgentGoal mostRecentGoal)
     {
@@ -21,7 +21,7 @@ public class GoapPlanner : IGoapPlanner
             var goalNode = new Node(null, null, goal.DesiredEffects, 0);
 
             // If we can find a path to the goal, return the plan.
-            if(FindPath(goalNode, agent.actions)) {
+            if(FindPath(goalNode, agent.Actions)) {
                 if(goalNode.IsLeafDead) continue;
 
                 var actionStack = new Stack<GAgentAction>();
@@ -51,7 +51,7 @@ public class GoapPlanner : IGoapPlanner
             }
 
             if(action.Effects.Any(requiredEffects.Contains)) {
-                var newRequiredEffects = new HashSet<AgentBelief>(requiredEffects);
+                var newRequiredEffects = new HashSet<GAgentBelief>(requiredEffects);
                 newRequiredEffects.ExceptWith(action.Effects);
                 newRequiredEffects.UnionWith(action.Preconditions);
 
@@ -80,13 +80,13 @@ public class GoapPlanner : IGoapPlanner
 public class Node {
     public Node Parent { get; }
     public GAgentAction Action { get; }
-    public HashSet<AgentBelief> RequiredEffects { get; }
+    public HashSet<GAgentBelief> RequiredEffects { get; }
     public List<Node> Leaves { get; }
     public float Cost { get; }
 
     public bool IsLeafDead => Leaves.Count == 0 && Action == null;
 
-    public Node(Node parent, GAgentAction action, HashSet<AgentBelief> requiredEffects, float cost) {
+    public Node(Node parent, GAgentAction action, HashSet<GAgentBelief> requiredEffects, float cost) {
         Parent = parent;
         Action = action;
         RequiredEffects = requiredEffects;

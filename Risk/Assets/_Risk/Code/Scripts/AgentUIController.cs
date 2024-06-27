@@ -6,34 +6,25 @@ using UnityEngine.UI;
 
 public class AgentUIController : MonoBehaviour
 {
+    private readonly string EMPTY_GOAL_ACTION_TEXT = "-";
+
     [SerializeField] private Image healthBar;
     [SerializeField] private Image staminaBar;
     [SerializeField] private Image oreBar;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI goalText;
     [SerializeField] private TextMeshProUGUI actionText;
-    private AgentStatus agentStatus;
-    private AgentBrain agentBrain;
     private Camera mainCamera;
     private Canvas canvas;
+    private GAgent gAgent;
 
     private void Start() {
-        agentStatus = GetComponentInParent<AgentStatus>();
-        agentBrain = GetComponentInParent<AgentBrain>();
         canvas = GetComponent<Canvas>();
         mainCamera = Camera.main;
 
-        if(agentStatus != null) {
-            agentStatus.HealthChanged += OnHealthChanged;
-            agentStatus.StaminaChanged += OnStaminaChanged;
-            agentStatus.OreChanged += OnOreChanged;
-            agentStatus.NameChanged += OnNameChanged;
-        }
-
-        if(agentBrain != null) {
-            agentBrain.GoalChanged += OnGoalChanged;
-            agentBrain.ActionChanged += OnActionChanged;
-        }
+        gAgent = GetComponentInParent<GAgent>();
+        gAgent.GoalChanged += OnGoalChanged;
+        gAgent.ActionChanged += OnActionChanged;
 
         Initialize();
     }
@@ -43,11 +34,14 @@ public class AgentUIController : MonoBehaviour
     }
 
     private void Initialize() {
-        OnHealthChanged(agentStatus.Health);
-        OnStaminaChanged(agentStatus.Stamina);
-        OnOreChanged(agentStatus.Ore);
-        OnNameChanged(agentStatus.Name);
-        OnGoalChanged(agentBrain.CurrentGoal);
+        // TODO: This method may be unnecessary if Awake will be used 
+
+        // OnHealthChanged(agentStatus.Health);
+        // OnStaminaChanged(agentStatus.Stamina);
+        // OnOreChanged(agentStatus.Ore);
+        // OnNameChanged(agentStatus.Name);
+        OnGoalChanged(gAgent.CurrentGoal);
+        OnActionChanged(gAgent.CurrentAction);
     }
 
     private Quaternion GetLookAtCameraRotation() {
@@ -59,25 +53,29 @@ public class AgentUIController : MonoBehaviour
         nameText.text = name;
     }
 
-    private void OnActionChanged(AgentAction action) {
+    private void OnActionChanged(GAgentAction action) {
         if (action != null)
             actionText.text = action.Name;
+        else
+            goalText.text = EMPTY_GOAL_ACTION_TEXT;
     }
 
-    private void OnGoalChanged(AgentGoal goal) {
+    private void OnGoalChanged(GAgentGoal goal) {
         if (goal != null)
             goalText.text = goal.Name;
+        else
+            goalText.text = EMPTY_GOAL_ACTION_TEXT;
     }
 
     private void OnHealthChanged(float health) {
-        healthBar.fillAmount = health / agentStatus.MaxHealth;
+        healthBar.fillAmount = health / 1f; // agentStatus.MaxHealth;
     }
 
     private void OnStaminaChanged(float stamina) {
-        staminaBar.fillAmount = stamina / agentStatus.MaxStamina;
+        staminaBar.fillAmount = stamina / 1f; // agentStatus.MaxStamina;
     }
 
     private void OnOreChanged(float ore) {
-        oreBar.fillAmount = ore / agentStatus.MaxOre;
+        oreBar.fillAmount = ore / 1f; // agentStatus.MaxOre;
     }
 }
