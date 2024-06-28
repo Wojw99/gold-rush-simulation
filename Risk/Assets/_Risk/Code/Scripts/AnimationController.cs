@@ -4,15 +4,6 @@ using UnityEngine;
 
 public class AnimationController : MonoBehaviour
 {
-    public static string IS_DIGGING = "IsDigging";
-    public static string IS_SITTING = "IsSitting";
-    public static string IS_WALKING = "IsWalking";
-    public static string IS_RUNNING = "IsRunning";
-    public static string IS_DAMAGED = "IsDamaged";
-    public static string IS_PRAYING = "IsPraying";
-    public static string IS_DYING = "IsDying";
-    public static string IS_ATTACKING = "IsAttacking";
-
     Animator animator;
     string currentAnimation = null;
 
@@ -35,4 +26,15 @@ public class AnimationController : MonoBehaviour
             currentAnimation = null;
         }
     }
+}
+
+public enum AnimType {
+    IsDigging,
+    IsSitting,
+    IsWalking,
+    IsRunning,
+    IsDamaged,
+    IsPraying,
+    IsDying,
+    IsAttacking
 }

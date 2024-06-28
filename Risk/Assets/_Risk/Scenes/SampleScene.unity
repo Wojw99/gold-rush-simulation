@@ -8248,6 +8248,7 @@ GameObject:
   - component: {fileID: 452596941865142451}
   - component: {fileID: 8846038506400218375}
   - component: {fileID: 8846038506400218377}
+  - component: {fileID: 8846038506400218378}
   - component: {fileID: 8846038506400218376}
   m_Layer: 0
   m_Name: Settler
@@ -9112,8 +9113,6 @@ MonoBehaviour:
   foodShack: {fileID: 1319053946}
   doorOnePosition: {fileID: 797816480}
   doorTwoPosition: {fileID: 1244201832}
-  health: 100
-  stamina: 100
 --- !u!114 &8846038506400218377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9126,3 +9125,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95d1cc5de3a40b842a9e42fc5f15eee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8846038506400218378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4489812337188724776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b6f8ab95fcffc14eba290b8dbb805cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  maxStamina: 100
+  maxOre: 100

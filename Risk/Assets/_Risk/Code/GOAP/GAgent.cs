@@ -22,13 +22,7 @@ public class GAgent : MonoBehaviour
     NavMeshAgent navMeshAgent;
     AnimationController animationController;
     Rigidbody rb;
-
-    // TODO: Move stats to a proper class
-    [Header("Sensors")]
-    public float health = 100;
-    public float stamina = 100;
-
-    CountdownTimer statsTimer;
+    AgentStats agentStats;
 
     GameObject target;
     Vector3 destination;
@@ -46,6 +40,7 @@ public class GAgent : MonoBehaviour
     void Awake() {
         navMeshAgent = GetComponent<NavMeshAgent>();
         animationController = GetComponent<AnimationController>();
+        agentStats = GetComponent<AgentStats>();
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
@@ -53,7 +48,6 @@ public class GAgent : MonoBehaviour
     }
 
     void Start() {
-        SetupTimers();
         SetupBeliefs();
         SetupActions();
         SetupGoals();
@@ -66,10 +60,10 @@ public class GAgent : MonoBehaviour
         factory.AddBelief("Nothing", () => false);
         factory.AddBelief("Idle", () => !navMeshAgent.hasPath);
         factory.AddBelief("Moving", () => navMeshAgent.hasPath);
-        factory.AddBelief("IsDying", () => health < 30);
-        factory.AddBelief("IsHealthy", () => health >= 50);
-        factory.AddBelief("IsExhausted", () => stamina < 20);
-        factory.AddBelief("IsRested", () => stamina >= 50);
+        factory.AddBelief("IsDying", () => agentStats.Health < 30);
+        factory.AddBelief("IsHealthy", () => agentStats.Health >= 50);
+        factory.AddBelief("IsExhausted", () => agentStats.Stamina < 20);
+        factory.AddBelief("IsRested", () => agentStats.Stamina >= 50);
 
         factory.AddLocationBelief("AtRestingPosition", 3f, restingPosition);
         factory.AddLocationBelief("AtFoodShack", 3f, foodShack);
@@ -82,33 +76,33 @@ public class GAgent : MonoBehaviour
         actions = new HashSet<GAgentAction>();
 
         actions.Add(new GAgentAction.Builder("Relax")
-            .WithStrategy(new IdleStrategy(2))
+            .WithStrategy(new IdleStrategy(1))
             .AddEffect(beliefs["Nothing"])
             .Build());
 
         actions.Add(new GAgentAction.Builder("WanderAround")
-            .WithStrategy(new WanderStrategy(navMeshAgent, 10))
+            .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController))
             .AddEffect(beliefs["Moving"])
             .Build());
 
         actions.Add(new GAgentAction.Builder("MoveToEatingPosition")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => foodShack.position))
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => foodShack.position, animationController))
             .AddEffect(beliefs["AtFoodShack"])
             .Build());
 
         actions.Add(new GAgentAction.Builder("Eat")
-            .WithStrategy(new IdleStrategy(3))
+            .WithStrategy(new HealStrategy(3, agentStats, animationController))
             .AddPrecondition(beliefs["AtFoodShack"])
             .AddEffect(beliefs["IsHealthy"])
             .Build());
 
         actions.Add(new GAgentAction.Builder("MoveToRestingPosition")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => restingPosition.position))
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => restingPosition.position, animationController))
             .AddEffect(beliefs["AtRestingPosition"])
             .Build());
 
         actions.Add(new GAgentAction.Builder("Rest")
-            .WithStrategy(new IdleStrategy(3))
+            .WithStrategy(new RestStrategy(3, agentStats, animationController))
             .AddPrecondition(beliefs["AtRestingPosition"])
             .AddEffect(beliefs["IsRested"])
             .Build());
@@ -138,27 +132,6 @@ public class GAgent : MonoBehaviour
             .Build());
     }
 
-    void SetupTimers() {
-        statsTimer = new CountdownTimer(2f);
-        statsTimer.OnTimerStop += () => {
-            UpdateStats();
-            statsTimer.Start();
-        };
-        statsTimer.Start();
-    }
-
-    // TODO: Move to a proper class
-    void UpdateStats() {
-        health += InRangeOf(foodShack.position, 3f) ? 20 : -10;
-        stamina += InRangeOf(restingPosition.position, 3f) ? 20 : -5;
-        stamina = Mathf.Clamp(stamina, 0, 100);
-        health = Mathf.Clamp(health, 0, 100);
-    }
-
-    bool InRangeOf(Vector3 target, float range) {
-        return Vector3.Distance(transform.position, target) < range;
-    }
-
     void OnEnable() => followSensor.TargetChanged += OnTargetChanged;
     void OnDisable() => followSensor.TargetChanged -= OnTargetChanged;
 
@@ -170,8 +143,6 @@ public class GAgent : MonoBehaviour
     }
 
     void Update() {
-        statsTimer.Tick(Time.deltaTime);
-
         // Update the plan and current action if there is one
         if(CurrentAction == null) {
             Debug.Log("Calculating any potential new plan");

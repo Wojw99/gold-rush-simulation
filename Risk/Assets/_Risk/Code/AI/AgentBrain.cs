@@ -94,7 +94,7 @@ public class AgentBrain : MonoBehaviour
             new InteractAction(
                 name: "mine_deposit", 
                 duration: 3,
-                animationName: AnimationController.IS_DIGGING,
+                animationName: AnimType.IsDigging.ToString(),
                 beaconType: BeaconType.DEPOSIT,
                 removeInteractedBeacon: true,
                 statusConsequences: (agentStatus) => agentStatus.Ore += 1,
@@ -108,7 +108,7 @@ public class AgentBrain : MonoBehaviour
             new InteractAction(
                 name: "take_rest", 
                 duration: 3,
-                animationName: AnimationController.IS_SITTING,
+                animationName: AnimType.IsSitting.ToString(),
                 beaconType: BeaconType.REST,
                 removeInteractedBeacon: false,
                 statusConsequences: (agentStatus) => agentStatus.Stamina = agentStatus.MaxStamina,
@@ -118,7 +118,7 @@ public class AgentBrain : MonoBehaviour
             new InteractAction(
                 name: "take_damage", 
                 duration: 0.5f,
-                animationName: AnimationController.IS_DAMAGED,
+                animationName: AnimType.IsDamaged.ToString(),
                 beaconType: BeaconType.DAMAGE,
                 removeInteractedBeacon: false,
                 requiredAttribute: AttributeName.Health,
