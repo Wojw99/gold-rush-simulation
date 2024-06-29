@@ -52,12 +52,12 @@ public class Sensor : MonoBehaviour
 
     void OnTriggerExit(Collider other) {
         if(other.TryGetComponent(out Beacon beacon)) {
-            UpdateTargetPosition(beacon.gameObject);
+            UpdateTargetPosition(null);
         }
     }
 
     public bool IsTargetOfType(BeaconType beaconType) {
-        if(target.TryGetComponent(out Beacon beacon)) {
+        if(target != null && target.TryGetComponent(out Beacon beacon)) {
             return beacon.BeaconType == beaconType;
         }
         return false;
