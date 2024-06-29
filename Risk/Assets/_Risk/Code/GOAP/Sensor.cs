@@ -44,13 +44,23 @@ public class Sensor : MonoBehaviour
 
     // TODO: Add a way to check not only the player, but also other agents.
     void OnTriggerEnter(Collider other) {
-        if(!other.CompareTag("Player")) return;
-        UpdateTargetPosition(other.gameObject);
+        if(other.TryGetComponent(out Beacon beacon)) {
+            UpdateTargetPosition(beacon.gameObject);
+            Debug.Log("Target in range: " + beacon.name);
+        }
     }
 
     void OnTriggerExit(Collider other) {
-        if(!other.CompareTag("Player")) return;
-        UpdateTargetPosition();
+        if(other.TryGetComponent(out Beacon beacon)) {
+            UpdateTargetPosition(beacon.gameObject);
+        }
+    }
+
+    public bool IsTargetOfType(BeaconType beaconType) {
+        if(target.TryGetComponent(out Beacon beacon)) {
+            return beacon.BeaconType == beaconType;
+        }
+        return false;
     }
 
     void UpdateTargetPosition(GameObject target = null) {
@@ -60,6 +70,8 @@ public class Sensor : MonoBehaviour
             TargetChanged.Invoke();
         }
     }
+
+    public GameObject Target => target;
 
     void OnDrawGizmos() {
         Gizmos.color = IsTargetInRange ? Color.red : Color.green;

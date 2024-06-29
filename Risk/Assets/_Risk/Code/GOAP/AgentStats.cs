@@ -15,6 +15,8 @@ public class AgentStats : MonoBehaviour
 
     bool isFillingHealth = false;
     bool isFillingStamina = false;
+    bool isDrawingStamina = false;
+    bool isDrawingHealth = false;
 
     CountdownTimer statsTimer;
 
@@ -23,7 +25,7 @@ public class AgentStats : MonoBehaviour
     void Awake() {
         health = maxHealth;
         stamina = maxStamina;
-        ore = maxOre;
+        ore = 0;
     }
 
     void Start() {
@@ -45,11 +47,29 @@ public class AgentStats : MonoBehaviour
 
 
     void UpdateStats() {
-        health += isFillingHealth ? 20 : -10;
-        stamina += isFillingStamina ? 20 : -5;
+        if(isFillingHealth) {
+            health += 20;
+        } else if (isDrawingHealth) {
+            health -= 10;
+        }
+
+        if(isFillingStamina) {
+            stamina += 20;
+        } else if (isDrawingStamina) {
+            stamina -= 5;
+        }
+
         stamina = Mathf.Clamp(stamina, 0, maxStamina);
         health = Mathf.Clamp(health, 0, maxHealth);
         StatsChanged?.Invoke();
+    }
+
+    public void StartDrawingStamina() {
+        isDrawingStamina = true;
+    }
+
+    public void StopDrawingStamina() {
+        isDrawingStamina = false;
     }
 
     public void StartFillingStamina() {
@@ -68,9 +88,33 @@ public class AgentStats : MonoBehaviour
         isFillingHealth = false;
     }
 
-    public float Health => health;
-    public float Stamina => stamina;
-    public float Ore => ore;
+    public float Health {
+        get => health;
+        set {
+            health = value;
+            health = Mathf.Clamp(health, 0, maxHealth);
+            StatsChanged?.Invoke();
+        }
+    }
+
+    public float Stamina {
+        get => stamina;
+        set {
+            stamina = value;
+            stamina = Mathf.Clamp(stamina, 0, maxStamina);
+            StatsChanged?.Invoke();
+        }
+    }
+
+    public float Ore {
+        get => ore;
+        set {
+            ore = value;
+            ore = Mathf.Clamp(ore, 0, maxOre);
+            StatsChanged?.Invoke();
+        }
+    }
+
     public float MaxHealth => maxHealth;
     public float MaxStamina => maxStamina;
     public float MaxOre => maxOre;

@@ -16,8 +16,8 @@ public class GAgent : MonoBehaviour
     [Header("Known Locations")]
     [SerializeField] Transform restingPosition;
     [SerializeField] Transform foodShack;
-    [SerializeField] Transform doorOnePosition;
-    [SerializeField] Transform doorTwoPosition;
+    [SerializeField] Transform depositOnePosition;
+    [SerializeField] Transform depositTwoPosition;
 
     NavMeshAgent navMeshAgent;
     AnimationController animationController;
@@ -64,12 +64,24 @@ public class GAgent : MonoBehaviour
         factory.AddBelief("IsHealthy", () => agentStats.Health >= 50);
         factory.AddBelief("IsExhausted", () => agentStats.Stamina < 20);
         factory.AddBelief("IsRested", () => agentStats.Stamina >= 50);
+        factory.AddBelief("HasOre", () => agentStats.Ore > 0);
+        factory.AddBelief("HasFullOre", () => agentStats.Ore >= agentStats.MaxOre);
 
         factory.AddLocationBelief("AtRestingPosition", 3f, restingPosition);
         factory.AddLocationBelief("AtFoodShack", 3f, foodShack);
+        factory.AddLocationBelief("AtDepositOnePosition", 3f, depositOnePosition);
 
-        factory.AddSensorBelief("PlayerInFollowRange", followSensor);
-        factory.AddSensorBelief("PlayerInInteracionRange", interactionSensor);
+        // factory.AddLocationBelief("DepositInInteractionRange", 3f, depositTwoPosition);
+
+
+        //factory.AddBelief("DepositInFollowRange", () => followSensor.IsTargetOfType(BeaconType.DEPOSIT));
+        //factory.AddBelief("DepositInInteractionRange", () => interactionSensor.IsTargetOfType(BeaconType.DEPOSIT));
+
+        // factory.AddSensorBelief("PlayerInFollowRange", followSensor);
+        // factory.AddSensorBelief("PlayerInInteracionRange", interactionSensor);
+
+        // factory.AddSensorBelief("DepositInFollowRange", BeaconType.DEPOSIT, followSensor);
+        // factory.AddSensorBelief("DepositInInteracionRange", BeaconType.DEPOSIT, interactionSensor);
     }
 
     void SetupActions() {
@@ -85,6 +97,8 @@ public class GAgent : MonoBehaviour
             .AddEffect(beliefs["Moving"])
             .Build());
 
+        // - - - - - HEALING - - - - -
+
         actions.Add(new GAgentAction.Builder("MoveToEatingPosition")
             .WithStrategy(new FollowStrategy(navMeshAgent, () => foodShack.position, animationController))
             .AddEffect(beliefs["AtFoodShack"])
@@ -96,6 +110,8 @@ public class GAgent : MonoBehaviour
             .AddEffect(beliefs["IsHealthy"])
             .Build());
 
+        // - - - - - RESTING - - - - -
+
         actions.Add(new GAgentAction.Builder("MoveToRestingPosition")
             .WithStrategy(new FollowStrategy(navMeshAgent, () => restingPosition.position, animationController))
             .AddEffect(beliefs["AtRestingPosition"])
@@ -106,6 +122,33 @@ public class GAgent : MonoBehaviour
             .AddPrecondition(beliefs["AtRestingPosition"])
             .AddEffect(beliefs["IsRested"])
             .Build());
+
+
+        // - - - - - MINING - - - - -
+
+        actions.Add(new GAgentAction.Builder("MoveToDeposit")
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => depositOnePosition.position, animationController))
+            .AddEffect(beliefs["AtDepositOnePosition"])
+            .Build());
+
+        actions.Add(new GAgentAction.Builder("Mine")
+            .WithStrategy(new MineStrategy(5, agentStats, animationController))
+            .AddPrecondition(beliefs["AtDepositOnePosition"])
+            .AddEffect(beliefs["HasOre"])
+            .AddEffect(beliefs["HasFullOre"])
+            .Build());
+
+        // actions.Add(new GAgentAction.Builder("MoveToDeposit")
+        //     .WithStrategy(new FollowStrategy(navMeshAgent, () => beliefs['DepositInFollowRange'].Location, animationController))
+        //     .AddPrecondition(beliefs["DepositInFollowRange"])
+        //     .AddEffect(beliefs["DepositInInteractionRange"])
+        //     .Build());
+
+        // actions.Add(new GAgentAction.Builder("Mine")
+        //     .WithStrategy(new MineStrategy(3, agentStats, animationController))
+        //     .AddPrecondition(beliefs["DepositInInteractionRange"])
+        //     .AddEffect(beliefs["HasOre"])
+        //     .Build());
     }
 
     void SetupGoals() {
@@ -122,13 +165,18 @@ public class GAgent : MonoBehaviour
             .Build());
 
         goals.Add(new GAgentGoal.Builder("KeepHealthUp")
-            .WithPriority(3)
+            .WithPriority(10)
             .WithDesiredEffect(beliefs["IsHealthy"])
             .Build());
 
         goals.Add(new GAgentGoal.Builder("KeepStaminaUp")
-            .WithPriority(2)
+            .WithPriority(5)
             .WithDesiredEffect(beliefs["IsRested"])
+            .Build());
+
+        goals.Add(new GAgentGoal.Builder("CollectOre")
+            .WithPriority(3)
+            .WithDesiredEffect(beliefs["HasFullOre"])
             .Build());
     }
 
@@ -136,10 +184,10 @@ public class GAgent : MonoBehaviour
     void OnDisable() => followSensor.TargetChanged -= OnTargetChanged;
 
     void OnTargetChanged() {
-        Debug.Log("Target changed, clearing current goal and action");
+        Debug.Log("Target changed");
         // Force the planner to re-evaluate the plan
-        CurrentGoal = null;
-        CurrentAction = null;
+        // CurrentGoal = null;
+        // CurrentAction = null;
     }
 
     void Update() {

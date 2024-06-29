@@ -74,7 +74,7 @@
      <Compile Include="Assets\_Risk\Code\GOAP\GAgentBelief.cs" />
      <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\PlayerMovement.cs" />
      <Compile Include="Assets\_Risk\Code\NewBehaviourScript.cs" />
-     <Compile Include="Assets\_Risk\Code\AI\Beacon.cs" />
+     <Compile Include="Assets\_Risk\Code\GOAP\Beacon.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\RandomGenerator.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentInteractionSensor.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentUIController.cs" />

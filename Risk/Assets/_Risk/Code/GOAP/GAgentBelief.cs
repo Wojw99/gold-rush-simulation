@@ -59,6 +59,7 @@ public class GAgentBelief
     }
 
     public bool Evaluate() => condition();
+    public Vector3 GetObservedLocation() => observedLocation();
 
     public class Builder {
         readonly GAgentBelief belief;

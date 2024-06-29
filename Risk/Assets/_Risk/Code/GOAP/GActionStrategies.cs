@@ -23,6 +23,37 @@ public interface IActionStrategy
     }
 }
 
+public class MineStrategy : IActionStrategy
+{
+    public bool CanPerform => true;
+    public bool Completed { get; private set; }
+
+    readonly CountdownTimer timer;
+
+    public MineStrategy(float duration, AgentStats agentStats, AnimationController animationController) {
+        timer = new CountdownTimer(duration);
+        timer.OnTimerStart += () => {
+            agentStats.StartDrawingStamina();
+            Completed = false;
+            animationController.StartAnimating(AnimType.IsDigging.ToString());
+        };
+        timer.OnTimerStop += () => {
+            agentStats.StopDrawingStamina();
+            agentStats.Ore += 10;
+            Completed = true;
+            animationController.StopAnimating();
+        };
+    }
+
+    public void Start() {
+        timer.Start();
+    }
+
+    public void Update(float deltaTime) {
+        timer.Tick(deltaTime);
+    }
+}
+
 public class RestStrategy : IActionStrategy
 {
     public bool CanPerform => true;
