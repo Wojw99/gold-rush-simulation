@@ -42,10 +42,10 @@ public class MineStrategy : IActionStrategy
         };
         timer.OnTimerStop += () => {
             agentStats.StopDrawingStamina();
-            agentStats.Ore += 10;
             Completed = true;
             animationController.StopAnimating();
             if(sensor.Target != null && sensor.Target.TryGetComponent(out Beacon beacon)) {
+                agentStats.Ore += 10;
                 beacon.ClearOccupierId();
                 beacon.Destroy();
             }

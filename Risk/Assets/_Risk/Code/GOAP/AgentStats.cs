@@ -24,7 +24,7 @@ public class AgentStats : MonoBehaviour
     public event Action StatsChanged;
 
     void Awake() {
-        health = maxHealth;
+        health = 10; // maxHealth;
         stamina = maxStamina;
         ore = 0;
     }

@@ -80,6 +80,7 @@
      <Compile Include="Assets\_Risk\Code\Scripts\AgentUIController.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\Spawner.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AnimationController.cs" />
+     <Compile Include="Assets\_Risk\Code\GOAP\InteractionTarget.cs" />
      <Compile Include="Assets\_Risk\Code\AI\AgentSensor.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\BeaconVisible.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\UIBottomMenuBuilder.cs" />

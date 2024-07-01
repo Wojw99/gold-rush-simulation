@@ -13,12 +13,6 @@ public class GAgent : MonoBehaviour
     [SerializeField] Sensor followSensor;
     [SerializeField] Sensor interactionSensor;
 
-    [Header("Known Locations")]
-    [SerializeField] Transform restingPosition;
-    [SerializeField] Transform foodShack;
-    [SerializeField] Transform depositOnePosition;
-    [SerializeField] Transform depositTwoPosition;
-
     NavMeshAgent navMeshAgent;
     AnimationController animationController;
     Rigidbody rb;
@@ -26,7 +20,7 @@ public class GAgent : MonoBehaviour
 
     GameObject target;
     Vector3 destination;
-    // InteractionTarget interactionTarget;
+    InteractionTarget interactionTarget;
 
     GAgentGoal lastGoal; 
     GAgentGoal _currentGoal;
@@ -68,11 +62,16 @@ public class GAgent : MonoBehaviour
         factory.AddBelief("HasOre", () => agentStats.Ore > 0);
         factory.AddBelief("HasFullOre", () => agentStats.Ore >= agentStats.MaxOre);
 
-        factory.AddLocationBelief("AtRestingPosition", 3f, restingPosition);
-        factory.AddLocationBelief("AtFoodShack", 3f, foodShack);
-
         factory.AddBelief("DepositInFollowRange", () => followSensor.IsTargetOfType(BeaconType.DEPOSIT));
         factory.AddBelief("DepositInInteractionRange", () => interactionSensor.IsTargetOfType(BeaconType.DEPOSIT));
+
+        factory.AddBelief("RestInFollowRange", () => followSensor.IsTargetOfType(BeaconType.REST));
+        factory.AddBelief("RestInInteractionRange", () => interactionSensor.IsTargetOfType(BeaconType.REST));
+        
+        factory.AddBelief("HealInFollowRange", () => followSensor.IsTargetOfType(BeaconType.HEAL));
+        factory.AddBelief("HealInInteractionRange", () => interactionSensor.IsTargetOfType(BeaconType.HEAL));
+
+
         factory.AddBelief("DepositFollowIsNotOccupied", () => DepositIsNotOccupied(followSensor, agentStats));
         factory.AddBelief("DepositInteractionIsNotOccupied", () => DepositIsNotOccupied(interactionSensor, agentStats));
     }
@@ -96,44 +95,51 @@ public class GAgent : MonoBehaviour
 
         // - - - - - HEALING - - - - -
 
-        actions.Add(new GAgentAction.Builder("MoveToEatingPosition")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => foodShack.position, animationController))
-            .AddEffect(beliefs["AtFoodShack"])
+        actions.Add(new GAgentAction.Builder("SearchForHeal")
+            .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController))
+            .AddEffect(beliefs["HealInFollowRange"])
             .Build());
 
-        actions.Add(new GAgentAction.Builder("Eat")
+        actions.Add(new GAgentAction.Builder("MoveToHealingPosition")
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.Target.transform.position, animationController))
+            .AddPrecondition(beliefs["HealInFollowRange"])
+            .AddEffect(beliefs["HealInInteractionRange"])
+            .Build());
+
+        actions.Add(new GAgentAction.Builder("Heal")
             .WithStrategy(new HealStrategy(3, agentStats, animationController))
-            .AddPrecondition(beliefs["AtFoodShack"])
+            .AddPrecondition(beliefs["HealInInteractionRange"])
             .AddEffect(beliefs["IsHealthy"])
             .Build());
 
         // - - - - - RESTING - - - - -
 
+        actions.Add(new GAgentAction.Builder("SearchForRest")
+            .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController))
+            .AddEffect(beliefs["RestInFollowRange"])
+            .Build());
+
+        // TODO: Consider saving the target in the InteractionTarget object when the target is first time spotted. In this point Target in follow sensor can be not the same as in belief.
         actions.Add(new GAgentAction.Builder("MoveToRestingPosition")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => restingPosition.position, animationController))
-            .AddEffect(beliefs["AtRestingPosition"])
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.Target.transform.position, animationController))
+            .AddPrecondition(beliefs["RestInFollowRange"])
+            .AddEffect(beliefs["RestInInteractionRange"])
             .Build());
 
         actions.Add(new GAgentAction.Builder("Rest")
             .WithStrategy(new RestStrategy(3, agentStats, animationController))
-            .AddPrecondition(beliefs["AtRestingPosition"])
+            .AddPrecondition(beliefs["RestInInteractionRange"])
             .AddEffect(beliefs["IsRested"])
             .Build());
 
 
         // - - - - - MINING - - - - -
 
-        // actions.Add(new GAgentAction.Builder("MoveToDeposit")
-        //     .WithStrategy(new FollowStrategy(navMeshAgent, () => depositOnePosition.position, animationController))
-        //     .AddEffect(beliefs["AtDepositOnePosition"])
-        //     .Build());
-
-        // actions.Add(new GAgentAction.Builder("Mine")
-        //     .WithStrategy(new MineStrategy(5, agentStats, animationController))
-        //     .AddPrecondition(beliefs["AtDepositOnePosition"])
-        //     .AddEffect(beliefs["HasOre"])
-        //     .AddEffect(beliefs["HasFullOre"])
-        //     .Build());
+        actions.Add(new GAgentAction.Builder("SearchForDeposit")
+            .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController))
+            .AddPrecondition(beliefs["IsRested"])
+            .AddEffect(beliefs["DepositInFollowRange"])
+            .Build());
 
         actions.Add(new GAgentAction.Builder("MoveToDeposit")
             .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.Target.transform.position, animationController))
