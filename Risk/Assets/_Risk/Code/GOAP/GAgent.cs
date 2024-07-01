@@ -26,6 +26,7 @@ public class GAgent : MonoBehaviour
 
     GameObject target;
     Vector3 destination;
+    // InteractionTarget interactionTarget;
 
     GAgentGoal lastGoal; 
     GAgentGoal _currentGoal;
@@ -63,25 +64,21 @@ public class GAgent : MonoBehaviour
         factory.AddBelief("IsDying", () => agentStats.Health < 30);
         factory.AddBelief("IsHealthy", () => agentStats.Health >= 50);
         factory.AddBelief("IsExhausted", () => agentStats.Stamina < 20);
-        factory.AddBelief("IsRested", () => agentStats.Stamina >= 50);
+        factory.AddBelief("IsRested", () => agentStats.Stamina >= 30);
         factory.AddBelief("HasOre", () => agentStats.Ore > 0);
         factory.AddBelief("HasFullOre", () => agentStats.Ore >= agentStats.MaxOre);
 
         factory.AddLocationBelief("AtRestingPosition", 3f, restingPosition);
         factory.AddLocationBelief("AtFoodShack", 3f, foodShack);
-        // factory.AddLocationBelief("AtDepositOnePosition", 3f, depositOnePosition);
-
-        // factory.AddLocationBelief("DepositInInteractionRange", 3f, depositTwoPosition);
-
 
         factory.AddBelief("DepositInFollowRange", () => followSensor.IsTargetOfType(BeaconType.DEPOSIT));
         factory.AddBelief("DepositInInteractionRange", () => interactionSensor.IsTargetOfType(BeaconType.DEPOSIT));
+        factory.AddBelief("DepositFollowIsNotOccupied", () => DepositIsNotOccupied(followSensor, agentStats));
+        factory.AddBelief("DepositInteractionIsNotOccupied", () => DepositIsNotOccupied(interactionSensor, agentStats));
+    }
 
-        // factory.AddSensorBelief("PlayerInFollowRange", followSensor);
-        // factory.AddSensorBelief("PlayerInInteracionRange", interactionSensor);
-
-        // factory.AddSensorBelief("DepositInFollowRange", BeaconType.DEPOSIT, followSensor);
-        // factory.AddSensorBelief("DepositInInteracionRange", BeaconType.DEPOSIT, interactionSensor);
+    bool DepositIsNotOccupied(Sensor sensor, AgentStats agentStats) {
+        return sensor.IsTargetOfType(BeaconType.DEPOSIT) && !sensor.Target.GetComponent<Beacon>().IsOccupiedByStranger(agentStats.ID);
     }
 
     void SetupActions() {
@@ -140,12 +137,13 @@ public class GAgent : MonoBehaviour
 
         actions.Add(new GAgentAction.Builder("MoveToDeposit")
             .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.Target.transform.position, animationController))
+            .AddPrecondition(beliefs["IsRested"])
             .AddPrecondition(beliefs["DepositInFollowRange"])
             .AddEffect(beliefs["DepositInInteractionRange"])
             .Build());
 
         actions.Add(new GAgentAction.Builder("Mine")
-            .WithStrategy(new MineStrategy(5, agentStats, animationController))
+            .WithStrategy(new MineStrategy(5, agentStats, animationController, interactionSensor))
             .AddPrecondition(beliefs["DepositInInteractionRange"])
             .AddEffect(beliefs["HasOre"])
             .AddEffect(beliefs["HasFullOre"])
@@ -202,11 +200,6 @@ public class GAgent : MonoBehaviour
 
                 CurrentGoal = actionPlan.AgentGoal;
                 Debug.Log($"Goal: {CurrentGoal.Name} with {actionPlan.Actions.Count} actions in plan");
-                foreach(var belief in beliefs.Values) {
-                    if(belief.Evaluate()) {
-                        Debug.Log($"Belief: {belief.Name} is true");
-                    }
-                }
                 CurrentAction = actionPlan.Actions.Pop();
                 Debug.Log($"Popped action: {CurrentAction.Name}");
 

@@ -12,6 +12,7 @@ public class AgentStats : MonoBehaviour
     float health = 100;
     float stamina = 100;
     float ore = 100;
+    int id = CalculateId();
 
     bool isFillingHealth = false;
     bool isFillingStamina = false;
@@ -118,8 +119,15 @@ public class AgentStats : MonoBehaviour
     public float MaxHealth => maxHealth;
     public float MaxStamina => maxStamina;
     public float MaxOre => maxOre;
+    public int ID => id;
 
     void OnDestroy() {
         StatsChanged = null;
+    }
+
+    private static int _maxId = -1;
+    public static int CalculateId() {
+        _maxId++;
+        return _maxId;
     }
 }

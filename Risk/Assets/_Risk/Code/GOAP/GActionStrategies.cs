@@ -30,18 +30,25 @@ public class MineStrategy : IActionStrategy
 
     readonly CountdownTimer timer;
 
-    public MineStrategy(float duration, AgentStats agentStats, AnimationController animationController) {
+    public MineStrategy(float duration, AgentStats agentStats, AnimationController animationController, Sensor sensor) {
         timer = new CountdownTimer(duration);
         timer.OnTimerStart += () => {
             agentStats.StartDrawingStamina();
             Completed = false;
             animationController.StartAnimating(AnimType.IsDigging.ToString());
+            if(sensor.Target != null && sensor.Target.TryGetComponent(out Beacon beacon)) {
+                beacon.AddOccupierId(agentStats.ID);
+            }
         };
         timer.OnTimerStop += () => {
             agentStats.StopDrawingStamina();
             agentStats.Ore += 10;
             Completed = true;
             animationController.StopAnimating();
+            if(sensor.Target != null && sensor.Target.TryGetComponent(out Beacon beacon)) {
+                beacon.ClearOccupierId();
+                beacon.Destroy();
+            }
         };
     }
 
@@ -51,6 +58,10 @@ public class MineStrategy : IActionStrategy
 
     public void Update(float deltaTime) {
         timer.Tick(deltaTime);
+    }
+
+    public void Stop() {
+
     }
 }
 

@@ -42,11 +42,9 @@ public class Sensor : MonoBehaviour
         timer.Tick(Time.deltaTime);
     }
 
-    // TODO: Add a way to check not only the player, but also other agents.
     void OnTriggerEnter(Collider other) {
         if(other.TryGetComponent(out Beacon beacon)) {
             UpdateTargetPosition(beacon.gameObject);
-            Debug.Log("Target in range: " + beacon.name);
         }
     }
 

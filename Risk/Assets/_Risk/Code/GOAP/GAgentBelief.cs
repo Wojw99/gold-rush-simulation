@@ -21,6 +21,13 @@ public class BeliefFactory {
             .Build());
     }
 
+    public void AddTargetBelief(string key, Func<bool> condition, GameObject target) {
+        beliefs.Add(key, new GAgentBelief.Builder(key)
+            .WithCondition(condition)
+            .WithTarget(target)
+            .Build());
+    }
+
     public void AddSensorBelief(string key, Sensor sensor) {
         beliefs.Add(key, new GAgentBelief.Builder(key)
             .WithCondition(() => sensor.IsTargetInRange)
@@ -53,6 +60,7 @@ public class GAgentBelief
 
     Func<bool> condition = () => false;
     Func<Vector3> observedLocation = () => Vector3.zero;
+    GameObject observedTarget = null;
 
     GAgentBelief(string name) {
         Name = name;
@@ -60,6 +68,7 @@ public class GAgentBelief
 
     public bool Evaluate() => condition();
     public Vector3 GetObservedLocation() => observedLocation();
+    public GameObject ObservedTarget => observedTarget;
 
     public class Builder {
         readonly GAgentBelief belief;
@@ -75,6 +84,11 @@ public class GAgentBelief
 
         public Builder WithLocation(Func<Vector3> observedLocation) {
             belief.observedLocation = observedLocation;
+            return this;
+        }
+
+        public Builder WithTarget(GameObject observedTarget) {
+            belief.observedTarget = observedTarget;
             return this;
         }
 

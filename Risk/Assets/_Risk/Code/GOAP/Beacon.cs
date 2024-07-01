@@ -12,6 +12,20 @@ public class Beacon : MonoBehaviour
     public Vector3 Position => transform.position;
     public bool IsActive => gameObject.activeSelf;
 
+    int occupierId = -1;
+
+    public void AddOccupierId(int id) {
+        occupierId = id;
+    }
+
+    public void ClearOccupierId() {
+        occupierId = -1;
+    }
+
+    public bool IsOccupiedByStranger(int agentId) {
+        return occupierId != -1 && occupierId != agentId;
+    }
+
     public void Destroy() {
         Destroy(gameObject);
     }
@@ -20,6 +34,8 @@ public class Beacon : MonoBehaviour
         BeaconDestroyed?.Invoke(this);
         BeaconDestroyed = null;
     }
+
+    public int OccupierId => occupierId; 
 }
 
 public enum BeaconType {
