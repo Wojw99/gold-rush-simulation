@@ -13,6 +13,7 @@ public class AgentStats : MonoBehaviour
     float stamina = 100;
     float ore = 100;
     int id = CalculateId();
+    string name = "James";
 
     bool isFillingHealth = false;
     bool isFillingStamina = false;
@@ -27,6 +28,7 @@ public class AgentStats : MonoBehaviour
         health = maxHealth; 
         stamina = maxStamina;
         ore = 0;
+        name = RandomGenerator.Instance.GenerateName();
     }
 
     void Start() {
@@ -120,6 +122,7 @@ public class AgentStats : MonoBehaviour
     public float MaxStamina => maxStamina;
     public float MaxOre => maxOre;
     public int ID => id;
+    public string Name => name;
 
     void OnDestroy() {
         StatsChanged = null;

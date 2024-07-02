@@ -5,7 +5,7 @@ using UnityEngine;
 public class RandomGenerator
 {
     private readonly string[] prefixes = new string[] { "Jam", "Han", "Solo", "Rom", "Ste" };
-    private readonly string[] subfixes = new string[] { "es", "son", "mer", "son", "ve" };
+    private readonly string[] subfixes = new string[] { "es", "son", "mer", "son", "ve", "tar", "su", "erik", "som", "mos" };
     private readonly int seed = 1111;
 
     public string GenerateName()
