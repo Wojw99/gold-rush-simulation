@@ -62,23 +62,23 @@ public class GAgent : MonoBehaviour
         factory.AddBelief("HasOre", () => agentStats.Ore > 0);
         factory.AddBelief("HasFullOre", () => agentStats.Ore >= agentStats.MaxOre);
 
-        factory.AddBelief("DepositInFollowRange", () => followSensor.IsTargetOfType(BeaconType.DEPOSIT));
-        factory.AddBelief("DepositInInteractionRange", () => interactionSensor.IsTargetOfType(BeaconType.DEPOSIT));
+        factory.AddBelief("DepositInFollowRange", () => followSensor.ContainsTargetOfType(BeaconType.DEPOSIT));
+        factory.AddBelief("DepositInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.DEPOSIT));
 
-        factory.AddBelief("RestInFollowRange", () => followSensor.IsTargetOfType(BeaconType.REST));
-        factory.AddBelief("RestInInteractionRange", () => interactionSensor.IsTargetOfType(BeaconType.REST));
+        factory.AddBelief("RestInFollowRange", () => followSensor.ContainsTargetOfType(BeaconType.REST));
+        factory.AddBelief("RestInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.REST));
         
-        factory.AddBelief("HealInFollowRange", () => followSensor.IsTargetOfType(BeaconType.HEAL));
-        factory.AddBelief("HealInInteractionRange", () => interactionSensor.IsTargetOfType(BeaconType.HEAL));
+        factory.AddBelief("HealInFollowRange", () => followSensor.ContainsTargetOfType(BeaconType.HEAL));
+        factory.AddBelief("HealInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.HEAL));
 
 
-        factory.AddBelief("DepositFollowIsNotOccupied", () => DepositIsNotOccupied(followSensor, agentStats));
-        factory.AddBelief("DepositInteractionIsNotOccupied", () => DepositIsNotOccupied(interactionSensor, agentStats));
+        // factory.AddBelief("DepositFollowIsNotOccupied", () => DepositIsNotOccupied(followSensor, agentStats));
+        // factory.AddBelief("DepositInteractionIsNotOccupied", () => DepositIsNotOccupied(interactionSensor, agentStats));
     }
 
-    bool DepositIsNotOccupied(Sensor sensor, AgentStats agentStats) {
-        return sensor.IsTargetOfType(BeaconType.DEPOSIT) && !sensor.Target.GetComponent<Beacon>().IsOccupiedByStranger(agentStats.ID);
-    }
+    // bool DepositIsNotOccupied(Sensor sensor, AgentStats agentStats) {
+    //     return sensor.ContainsTargetOfType(BeaconType.DEPOSIT) && !sensor.Target.GetComponent<Beacon>().IsOccupiedByStranger(agentStats.ID);
+    // }
 
     void SetupActions() {
         actions = new HashSet<GAgentAction>();
@@ -101,7 +101,7 @@ public class GAgent : MonoBehaviour
             .Build());
 
         actions.Add(new GAgentAction.Builder("MoveToHealingPosition")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.Target.transform.position, animationController))
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.GetNearestTarget(BeaconType.HEAL).transform.position, animationController))
             .AddPrecondition(beliefs["HealInFollowRange"])
             .AddEffect(beliefs["HealInInteractionRange"])
             .Build());
@@ -121,7 +121,7 @@ public class GAgent : MonoBehaviour
 
         // TODO: Consider saving the target in the InteractionTarget object when the target is first time spotted. In this point Target in follow sensor can be not the same as in belief.
         actions.Add(new GAgentAction.Builder("MoveToRestingPosition")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.Target.transform.position, animationController))
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.GetNearestTarget(BeaconType.REST).transform.position, animationController))
             .AddPrecondition(beliefs["RestInFollowRange"])
             .AddEffect(beliefs["RestInInteractionRange"])
             .Build());
@@ -142,7 +142,7 @@ public class GAgent : MonoBehaviour
             .Build());
 
         actions.Add(new GAgentAction.Builder("MoveToDeposit")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.Target.transform.position, animationController))
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.GetNearestTarget(BeaconType.DEPOSIT).transform.position, animationController))
             .AddPrecondition(beliefs["IsRested"])
             .AddPrecondition(beliefs["DepositInFollowRange"])
             .AddEffect(beliefs["DepositInInteractionRange"])
@@ -184,9 +184,6 @@ public class GAgent : MonoBehaviour
             .WithDesiredEffect(beliefs["HasFullOre"])
             .Build());
     }
-
-    void OnEnable() => followSensor.TargetChanged += OnTargetChanged;
-    void OnDisable() => followSensor.TargetChanged -= OnTargetChanged;
 
     void OnTargetChanged() {
         Debug.Log("Target changed");

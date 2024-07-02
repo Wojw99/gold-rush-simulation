@@ -36,7 +36,8 @@ public class MineStrategy : IActionStrategy
             agentStats.StartDrawingStamina();
             Completed = false;
             animationController.StartAnimating(AnimType.IsDigging.ToString());
-            if(sensor.Target != null && sensor.Target.TryGetComponent(out Beacon beacon)) {
+            
+            if(sensor.TryGetBeaconOfType(BeaconType.DEPOSIT, out Beacon beacon)){
                 beacon.AddOccupierId(agentStats.ID);
             }
         };
@@ -44,7 +45,8 @@ public class MineStrategy : IActionStrategy
             agentStats.StopDrawingStamina();
             Completed = true;
             animationController.StopAnimating();
-            if(sensor.Target != null && sensor.Target.TryGetComponent(out Beacon beacon)) {
+
+            if(sensor.TryGetBeaconOfType(BeaconType.DEPOSIT, out Beacon beacon)){
                 agentStats.Ore += 10;
                 beacon.ClearOccupierId();
                 beacon.Destroy();

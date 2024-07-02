@@ -8,20 +8,11 @@ using UnityUtils;
 public class Sensor : MonoBehaviour
 {
     [SerializeField] private float detectionRange = 5f;
-    [SerializeField] private float evaluationInterval = 1f;
+    [SerializeField] private float evaluationInterval = 0.3f;
 
     SphereCollider detectionSphere;
-
-    /// <summary>
-    /// Event triggered when there is new target or the old one is moved.
-    /// </summary>
-    public event Action TargetChanged = delegate { };
-    public Vector3 TargetPosition => target ? target.transform.position : Vector3.zero;
-    public bool IsTargetInRange => TargetPosition != Vector3.zero;
-
-    GameObject target;
-    Vector3 lastKnownPosition;
     CountdownTimer timer;
+    List<TargetInfo> targets = new List<TargetInfo>();
 
     void Awake() {
         detectionSphere = GetComponent<SphereCollider>();
@@ -32,7 +23,7 @@ public class Sensor : MonoBehaviour
     void Start() {
         timer = new CountdownTimer(evaluationInterval);
         timer.OnTimerStop += () => {
-            UpdateTargetPosition(target.OrNull());
+            UpdateTargetList();
             timer.Start();
         };
         timer.Start();
@@ -44,35 +35,67 @@ public class Sensor : MonoBehaviour
 
     void OnTriggerEnter(Collider other) {
         if(other.TryGetComponent(out Beacon beacon)) {
-            UpdateTargetPosition(beacon.gameObject);
+            var targetInfo = new TargetInfo(beacon.gameObject, Vector3.Distance(transform.position, beacon.Position), beacon.BeaconType);
+            targets.Add(targetInfo);
+            beacon.BeaconDestroyed += OnBeaconDestroyed;
         }
+    }
+
+    void OnBeaconDestroyed(Beacon beacon) {
+        targets.RemoveAll(target => target.GameObject == beacon.gameObject);
     }
 
     void OnTriggerExit(Collider other) {
         if(other.TryGetComponent(out Beacon beacon)) {
-            UpdateTargetPosition(null);
+            targets.RemoveAll(target => target.GameObject == beacon.gameObject);
         }
     }
 
-    public bool IsTargetOfType(BeaconType beaconType) {
-        if(target != null && target.TryGetComponent(out Beacon beacon)) {
-            return beacon.BeaconType == beaconType;
-        }
-        return false;
+    public bool TryGetTargetOfType(BeaconType type, out GameObject target) {
+        var nearestTarget = GetNearestTarget(type);
+        target = nearestTarget;
+        return nearestTarget != null;
     }
 
-    void UpdateTargetPosition(GameObject target = null) {
-        this.target = target;
-        if(IsTargetInRange && (lastKnownPosition != TargetPosition || lastKnownPosition != Vector3.zero)) {
-            lastKnownPosition = TargetPosition;
-            TargetChanged.Invoke();
-        }
+    public bool TryGetBeaconOfType(BeaconType type, out Beacon beacon) {
+        var nearestTarget = GetNearestTarget(type);
+        beacon = nearestTarget?.GetComponent<Beacon>();
+        return beacon != null;
     }
 
-    public GameObject Target => target;
+    public bool ContainsTargetOfType(BeaconType type) {
+        return targets.Exists(target => target.BeaconType == type);
+    }
+
+    public GameObject GetNearestTarget(BeaconType type) {
+        targets.Sort((a, b) => a.Distance.CompareTo(b.Distance));
+        var nearestTarget = targets.Find(target => target.BeaconType == type);
+        return nearestTarget?.GameObject;
+    }
+
+    void UpdateTargetList() {
+        
+    }
 
     void OnDrawGizmos() {
-        Gizmos.color = IsTargetInRange ? Color.red : Color.green;
+        Gizmos.color = targets.Count > 0 ? Color.green : Color.gray;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
     }
+}
+
+
+public class TargetInfo {
+    GameObject gameObject;
+    float distance;
+    BeaconType beaconType;
+
+    public TargetInfo(GameObject gameObject, float distance, BeaconType beaconType) {
+        this.gameObject = gameObject;
+        this.distance = distance;
+        this.beaconType = beaconType;
+    }
+
+    public GameObject GameObject => gameObject;
+    public float Distance => distance;
+    public BeaconType BeaconType => beaconType;
 }

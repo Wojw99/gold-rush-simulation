@@ -28,10 +28,10 @@ public class BeliefFactory {
             .Build());
     }
 
-    public void AddSensorBelief(string key, Sensor sensor) {
+    public void AddSensorBelief(string key, Sensor sensor, BeaconType type) {
         beliefs.Add(key, new GAgentBelief.Builder(key)
-            .WithCondition(() => sensor.IsTargetInRange)
-            .WithLocation(() => sensor.TargetPosition)
+            .WithCondition(() => sensor.ContainsTargetOfType(type))
+            .WithLocation(() => sensor.GetNearestTarget(type).transform.position)
             .Build());
     }
 
