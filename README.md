@@ -144,5 +144,3 @@ public class MineStrategy : IActionStrategy
     }
 }
 ```
-
-### 3. Agent strategy example
