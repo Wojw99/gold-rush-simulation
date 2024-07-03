@@ -80,7 +80,7 @@ public class Sensor : MonoBehaviour
     }
 
     void UpdateTargetList() {
-        
+        // targets.RemoveAll(target => Vector3.Distance(transform.position, target.GameObject.transform.position) > detectionRange);
     }
 
     void OnDrawGizmos() {
