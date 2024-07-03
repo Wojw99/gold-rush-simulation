@@ -23,6 +23,42 @@ public interface IActionStrategy
     }
 }
 
+public class BuildStrategy : IActionStrategy
+{
+    public bool CanPerform => true;
+    public bool Completed { get; private set; }
+
+    readonly CountdownTimer timer;
+
+    public BuildStrategy(float duration, AgentStats agentStats, AnimationController animationController, Sensor sensor) {
+        timer = new CountdownTimer(duration);
+        timer.OnTimerStart += () => {
+            agentStats.StartDrawingStamina();
+            Completed = false;
+            animationController.StartAnimating(AnimType.IsDigging.ToString());
+        };
+        timer.OnTimerStop += () => {
+            agentStats.StopDrawingStamina();
+            Completed = true;
+            animationController.StopAnimating();
+
+            if(sensor.TryGetBuilding(out Building building)){
+                agentStats.Ore = 0;
+                building.ContinueBuilding();
+            }
+        };
+    }
+
+    public void Start() {
+        timer.Start();
+    }
+
+    public void Update(float deltaTime) {
+        timer.Tick(deltaTime);
+    }
+}
+
+
 public class MineStrategy : IActionStrategy
 {
     public bool CanPerform => true;
@@ -135,7 +171,7 @@ public class FollowStrategy : IActionStrategy
 
     public bool CanPerform => !Completed;
 
-    public bool Completed => navMeshAgent.remainingDistance <= 2f && !navMeshAgent.pathPending;
+    public bool Completed => navMeshAgent.remainingDistance <= 1.5f && !navMeshAgent.pathPending;
 
     public FollowStrategy(NavMeshAgent navMeshAgent, Func<Vector3> destination, AnimationController animationController) {
         this.navMeshAgent = navMeshAgent;

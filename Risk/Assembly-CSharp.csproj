@@ -68,6 +68,7 @@
      <Compile Include="Assets\_Risk\Code\GOAP\Sensor.cs" />
      <Compile Include="Assets\_Risk\Code\GOAP\GActionStrategies.cs" />
      <Compile Include="Assets\RTS_Camera\Scripts\RTS_Camera.cs" />
+     <Compile Include="Assets\_Risk\Code\HelperFunctions.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentVisionSensor.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\BeaconInteractible.cs" />
      <Compile Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Scripts\PT_Create_Prefab.cs" />
@@ -84,6 +85,7 @@
      <Compile Include="Assets\_Risk\Code\AI\AgentSensor.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\BeaconVisible.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\UIBottomMenuBuilder.cs" />
+     <Compile Include="Assets\_Risk\Code\GOAP\Building.cs" />
      <Compile Include="Assets\_Risk\Code\GOAP\AgentStats.cs" />
      <Compile Include="Assets\_Risk\Code\AI\AgentAction.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\AgentBrain2.cs" />

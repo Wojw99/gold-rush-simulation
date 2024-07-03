@@ -12,7 +12,7 @@ public class UIBottomMenuBuilder : MonoBehaviour
     private readonly float menuItemWidth = 65f;
 
     private void Start() {
-        PlayerInteraction.instance.PrefabsArrayChanged += OnPrefabsArrayChanged;
+        PlayerInteraction.instance.PrefabsSelectionChanged += OnPrefabsArrayChanged;
     }
 
     private void OnPrefabsArrayChanged(GameObject[] prefabsArray) {

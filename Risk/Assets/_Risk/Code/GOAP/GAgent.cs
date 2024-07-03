@@ -46,6 +46,7 @@ public class GAgent : MonoBehaviour
         SetupBeliefs();
         SetupActions();
         SetupGoals();
+        PlayerInteraction.instance.SelectionChanged += OnPlayerSelectionChanged;
     }
 
     void SetupBeliefs() {
@@ -70,7 +71,14 @@ public class GAgent : MonoBehaviour
         
         factory.AddBelief("HealInFollowRange", () => followSensor.ContainsTargetOfType(BeaconType.HEAL));
         factory.AddBelief("HealInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.HEAL));
+        
+        factory.AddBelief("BuildingInFollowRange", () => followSensor.ContainsTargetOfType(BeaconType.BUILDING));
+        factory.AddBelief("BuildingInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.BUILDING));
+        factory.AddBelief("BuildingIsComplete", () => interactionSensor.TryGetBuilding(out var building) && building.IsComplete);
 
+        factory.AddBelief("MarkerExists", () => PlayerInteraction.instance.GetMarkerPosition() != Vector3.zero);
+        factory.AddBelief("MarkerInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.MARKER));
+        factory.AddBelief("IsWaitingForOrders", () => false);
 
         // factory.AddBelief("DepositFollowIsNotOccupied", () => DepositIsNotOccupied(followSensor, agentStats));
         // factory.AddBelief("DepositInteractionIsNotOccupied", () => DepositIsNotOccupied(interactionSensor, agentStats));
@@ -154,6 +162,44 @@ public class GAgent : MonoBehaviour
             .AddEffect(beliefs["HasOre"])
             .AddEffect(beliefs["HasFullOre"])
             .Build());
+            
+        // - - - - - BUILDING - - - - -
+
+        actions.Add(new GAgentAction.Builder("SearchForBuilding")
+            .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController))
+            .AddPrecondition(beliefs["IsRested"])
+            .AddPrecondition(beliefs["HasFullOre"])
+            .AddEffect(beliefs["BuildingInFollowRange"])
+            .Build());
+
+        actions.Add(new GAgentAction.Builder("MoveToBuilding")
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.GetNearestTarget(BeaconType.BUILDING).transform.position, animationController))
+            .AddPrecondition(beliefs["IsRested"])
+            .AddPrecondition(beliefs["HasFullOre"])
+            .AddPrecondition(beliefs["BuildingInFollowRange"])
+            .AddEffect(beliefs["BuildingInInteractionRange"])
+            .Build());
+
+        actions.Add(new GAgentAction.Builder("Build")
+            .WithStrategy(new BuildStrategy(5, agentStats, animationController, interactionSensor))
+            .AddPrecondition(beliefs["BuildingInInteractionRange"])
+            .AddPrecondition(beliefs["HasFullOre"])
+            .AddEffect(beliefs["BuildingIsComplete"])
+            .Build());
+
+        // - - - - - PLAYER MARKER - - - - -
+
+        actions.Add(new GAgentAction.Builder("MoveToMarker")
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => PlayerInteraction.instance.GetMarkerPosition(), animationController))
+            .AddPrecondition(beliefs["MarkerExists"])
+            .AddEffect(beliefs["MarkerInInteractionRange"])
+            .Build());
+
+        actions.Add(new GAgentAction.Builder("WaitForOrders")
+            .WithStrategy(new IdleStrategy(3))
+            .AddPrecondition(beliefs["MarkerInInteractionRange"])
+            .AddEffect(beliefs["IsWaitingForOrders"])
+            .Build());
     }
 
     void SetupGoals() {
@@ -183,19 +229,38 @@ public class GAgent : MonoBehaviour
             .WithPriority(3)
             .WithDesiredEffect(beliefs["HasFullOre"])
             .Build());
+
+        goals.Add(new GAgentGoal.Builder("BuildBuildings")
+            .WithPriority(4)
+            .WithDesiredEffect(beliefs["BuildingIsComplete"])
+            .Build());
+
+        goals.Add(new GAgentGoal.Builder("FollowInstructions")
+            .WithPriority(99)
+            .WithDesiredEffect(beliefs["IsWaitingForOrders"])
+            .Build());
+    }
+
+    void OnPlayerSelectionChanged() {
+        // ReevaluatePlan();
+    }
+
+    void ReevaluatePlan() {
+        // Force the planner to re-evaluate the plan
+        CurrentGoal = null;
+        CurrentAction = null;
     }
 
     void OnTargetChanged() {
         Debug.Log("Target changed");
-        // Force the planner to re-evaluate the plan
-        // CurrentGoal = null;
-        // CurrentAction = null;
+        // ReevaluatePlan();
     }
 
     void Update() {
         // Update the plan and current action if there is one
         if(CurrentAction == null) {
             Debug.Log("Calculating any potential new plan");
+            LogCurrentAgentState();
             CalculatePlan();
 
             if(actionPlan != null && actionPlan.Actions.Count > 0) {
@@ -234,6 +299,17 @@ public class GAgent : MonoBehaviour
         }
     }
 
+    void LogCurrentAgentState() {
+        string beliefText = "";
+        foreach(var belief in beliefs) {
+            if(belief.Value.Evaluate()) {
+                beliefText += $"{belief.Key} ";
+            }
+        }
+        Debug.Log($"Beliefs: {beliefText}");
+        Debug.Log($"Health: {agentStats.Health}/{agentStats.MaxHealth}, Stamina: {agentStats.Stamina}/{agentStats.MaxStamina}, Ore: {agentStats.Ore}/{agentStats.MaxOre}");
+    }
+
     void CalculatePlan() {
         var priorityLevel = CurrentGoal?.Priority ?? 0;
         var goalsToConsider = goals;
@@ -268,5 +344,9 @@ public class GAgent : MonoBehaviour
             _currentAction = value;
             ActionChanged?.Invoke(_currentAction);
         }
+    }
+
+    private void OnDestroy() {
+        PlayerInteraction.instance.SelectionChanged -= OnPlayerSelectionChanged;
     }
 }

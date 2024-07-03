@@ -63,6 +63,12 @@ public class Sensor : MonoBehaviour
         return beacon != null;
     }
 
+    public bool TryGetBuilding(out Building building) {
+        var nearestTarget = GetNearestTarget(BeaconType.BUILDING);
+        building = nearestTarget?.GetComponent<Building>();
+        return building != null;
+    }
+
     public bool ContainsTargetOfType(BeaconType type) {
         return targets.Exists(target => target.BeaconType == type);
     }

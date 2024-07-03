@@ -19,12 +19,14 @@ public class AgentUIController : MonoBehaviour
     GAgent gAgent;
     AgentStats agentStats;
 
-    void Start() {
+    void Awake() {
         canvas = GetComponent<Canvas>();
         mainCamera = Camera.main;
         agentStats = GetComponentInParent<AgentStats>();
         gAgent = GetComponentInParent<GAgent>();
+    }
 
+    void Start() {
         gAgent.GoalChanged += OnGoalChanged;
         gAgent.ActionChanged += OnActionChanged;
         agentStats.StatsChanged += OnStatsChanged;
@@ -33,7 +35,7 @@ public class AgentUIController : MonoBehaviour
     }
 
     void Update() {
-        canvas.transform.rotation = GetLookAtCameraRotation();
+        canvas.transform.rotation = HelperFunctions.Instance.GetLookAtCameraRotation(transform, mainCamera);
     }
 
     void Initialize() {
@@ -41,11 +43,6 @@ public class AgentUIController : MonoBehaviour
         OnGoalChanged(gAgent.CurrentGoal);
         OnActionChanged(gAgent.CurrentAction);
         OnStatsChanged();
-    }
-
-    Quaternion GetLookAtCameraRotation() {
-        var newVector = transform.position - mainCamera.transform.position;
-        return Quaternion.LookRotation(new Vector3(0f, newVector.y, newVector.z));
     }
 
     void OnStatsChanged() {

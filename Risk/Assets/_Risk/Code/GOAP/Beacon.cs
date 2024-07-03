@@ -44,4 +44,6 @@ public enum BeaconType {
     REST,
     AGENT,
     DAMAGE,
+    BUILDING,
+    MARKER
 }

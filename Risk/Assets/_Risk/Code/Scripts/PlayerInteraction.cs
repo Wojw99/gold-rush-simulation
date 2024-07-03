@@ -14,120 +14,131 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     private PlayerInteraction() {
-
+        
     }
 
     #endregion
 
-    [SerializeField] private Camera mainCamera;
-    [SerializeField] private GameObject fancySpherePrefab;
-    [SerializeField] private GameObject[] prefabsArray = new GameObject[10];
-    [SerializeField] private int selectedPrefabIndex = -1;
+    [SerializeField] Camera mainCamera;
+    [SerializeField] GameObject selectionPrefab;
+    [SerializeField] GameObject[] prefabsArray = new GameObject[10];
+    
+    int _selectedPrefabIndex = -1;
+    GameObject _selectedAgent = null;
+    GameObject selectionMarker;
 
-    private GameObject selectedAgent = null;
-
-    public event Action<GameObject[]> PrefabsArrayChanged;
-
-    private void Start() {
-        InitializeSelectedPrefabIndex();
+    void Start() {
+        SelectedPrefabIndex = -1;
     }
 
-    private void Update() {
-        ChangeSelectedIndexOnInput();
-        SpawnPrefabOnInput();
-        SelectAgentOnInput();
-        OrderAgentMovement();
+    void Update() {
+        ChangeSelectedPrefabIndex();
+        SpawnPrefab();
+        SelectPosition();
+        SelectAgent();
         ClearSelection();
     }
 
-    private void ClearSelection () {
+    void ClearSelection () {
         if(Input.GetKeyDown(KeyCode.Escape)) {
-            selectedPrefabIndex = -1;
-            PrefabsArrayChanged?.Invoke(prefabsArray);
+            SelectedPrefabIndex = -1;
+            SelectedAgent = null;
+            ClearSelectionMarker();
         }
     }
 
-    private void OrderAgentMovement() {
-        if (selectedPrefabIndex != -1) return;
-        if (selectedAgent != null && Input.GetMouseButtonDown(1)) {
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit)) {
-                var agentInteraction = selectedAgent.GetComponent<AgentInteractionSensor>();
-                var destination = new Vector3(hit.point.x, hit.point.y, hit.point.z);
-                // spawn fancy sphere at collider position
-                var fancySphere = Instantiate(fancySpherePrefab, destination, Quaternion.identity);
-                agentInteraction.OnPlayerOrder(fancySphere);
-            }
+    void SelectPosition() {
+        if(SelectedPrefabIndex != -1 || SelectedAgent == null) return;
+        if(Input.GetMouseButtonDown(0)) {
+            var mouseGroundPosition = GetMouseGroundPosition();
+            ClearSelectionMarker();
+            selectionMarker = Instantiate(selectionPrefab, mouseGroundPosition, Quaternion.identity);
         }
     }
 
-    private void SelectAgentOnInput() {
-        if (selectedPrefabIndex != -1) return;
+    void SelectAgent() {
+        if (SelectedPrefabIndex != -1) return;
         if (Input.GetMouseButtonDown(0)) {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit)) {
-                var agentInteraction = hit.collider.GetComponent<AgentInteractionSensor>();
-                if (agentInteraction != null) {
-                    agentInteraction.OnPlayerSelect();
-
-                    if (selectedAgent != null) {
-                        selectedAgent.GetComponent<AgentInteractionSensor>().OnPlayerDeselect();
-                    }
-
-                    selectedAgent = hit.collider.gameObject;
-                } else {
-                    if (selectedAgent != null) {
-                        selectedAgent.GetComponent<AgentInteractionSensor>().OnPlayerDeselect();
-                        selectedAgent = null;
-                    }
+            var layerMask = LayerMask.GetMask("Agent");
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask)) {
+                var agent = hit.collider.gameObject;
+                if(agent.TryGetComponent(out AgentStats agentStats)) {
+                    SelectedAgent = agent;
+                    Debug.Log("Selected agent: " + agentStats.Name);
                 }
             }
         }
     }
 
-    private void InitializeSelectedPrefabIndex() {
-        selectedPrefabIndex = -1;
-        PrefabsArrayChanged?.Invoke(prefabsArray);
+    void ClearSelectionMarker() {
+        if (selectionMarker != null) {
+            Destroy(selectionMarker);
+        }
     }
 
-    private Vector3 GetMouseGroundPosition() {
+    Vector3 GetMouseGroundPosition() {
         var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit)) {
-            var groundPosition = 0f;
-            var mousePosition = hit.point;
-            mousePosition.y = groundPosition;
-            return mousePosition;
+        var layerMask = LayerMask.GetMask("Terrain");
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask)) {
+            return hit.point;
         }
         return Input.mousePosition;
     }
 
-    private void SpawnPrefabOnInput() {
-        if(selectedPrefabIndex == -1) {
+    void SpawnPrefab() {
+        if(SelectedPrefabIndex == -1) {
             return;
         }
         if (Input.GetMouseButtonDown(0)) {
             var mouseGroundPosition = GetMouseGroundPosition();
             var spawnPosition = mouseGroundPosition + Vector3.up * 0.01f;
-            spawnPosition.y = 0.01f;
-            var prefab = prefabsArray[selectedPrefabIndex];
+            var prefab = prefabsArray[SelectedPrefabIndex];
             Instantiate(prefab, spawnPosition, Quaternion.identity);
         }
     }
 
-    private void ChangeSelectedIndexOnInput() {
+    void ChangeSelectedPrefabIndex() {
         for (int i = 0; i < prefabsArray.Length; i++) {
             if (Input.GetKeyDown(i.ToString())) {
-                selectedPrefabIndex = i;
-                PrefabsArrayChanged?.Invoke(prefabsArray);
+                SelectedPrefabIndex = i;
             }
         }
     }
+
+    public Vector3 GetMarkerPosition() {
+        if(selectionMarker == null) {
+            return Vector3.zero;
+        }
+        return selectionMarker.transform.position;
+    }
+
+    public event Action<GameObject[]> PrefabsSelectionChanged;
+
+    public event Action SelectionChanged;
 
     public GameObject[] PrefabsArray {
         get => prefabsArray;
     }
 
     public int SelectedPrefabIndex {
-        get => selectedPrefabIndex;
+        get => _selectedPrefabIndex;
+        set {
+            _selectedPrefabIndex = value;
+            PrefabsSelectionChanged?.Invoke(prefabsArray);
+        }
+    }
+
+    public GameObject SelectedAgent {
+        get => _selectedAgent;
+        set {
+            _selectedAgent = value;
+            SelectionChanged?.Invoke();
+        }
+    }
+
+    private void OnDestroy() {
+        SelectionChanged = null;
+        PrefabsSelectionChanged = null;
     }
 }
