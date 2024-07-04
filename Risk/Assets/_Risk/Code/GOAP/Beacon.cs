@@ -30,6 +30,11 @@ public class Beacon : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void Destroy(float delay) {
+        Destroy(gameObject, delay);
+    }
+
+
     private void OnDestroy() {
         BeaconDestroyed?.Invoke(this);
         BeaconDestroyed = null;

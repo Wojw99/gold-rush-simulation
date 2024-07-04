@@ -21,6 +21,10 @@ public interface IActionStrategy
     void Stop() {
         
     }
+
+    void Interrupt() {
+        
+    }
 }
 
 public class AttackStrategy : IActionStrategy
@@ -56,6 +60,10 @@ public class AttackStrategy : IActionStrategy
         };
     }
 
+    public void Interrupt() {
+        timer.Interrupt();
+    }
+
     public void Start() {
         timer.Start();
     }
@@ -71,9 +79,11 @@ public class BuildStrategy : IActionStrategy
     public bool Completed { get; private set; }
 
     readonly CountdownTimer timer;
+    readonly AgentStats agentStats;
 
     public BuildStrategy(float duration, AgentStats agentStats, AnimationController animationController, Sensor sensor) {
         timer = new CountdownTimer(duration);
+        this.agentStats = agentStats;
         timer.OnTimerStart += () => {
             agentStats.StartDrawingStamina();
             Completed = false;
@@ -89,6 +99,11 @@ public class BuildStrategy : IActionStrategy
                 building.ContinueBuilding();
             }
         };
+    }
+
+    public void Interrupt() {
+        agentStats.StopDrawingStamina();
+        timer.Interrupt();
     }
 
     public void Start() {
@@ -107,8 +122,10 @@ public class MineStrategy : IActionStrategy
     public bool Completed { get; private set; }
 
     readonly CountdownTimer timer;
+    readonly AgentStats agentStats;
 
     public MineStrategy(float duration, AgentStats agentStats, AnimationController animationController, Sensor sensor) {
+        this.agentStats = agentStats;
         timer = new CountdownTimer(duration);
         timer.OnTimerStart += () => {
             agentStats.StartDrawingStamina();
@@ -130,6 +147,11 @@ public class MineStrategy : IActionStrategy
                 beacon.Destroy();
             }
         };
+    }
+
+    public void Interrupt() {
+        agentStats.StopDrawingStamina();
+        timer.Interrupt();
     }
 
     public void Start() {
@@ -162,6 +184,10 @@ public class RestStrategy : IActionStrategy
         };
     }
 
+    public void Interrupt() {
+        timer.Stop();
+    }
+
     public void Start() {
         timer.Start();
     }
@@ -190,6 +216,10 @@ public class HealStrategy : IActionStrategy
             Completed = true;
             animationController.StopAnimating();
         };
+    }
+
+    public void Interrupt() {
+        timer.Stop();
     }
 
     public void Start() {
@@ -239,6 +269,10 @@ public class IdleStrategy : IActionStrategy
         timer = new CountdownTimer(duration);
         timer.OnTimerStart += () => Completed = false;
         timer.OnTimerStop += () => Completed = true;
+    }
+
+    public void Interrupt() {
+        timer.Interrupt();
     }
 
     public void Start() {

@@ -106,7 +106,9 @@ public class AgentStats : MonoBehaviour
             StatsChanged?.Invoke();
             // TODO: This is a temporary solution, death should be handled differently
             if(health == 0) {
-                Destroy(gameObject);
+                transform.position = new Vector3(0, -100, 0);
+                GetComponent<GAgent>()?.ReevaluatePlan();
+                GetComponent<Beacon>()?.Destroy(5f);
             }
         }
     }

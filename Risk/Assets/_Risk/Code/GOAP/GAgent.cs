@@ -49,6 +49,7 @@ public class GAgent : MonoBehaviour
         SetupActions();
         SetupGoals();
         PlayerInteraction.instance.SelectionChanged += OnPlayerSelectionChanged;
+        PlayerInteraction.instance.SelectionMarkerChanged += OnPlayerSelectionMarkerChanged;
     }
 
     void SetupBeliefs() {
@@ -78,7 +79,7 @@ public class GAgent : MonoBehaviour
         factory.AddBelief("BuildingInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.BUILDING));
         factory.AddBelief("BuildingIsComplete", () => interactionSensor.TryGetBuilding(out var building) && building.IsComplete);
 
-        factory.AddBelief("MarkerExists", () => PlayerInteraction.instance.GetMarkerPosition() != Vector3.zero);
+        factory.AddBelief("MarkerExists", () => PlayerInteraction.instance.GetMarkerPosition() != Vector3.zero && PlayerInteraction.instance.SelectedAgent == gameObject);
         factory.AddBelief("MarkerInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.MARKER));
         factory.AddBelief("IsWaitingForOrders", () => false);
 
@@ -209,6 +210,7 @@ public class GAgent : MonoBehaviour
 
         actions.Add(new GAgentAction.Builder("WaitForOrders")
             .WithStrategy(new IdleStrategy(3))
+            .AddPrecondition(beliefs["MarkerExists"])
             .AddPrecondition(beliefs["MarkerInInteractionRange"])
             .AddEffect(beliefs["IsWaitingForOrders"])
             .Build());
@@ -279,17 +281,26 @@ public class GAgent : MonoBehaviour
         // ReevaluatePlan();
     }
 
-    void ReevaluatePlan() {
+    void OnPlayerSelectionMarkerChanged() {
+        if(PlayerInteraction.instance.SelectedAgent == gameObject) {
+            ReevaluatePlan();
+        }
+    }
+
+    public void ReevaluatePlan() {
         // Force the planner to re-evaluate the plan
+        CurrentAction.Interrupt();
         CurrentGoal = null;
         CurrentAction = null;
+        animationController.StopAnimating();
+        animationController.ResetSpeed();
     }
 
     void OnTargetsChanged(BeaconType type) {
-        Debug.Log($"Targets changed: {type}");
         if(type == BeaconType.AGENT) {
-            ReevaluatePlan();
-            Debug.Log("Reevaluating plan");
+            if(followSensor.TryGetEnemyStats(agentStats.TeamId, out _) || interactionSensor.TryGetEnemyStats(agentStats.TeamId, out _)) {
+                ReevaluatePlan();
+            }
         }
     }
 

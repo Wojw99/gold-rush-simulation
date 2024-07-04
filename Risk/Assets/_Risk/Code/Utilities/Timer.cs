@@ -32,6 +32,11 @@ public abstract class Timer {
 
     public void Resume() => IsRunning = true;
     public void Pause() => IsRunning = false;
+    public void Interrupt() {
+        if(IsRunning) {
+            IsRunning = false;
+        }
+    }
 
     public abstract void Tick(float deltaTime);
 }

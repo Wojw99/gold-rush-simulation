@@ -38,6 +38,8 @@ public class GAgentAction
 
     public void Stop() => strategy.Stop();
 
+    public void Interrupt() => strategy.Interrupt(); 
+
     public class Builder {
         readonly GAgentAction action;
 

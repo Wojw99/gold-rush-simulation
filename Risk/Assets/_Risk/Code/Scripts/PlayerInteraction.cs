@@ -25,7 +25,7 @@ public class PlayerInteraction : MonoBehaviour
     
     int _selectedPrefabIndex = -1;
     GameObject _selectedAgent = null;
-    GameObject selectionMarker;
+    GameObject _selectionMarker;
 
     void Start() {
         SelectedPrefabIndex = -1;
@@ -52,7 +52,7 @@ public class PlayerInteraction : MonoBehaviour
         if(Input.GetMouseButtonDown(0)) {
             var mouseGroundPosition = GetMouseGroundPosition();
             ClearSelectionMarker();
-            selectionMarker = Instantiate(selectionPrefab, mouseGroundPosition, Quaternion.identity);
+            SelectionMarker = Instantiate(selectionPrefab, mouseGroundPosition, Quaternion.identity);
         }
     }
 
@@ -72,8 +72,8 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     void ClearSelectionMarker() {
-        if (selectionMarker != null) {
-            Destroy(selectionMarker);
+        if (SelectionMarker != null) {
+            Destroy(SelectionMarker);
         }
     }
 
@@ -107,14 +107,25 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     public Vector3 GetMarkerPosition() {
-        if(selectionMarker == null) {
+        if(SelectionMarker == null) {
             return Vector3.zero;
         }
-        return selectionMarker.transform.position;
+        return SelectionMarker.transform.position;
+    }
+
+    public GameObject SelectionMarker {
+        get {
+            return _selectionMarker;
+        } 
+        set {
+            _selectionMarker = value;
+            SelectionMarkerChanged?.Invoke();
+        }
     }
 
     public event Action<GameObject[]> PrefabsSelectionChanged;
 
+    public event Action SelectionMarkerChanged;
     public event Action SelectionChanged;
 
     public GameObject[] PrefabsArray {

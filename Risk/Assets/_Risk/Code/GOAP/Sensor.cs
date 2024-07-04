@@ -47,6 +47,7 @@ public class Sensor : MonoBehaviour
     }
 
     void OnBeaconDestroyed(Beacon beacon) {
+        Debug.Log("Beacon destroyed");
         targets.RemoveAll(target => target.GameObject == beacon.gameObject);
         TargetsChanged?.Invoke(beacon.BeaconType);
     }
