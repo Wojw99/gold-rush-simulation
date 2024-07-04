@@ -13,6 +13,7 @@ public class Sensor : MonoBehaviour
     SphereCollider detectionSphere;
     CountdownTimer timer;
     List<TargetInfo> targets = new List<TargetInfo>();
+    public event Action<BeaconType> TargetsChanged;
 
     void Awake() {
         detectionSphere = GetComponent<SphereCollider>();
@@ -37,17 +38,23 @@ public class Sensor : MonoBehaviour
         if(other.TryGetComponent(out Beacon beacon)) {
             var targetInfo = new TargetInfo(beacon.gameObject, Vector3.Distance(transform.position, beacon.Position), beacon.BeaconType);
             targets.Add(targetInfo);
+            TargetsChanged?.Invoke(beacon.BeaconType);
+            if(beacon.BeaconType == BeaconType.AGENT) {
+                Debug.Log("Agent entered the sensor");
+            }
             beacon.BeaconDestroyed += OnBeaconDestroyed;
         }
     }
 
     void OnBeaconDestroyed(Beacon beacon) {
         targets.RemoveAll(target => target.GameObject == beacon.gameObject);
+        TargetsChanged?.Invoke(beacon.BeaconType);
     }
 
     void OnTriggerExit(Collider other) {
         if(other.TryGetComponent(out Beacon beacon)) {
             targets.RemoveAll(target => target.GameObject == beacon.gameObject);
+            TargetsChanged?.Invoke(beacon.BeaconType);
         }
     }
 
@@ -71,6 +78,34 @@ public class Sensor : MonoBehaviour
 
     public bool ContainsTargetOfType(BeaconType type) {
         return targets.Exists(target => target.BeaconType == type);
+    }
+
+    public bool TryGetEnemyStats(int agentTeamId, out AgentStats enemyStats) {
+        foreach(var target in targets) {
+            if(target.BeaconType == BeaconType.AGENT) {
+                if(target.GameObject.TryGetComponent(out AgentStats targetStats)) {
+                    if(targetStats.TeamId != agentTeamId) {
+                        enemyStats = targetStats;
+                        return true;
+                    }
+                }
+            }
+        }
+        enemyStats = null;
+        return false;
+    }
+
+    public Vector3 TryGetEnemyPosistion (int agentTeamId) {
+        foreach(var target in targets) {
+            if(target.BeaconType == BeaconType.AGENT) {
+                if(target.GameObject.TryGetComponent(out AgentStats targetStats)) {
+                    if(targetStats.TeamId != agentTeamId) {
+                        return target.GameObject.transform.position;
+                    }
+                }
+            }
+        }
+        return Vector3.zero;
     }
 
     public GameObject GetNearestTarget(BeaconType type) {

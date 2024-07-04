@@ -7,7 +7,7 @@ public class AnimationController : MonoBehaviour
     Animator animator;
     string currentAnimation = null;
 
-    void Start()
+    void Awake()
     {
         animator = GetComponent<Animator>();
     }
@@ -25,6 +25,26 @@ public class AnimationController : MonoBehaviour
             animator.SetBool(currentAnimation, false);
             currentAnimation = null;
         }
+    }
+
+    public float GetAnimationDuration(string animationName) {
+        var clips = animator.runtimeAnimatorController.animationClips;
+        foreach(var clip in clips) {
+            if(clip.name == animationName) {
+                return clip.length;
+            }
+        }
+        var defValue = 1f;
+        Debug.LogError($"Animation not found: {animationName}, returned {defValue}");
+        return defValue;
+    }
+
+    public void SetSpeed(float speed) {
+        animator.speed = speed;
+    }
+
+    public void ResetSpeed() {
+        animator.speed = 1f;
     }
 }
 

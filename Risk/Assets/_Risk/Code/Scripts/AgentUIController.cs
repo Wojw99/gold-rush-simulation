@@ -49,7 +49,7 @@ public class AgentUIController : MonoBehaviour
         healthBar.fillAmount = agentStats.Health / agentStats.MaxHealth;
         staminaBar.fillAmount = agentStats.Stamina / agentStats.MaxStamina;
         oreBar.fillAmount = agentStats.Ore / agentStats.MaxOre;
-        nameText.text = agentStats.Name;
+        nameText.text = agentStats.AgentName;
     }
 
     void OnActionChanged(GAgentAction action) {

@@ -23,6 +23,48 @@ public interface IActionStrategy
     }
 }
 
+public class AttackStrategy : IActionStrategy
+{
+    public bool CanPerform => true;
+    public bool Completed { get; private set; }
+
+    readonly CountdownTimer timer;
+
+    public AttackStrategy(AgentStats agentStats, AnimationController animationController, Sensor sensor, Transform transform) {
+        var duration = animationController.GetAnimationDuration(AnimType.IsAttacking.ToString());
+        var attackSpeed = agentStats.CalculateFinalAttackSpeed();
+        var modifiedDuration = duration / attackSpeed;
+
+        timer = new CountdownTimer(modifiedDuration);
+        
+        timer.OnTimerStart += () => {
+            agentStats.Stamina -= 10;
+            Completed = false;
+            animationController.SetSpeed(attackSpeed);
+            animationController.StartAnimating(AnimType.IsAttacking.ToString());
+            transform.LookAt(sensor.TryGetEnemyPosistion(agentStats.TeamId));
+        };
+
+        timer.OnTimerStop += () => {
+            Completed = true;
+            animationController.ResetSpeed();
+            animationController.StopAnimating();
+            
+            if(sensor.TryGetEnemyStats(agentStats.TeamId, out AgentStats enemyStats)){
+                enemyStats.Health -= agentStats.CalculateFinalAttack();
+            }
+        };
+    }
+
+    public void Start() {
+        timer.Start();
+    }
+
+    public void Update(float deltaTime) {
+        timer.Tick(deltaTime);
+    }
+}
+
 public class BuildStrategy : IActionStrategy
 {
     public bool CanPerform => true;
@@ -96,10 +138,6 @@ public class MineStrategy : IActionStrategy
 
     public void Update(float deltaTime) {
         timer.Tick(deltaTime);
-    }
-
-    public void Stop() {
-
     }
 }
 

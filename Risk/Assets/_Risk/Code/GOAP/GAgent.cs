@@ -40,6 +40,8 @@ public class GAgent : MonoBehaviour
         rb.freezeRotation = true;
 
         goapPlanner = new GPlanner();
+        followSensor.TargetsChanged += OnTargetsChanged;
+        interactionSensor.TargetsChanged += OnTargetsChanged;
     }
 
     void Start() {
@@ -79,6 +81,16 @@ public class GAgent : MonoBehaviour
         factory.AddBelief("MarkerExists", () => PlayerInteraction.instance.GetMarkerPosition() != Vector3.zero);
         factory.AddBelief("MarkerInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.MARKER));
         factory.AddBelief("IsWaitingForOrders", () => false);
+
+        factory.AddBelief("EnemyInFollowRange", () => followSensor.TryGetEnemyStats(agentStats.TeamId, out _));
+        factory.AddBelief("EnemyInInteractionRange", () => interactionSensor.TryGetEnemyStats(agentStats.TeamId, out _));
+        // factory.AddBelief("EnemyDied", () => {
+        //     if(followSensor.TryGetEnemyStats(agentStats.TeamId, out var enemyStats)) {
+        //         return enemyStats.Health <= 0;
+        //     }
+        //     return false;
+        // });
+        factory.AddBelief("NoEnemyInRange", () => !followSensor.TryGetEnemyStats(agentStats.TeamId, out _) && !interactionSensor.TryGetEnemyStats(agentStats.TeamId, out _));
 
         // factory.AddBelief("DepositFollowIsNotOccupied", () => DepositIsNotOccupied(followSensor, agentStats));
         // factory.AddBelief("DepositInteractionIsNotOccupied", () => DepositIsNotOccupied(interactionSensor, agentStats));
@@ -200,6 +212,23 @@ public class GAgent : MonoBehaviour
             .AddPrecondition(beliefs["MarkerInInteractionRange"])
             .AddEffect(beliefs["IsWaitingForOrders"])
             .Build());
+
+        // - - - - - FIGHT - - - - -
+
+        actions.Add(new GAgentAction.Builder("MoveToEnemy")
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => {
+                followSensor.TryGetEnemyStats(agentStats.TeamId, out var enemyStats);
+                return enemyStats.transform.position;
+            }, animationController))
+            .AddPrecondition(beliefs["EnemyInFollowRange"])
+            .AddEffect(beliefs["EnemyInInteractionRange"])
+            .Build());
+
+        actions.Add(new GAgentAction.Builder("Attack")
+            .WithStrategy(new AttackStrategy(agentStats, animationController, interactionSensor, transform))
+            .AddPrecondition(beliefs["EnemyInInteractionRange"])
+            .AddEffect(beliefs["NoEnemyInRange"])
+            .Build());
     }
 
     void SetupGoals() {
@@ -239,6 +268,11 @@ public class GAgent : MonoBehaviour
             .WithPriority(99)
             .WithDesiredEffect(beliefs["IsWaitingForOrders"])
             .Build());
+
+        goals.Add(new GAgentGoal.Builder("DefendYourself")
+            .WithPriority(15)
+            .WithDesiredEffect(beliefs["NoEnemyInRange"])
+            .Build());
     }
 
     void OnPlayerSelectionChanged() {
@@ -251,9 +285,12 @@ public class GAgent : MonoBehaviour
         CurrentAction = null;
     }
 
-    void OnTargetChanged() {
-        Debug.Log("Target changed");
-        // ReevaluatePlan();
+    void OnTargetsChanged(BeaconType type) {
+        Debug.Log($"Targets changed: {type}");
+        if(type == BeaconType.AGENT) {
+            ReevaluatePlan();
+            Debug.Log("Reevaluating plan");
+        }
     }
 
     void Update() {

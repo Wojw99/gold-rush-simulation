@@ -151,7 +151,7 @@ Transform:
   - {fileID: 3098577517994099593}
   - {fileID: 4954050610385899858}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &3896656460199688360
 BoxCollider:
@@ -931,7 +931,6 @@ GameObject:
   - component: {fileID: 5472849635515447886}
   - component: {fileID: 5157710055782503136}
   - component: {fileID: 307396592752188190}
-  - component: {fileID: 6336586761618104059}
   m_Layer: 0
   m_Name: BuildingUI
   m_TagString: Untagged
@@ -1023,24 +1022,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &6336586761618104059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4530152498279739395}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fb45a611409cd74d800984eae1b7b00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBar: {fileID: 0}
-  staminaBar: {fileID: 0}
-  oreBar: {fileID: 4732872816811742212}
-  nameText: {fileID: 0}
-  goalText: {fileID: 0}
-  actionText: {fileID: 0}
 --- !u!1 &4683098793201863956
 GameObject:
   m_ObjectHideFlags: 0

@@ -65,7 +65,7 @@ public class PlayerInteraction : MonoBehaviour
                 var agent = hit.collider.gameObject;
                 if(agent.TryGetComponent(out AgentStats agentStats)) {
                     SelectedAgent = agent;
-                    Debug.Log("Selected agent: " + agentStats.Name);
+                    Debug.Log("Selected agent: " + agentStats.AgentName);
                 }
             }
         }

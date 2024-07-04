@@ -13,7 +13,14 @@ public class AgentStats : MonoBehaviour
     float stamina = 100;
     float ore = 100;
     int id = CalculateId();
-    string name = "James";
+    string agentName = "James";
+    [SerializeField] int attack = 10;
+    [SerializeField] float attackSpeed = 1;
+    [SerializeField] int teamId = 0;
+    int attackModifierMin = 1;
+    int attackModifierMax = 10;
+    float attackSpeedModifierMin = 0;
+    float attackSpeedModifierMax = 0.5f;
 
     bool isFillingHealth = false;
     bool isFillingStamina = false;
@@ -28,7 +35,7 @@ public class AgentStats : MonoBehaviour
         health = maxHealth; 
         stamina = maxStamina;
         ore = 0;
-        name = RandomGenerator.Instance.GenerateName();
+        agentName = RandomGenerator.Instance.GenerateName();
     }
 
     void Start() {
@@ -97,6 +104,10 @@ public class AgentStats : MonoBehaviour
             health = value;
             health = Mathf.Clamp(health, 0, maxHealth);
             StatsChanged?.Invoke();
+            // TODO: This is a temporary solution, death should be handled differently
+            if(health == 0) {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -118,11 +129,27 @@ public class AgentStats : MonoBehaviour
         }
     }
 
+    public float CalculateFinalAttack() {
+        return attack + UnityEngine.Random.Range(attackModifierMin, attackModifierMax);
+    }
+
+    public float CalculateFinalAttackSpeed() {
+        return attackSpeed + UnityEngine.Random.Range(attackSpeedModifierMin, attackSpeedModifierMax);
+    }
+
     public float MaxHealth => maxHealth;
     public float MaxStamina => maxStamina;
     public float MaxOre => maxOre;
     public int ID => id;
-    public string Name => name;
+    public string AgentName => agentName;
+    public int TeamId => teamId;
+
+    // public int Attack => attack;
+    // public int AttackSpeed => attackSpeed;
+    // public int AttackModifierMin => attackModifierMin;
+    // public int AttackModifierMax => attackModifierMax;
+    // public int AttackSpeedModifierMin => attackSpeedModifierMin;
+    // public int AttackSpeedModifierMax => attackSpeedModifierMax;
 
     void OnDestroy() {
         StatsChanged = null;

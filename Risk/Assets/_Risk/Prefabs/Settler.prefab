@@ -325,7 +325,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3640207694046640710}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 4.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -351,7 +351,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 7.77
+  m_Radius: 9.99
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2908926214250527997
 MonoBehaviour:
@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f328ffbde4bc1414faf20e8aeda4b990, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRange: 7.77
+  detectionRange: 9.99
   evaluationInterval: 1
 --- !u!1 &4787937725192321458
 GameObject:
@@ -381,6 +381,7 @@ GameObject:
   - component: {fileID: 3529186047171842163}
   - component: {fileID: 6753827340874178059}
   - component: {fileID: 8263602189685992850}
+  - component: {fileID: 4488952798117922279}
   - component: {fileID: 1640732010983100038}
   - component: {fileID: 7234050820136317368}
   m_Layer: 6
@@ -397,7 +398,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4787937725192321458}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 62.748894, y: -0.0000019073486, z: 48.901505}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -407,7 +408,7 @@ Transform:
   - {fileID: 4519627283083020360}
   - {fileID: 6886769099803681856}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &5847111655930769010
 Rigidbody:
@@ -514,6 +515,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95d1cc5de3a40b842a9e42fc5f15eee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4488952798117922279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4787937725192321458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05ac0a6f76adb3240a05576c2df5ee7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beaconType: 3
 --- !u!114 &1640732010983100038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,7 +542,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   maxStamina: 100
-  maxOre: 100
+  maxOre: 20
+  attack: 10
+  attackSpeed: 1
+  teamId: 0
 --- !u!114 &7234050820136317368
 MonoBehaviour:
   m_ObjectHideFlags: 0
