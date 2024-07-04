@@ -289,11 +289,11 @@ public class GAgent : MonoBehaviour
 
     public void ReevaluatePlan() {
         // Force the planner to re-evaluate the plan
-        CurrentAction.Interrupt();
+        CurrentAction?.Interrupt();
         CurrentGoal = null;
         CurrentAction = null;
-        animationController.StopAnimating();
-        animationController.ResetSpeed();
+        animationController?.StopAnimating();
+        animationController?.ResetSpeed();
     }
 
     void OnTargetsChanged(BeaconType type) {
@@ -305,6 +305,11 @@ public class GAgent : MonoBehaviour
     }
 
     void Update() {
+        if(goals == null || actions == null || beliefs == null) {
+            Debug.LogError("Agent not fully initialized, skipping update");
+            return;
+        };
+
         // Update the plan and current action if there is one
         if(CurrentAction == null) {
             Debug.Log("Calculating any potential new plan");

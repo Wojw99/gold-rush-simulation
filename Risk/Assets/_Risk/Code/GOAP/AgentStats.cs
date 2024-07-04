@@ -16,7 +16,7 @@ public class AgentStats : MonoBehaviour
     string agentName = "James";
     [SerializeField] int attack = 10;
     [SerializeField] float attackSpeed = 1;
-    [SerializeField] int teamId = 0;
+    [SerializeField] Team team;
     int attackModifierMin = 1;
     int attackModifierMax = 10;
     float attackSpeedModifierMin = 0;
@@ -144,7 +144,8 @@ public class AgentStats : MonoBehaviour
     public float MaxOre => maxOre;
     public int ID => id;
     public string AgentName => agentName;
-    public int TeamId => teamId;
+    public int TeamId => team.id;
+    public Team Team => team;
 
     // public int Attack => attack;
     // public int AttackSpeed => attackSpeed;

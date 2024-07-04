@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e28834bd21fd684dacd0b49a9a8a8c4, type: 3}
+  m_Name: Skeletons
+  m_EditorClassIdentifier: 
+  id: 1
+  name: Skeletons
+  color: {r: 0.36212873, g: 0, b: 1, a: 1}
+  visualModel: {fileID: 7625158201351052849, guid: 5e7af96254bc26b4282863967b27d03d,
+    type: 3}

@@ -30,7 +30,8 @@ public class AgentUIController : MonoBehaviour
         gAgent.GoalChanged += OnGoalChanged;
         gAgent.ActionChanged += OnActionChanged;
         agentStats.StatsChanged += OnStatsChanged;
-
+        nameText.color = agentStats.Team.color;
+        
         Initialize();
     }
 

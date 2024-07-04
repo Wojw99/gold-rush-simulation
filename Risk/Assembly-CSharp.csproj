@@ -57,6 +57,7 @@
      <Compile Include="Assets\_Risk\Code\GOAP\GAgent.cs" />
      <Compile Include="Assets\_Risk\Code\GOAP\GAgentAction.cs" />
      <Compile Include="Assets\_Risk\Code\AI\AgentGoal.cs" />
+     <Compile Include="Assets\_Risk\Code\ScriptableObjects\Team.cs" />
      <Compile Include="Assets\_Risk\Code\AI\AgentBrain.cs" />
      <Compile Include="Assets\_Risk\Code\Scripts\StatusController.cs" />
      <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\MouseLook.cs" />

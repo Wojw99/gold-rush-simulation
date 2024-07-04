@@ -2948,6 +2948,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1640732010983100038, guid: 1c8ebcbf4e58ca3419591fa42c071481,
         type: 3}
+      propertyPath: team
+      value: 
+      objectReference: {fileID: 11400000, guid: ecf3cca9413403f40868299e8c822625,
+        type: 2}
+    - target: {fileID: 1640732010983100038, guid: 1c8ebcbf4e58ca3419591fa42c071481,
+        type: 3}
       propertyPath: attack
       value: 10
       objectReference: {fileID: 0}
@@ -2960,6 +2966,11 @@ PrefabInstance:
         type: 3}
       propertyPath: attackSpeed
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3516104902887102829, guid: 1c8ebcbf4e58ca3419591fa42c071481,
+        type: 3}
+      propertyPath: m_Name
+      value: SettlerVisual
       objectReference: {fileID: 0}
     - target: {fileID: 4787937725192321458, guid: 1c8ebcbf4e58ca3419591fa42c071481,
         type: 3}
@@ -3025,6 +3036,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6701356975654560956, guid: 1c8ebcbf4e58ca3419591fa42c071481,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6594,6 +6610,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1640732010983100038, guid: 1c8ebcbf4e58ca3419591fa42c071481,
         type: 3}
+      propertyPath: team
+      value: 
+      objectReference: {fileID: 11400000, guid: dbce32f0c2c4cf642a72bca0586988f4,
+        type: 2}
+    - target: {fileID: 1640732010983100038, guid: 1c8ebcbf4e58ca3419591fa42c071481,
+        type: 3}
       propertyPath: attack
       value: 8
       objectReference: {fileID: 0}
@@ -6676,6 +6698,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6753827340874178059, guid: 1c8ebcbf4e58ca3419591fa42c071481,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

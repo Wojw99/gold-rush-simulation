@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class AnimationController : MonoBehaviour
 {
+    [SerializeField] GameObject dummyVisualModel;
     Animator animator;
     string currentAnimation = null;
+    GameObject visualModel;
 
     void Awake()
     {
-        animator = GetComponent<Animator>();
+        var agentStats = GetComponent<AgentStats>();
+        Destroy(dummyVisualModel);
+        visualModel = Instantiate(agentStats.Team.visualModel, transform);
+        animator = visualModel.GetComponent<Animator>();
     }
 
     public void StartAnimating(string animationName) {
@@ -24,6 +29,9 @@ public class AnimationController : MonoBehaviour
         if(currentAnimation != null) {
             animator.SetBool(currentAnimation, false);
             currentAnimation = null;
+            // Because the animation changes rotation and position of model
+            visualModel.transform.position = transform.position;
+            visualModel.transform.rotation = transform.rotation;
         }
     }
 
@@ -46,6 +54,8 @@ public class AnimationController : MonoBehaviour
     public void ResetSpeed() {
         animator.speed = 1f;
     }
+
+    public Animator Animator => animator;
 }
 
 public enum AnimType {
