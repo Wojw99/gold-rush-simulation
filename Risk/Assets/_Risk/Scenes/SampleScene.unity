@@ -1641,8 +1641,8 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
-  - component: {fileID: 330585548}
   - component: {fileID: 330585549}
+  - component: {fileID: 330585548}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1775,7 +1775,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc6fb668309676c45b8aa95d5292714c, type: 3}
   m_Name: 
@@ -1792,7 +1792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ef8c68bade09b41aca258d42a632f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lastTab: 2
+  lastTab: 0
   movementSettingsFoldout: 0
   zoomingSettingsFoldout: 0
   rotationSettingsFoldout: 0
@@ -1801,7 +1801,7 @@ MonoBehaviour:
   targetingSettingsFoldout: 0
   inputSettingsFoldout: 0
   useFixedUpdate: 0
-  keyboardMovementSpeed: 15
+  keyboardMovementSpeed: 20
   screenEdgeMovementSpeed: 3
   followingSpeed: 5
   rotationSped: 30
@@ -3352,6 +3352,50 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1183159545}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &877050830
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 877050831}
+  - component: {fileID: 877050832}
+  m_Layer: 0
+  m_Name: TimeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &877050831
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877050830}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1877346347}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &877050832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877050830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c655c27c6b8886047a34ccc4a92b5c86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &952139927 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2110994530272689763, guid: 384ffe357d83ff340989839af5945365,
@@ -4820,7 +4864,7 @@ PrefabInstance:
     - target: {fileID: 3094862917451690668, guid: f8c91dbf4bafb0243a6ba18f6f2f5c3a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.41
+      value: 4.13
       objectReference: {fileID: 0}
     - target: {fileID: 3094862917451690668, guid: f8c91dbf4bafb0243a6ba18f6f2f5c3a,
         type: 3}
@@ -4830,7 +4874,7 @@ PrefabInstance:
     - target: {fileID: 3094862917451690668, guid: f8c91dbf4bafb0243a6ba18f6f2f5c3a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11.42
+      value: -0.49
       objectReference: {fileID: 0}
     - target: {fileID: 3094862917451690668, guid: f8c91dbf4bafb0243a6ba18f6f2f5c3a,
         type: 3}
@@ -5988,6 +6032,7 @@ Transform:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 258467078}
+  - {fileID: 877050831}
   - {fileID: 1884956835}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -6979,7 +7024,7 @@ PrefabInstance:
     - target: {fileID: 3094862917451690668, guid: f8c91dbf4bafb0243a6ba18f6f2f5c3a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.21
+      value: -4.35
       objectReference: {fileID: 0}
     - target: {fileID: 3094862917451690668, guid: f8c91dbf4bafb0243a6ba18f6f2f5c3a,
         type: 3}
@@ -6989,7 +7034,7 @@ PrefabInstance:
     - target: {fileID: 3094862917451690668, guid: f8c91dbf4bafb0243a6ba18f6f2f5c3a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -12.73
       objectReference: {fileID: 0}
     - target: {fileID: 3094862917451690668, guid: f8c91dbf4bafb0243a6ba18f6f2f5c3a,
         type: 3}

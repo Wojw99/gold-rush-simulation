@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
@@ -37,6 +38,22 @@ public class PlayerInteraction : MonoBehaviour
         SelectPosition();
         SelectAgent();
         ClearSelection();
+        ManageTime();
+    }
+
+    void ManageTime() {
+        if(Input.GetKeyDown(KeyCode.RightBracket)) 
+        {
+            TimeManager.instance.FastForwardTime();
+        } 
+        else if (Input.GetKeyDown(KeyCode.Space)) 
+        {
+            TimeManager.instance.PlayPauseTime();
+        } 
+        else if (Input.GetKeyDown(KeyCode.LeftBracket)) 
+        {
+            TimeManager.instance.SlowDownTime();
+        }
     }
 
     void ClearSelection () {

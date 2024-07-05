@@ -1,42 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
+using RTS_Cam;
 using UnityEngine;
 
 public class MainCameraController : MonoBehaviour
 {
-    private Camera mainCamera;
+    RTS_Camera rtsCamera;
 
-    private void Start() {
-        mainCamera = GetComponent<Camera>();
+    float keyboardMovementSpeedInitial;
+    float screenEdgeMovementSpeedInitial;
+    float rotationSpedInitial;
+    float followingSpeedInitial;
+    float panningSpeedInitial;
+    float mouseRotationSpeedInitial;
+    float scrollWheelZoomingSensitivityInitial;
+    float keyboardZoomingSensitivityInitial;
+
+    void Start() {
+        rtsCamera = GetComponent<RTS_Camera>();
+        TimeManager.instance.TimeMultiplierChanged += OnTimeMultiplierChanged;
+        
+        keyboardMovementSpeedInitial = rtsCamera.keyboardMovementSpeed;
+        screenEdgeMovementSpeedInitial = rtsCamera.screenEdgeMovementSpeed;
+        rotationSpedInitial = rtsCamera.rotationSped;
+        followingSpeedInitial = rtsCamera.followingSpeed;
+        panningSpeedInitial = rtsCamera.panningSpeed;
+        mouseRotationSpeedInitial = rtsCamera.mouseRotationSpeed;
+        scrollWheelZoomingSensitivityInitial = rtsCamera.scrollWheelZoomingSensitivity;
+        keyboardZoomingSensitivityInitial = rtsCamera.keyboardZoomingSensitivity;
     }
 
-    private void Update() {
-        // move camera with WSAD keys
-        if (Input.GetKey(KeyCode.W)) {
-            mainCamera.transform.position += new Vector3(0, 0, 1);
-        }
-        if (Input.GetKey(KeyCode.S)) {
-            mainCamera.transform.position += new Vector3(0, 0, -1);
-        }
-        if (Input.GetKey(KeyCode.A)) {
-            mainCamera.transform.position += new Vector3(-1, 0, 0);
-        }
-        if (Input.GetKey(KeyCode.D)) {
-            mainCamera.transform.position += new Vector3(1, 0, 0);
-        }
-        // rotate camera horizontally with Q and E keys
-        if (Input.GetKey(KeyCode.Q)) {
-            mainCamera.transform.Rotate(new Vector3(0, -1, 0));
-        }
-        if (Input.GetKey(KeyCode.E)) {
-            mainCamera.transform.Rotate(new Vector3(0, 1, 0));
-        }
-        // rotate camera vertically with R and F keys
-        if (Input.GetKey(KeyCode.R)) {
-            mainCamera.transform.Rotate(new Vector3(-1, 0, 0));
-        }
-        if (Input.GetKey(KeyCode.F)) {
-            mainCamera.transform.Rotate(new Vector3(1, 0, 0));
-        }
+    void OnTimeMultiplierChanged(int timeMultiplier) {
+        float tmf = (float)timeMultiplier;
+
+        rtsCamera.keyboardMovementSpeed = keyboardMovementSpeedInitial / tmf;
+        rtsCamera.screenEdgeMovementSpeed = screenEdgeMovementSpeedInitial / tmf;
+        rtsCamera.rotationSped = rotationSpedInitial / tmf;
+        rtsCamera.followingSpeed = followingSpeedInitial / tmf;
+        rtsCamera.panningSpeed = panningSpeedInitial / tmf;
+        rtsCamera.mouseRotationSpeed = mouseRotationSpeedInitial / tmf;
+        rtsCamera.scrollWheelZoomingSensitivity = scrollWheelZoomingSensitivityInitial / tmf;
+        rtsCamera.keyboardZoomingSensitivity = keyboardZoomingSensitivityInitial / tmf;
+
+        Debug.Log($"Time Multiplier Changed: {timeMultiplier}, (float){tmf}");
     }
 }
