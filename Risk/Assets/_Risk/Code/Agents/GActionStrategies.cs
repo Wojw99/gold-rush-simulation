@@ -38,12 +38,13 @@ public class AttackStrategy : IActionStrategy
         var duration = animationController.GetAnimationDuration(AnimType.IsAttacking.ToString());
         var attackSpeed = agentStats.CalculateFinalAttackSpeed();
         var modifiedDuration = duration / attackSpeed;
-
         timer = new CountdownTimer(modifiedDuration);
         
         timer.OnTimerStart += () => {
             agentStats.Stamina -= 10;
             Completed = false;
+            
+            var attackSpeed = agentStats.CalculateFinalAttackSpeed();
             animationController.SetSpeed(attackSpeed);
             animationController.StartAnimating(AnimType.IsAttacking.ToString());
             transform.LookAt(sensor.TryGetEnemyPosistion(agentStats.TeamId));
@@ -56,6 +57,12 @@ public class AttackStrategy : IActionStrategy
             
             if(sensor.TryGetEnemyStats(agentStats.TeamId, out AgentStats enemyStats)){
                 enemyStats.Health -= agentStats.CalculateFinalAttack();
+            }
+
+            if(agentStats.Stamina <= 0){
+                // slow down attack speed
+                var attackSpeed = agentStats.CalculateFinalAttackSpeed();
+                timer.Reset(duration / attackSpeed);
             }
         };
     }

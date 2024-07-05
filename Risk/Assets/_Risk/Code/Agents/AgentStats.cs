@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
@@ -132,11 +133,17 @@ public class AgentStats : MonoBehaviour
     }
 
     public float CalculateFinalAttack() {
-        return attack + UnityEngine.Random.Range(attackModifierMin, attackModifierMax);
+        var finalAttack = attack + UnityEngine.Random.Range(attackModifierMin, attackModifierMax);
+
+        if (Stamina <= 0) return finalAttack / 2f;
+        return finalAttack;
     }
 
     public float CalculateFinalAttackSpeed() {
-        return attackSpeed + UnityEngine.Random.Range(attackSpeedModifierMin, attackSpeedModifierMax);
+        var finalAttackSpeed = attackSpeed + UnityEngine.Random.Range(attackSpeedModifierMin, attackSpeedModifierMax);
+       
+        if (Stamina <= 0) return finalAttackSpeed / 2f;
+        return finalAttackSpeed;
     }
 
     public float MaxHealth => maxHealth;
