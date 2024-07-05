@@ -96,7 +96,7 @@ public class BuildStrategy : IActionStrategy
 
             if(sensor.TryGetBuilding(out Building building)){
                 agentStats.Ore = 0;
-                building.ContinueBuilding();
+                building.ContinueBuilding(agentStats.Team);
             }
         };
     }

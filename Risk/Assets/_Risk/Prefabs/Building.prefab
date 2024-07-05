@@ -213,6 +213,11 @@ MonoBehaviour:
   - {fileID: 2940921441282716003}
   - {fileID: 4739420070188475619}
   progressBar: {fileID: 4732872816811742212}
+  materialTemplate: {fileID: 2100000, guid: f8f720c6d75b499478696833a15e6bfa, type: 2}
+  agentPrefab: {fileID: 4787937725192321458, guid: 1c8ebcbf4e58ca3419591fa42c071481,
+    type: 3}
+  ownerTeam: {fileID: 0}
+  startSize: 0
 --- !u!1 &883825128891910162
 GameObject:
   m_ObjectHideFlags: 0

@@ -145,7 +145,12 @@ public class AgentStats : MonoBehaviour
     public int ID => id;
     public string AgentName => agentName;
     public int TeamId => team.id;
-    public Team Team => team;
+    public Team Team {
+        get => team;
+        set {
+            team = value;
+        }
+    }
 
     // public int Attack => attack;
     // public int AttackSpeed => attackSpeed;

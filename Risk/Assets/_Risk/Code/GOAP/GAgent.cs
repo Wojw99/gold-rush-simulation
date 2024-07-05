@@ -75,8 +75,8 @@ public class GAgent : MonoBehaviour
         factory.AddBelief("HealInFollowRange", () => followSensor.ContainsTargetOfType(BeaconType.HEAL));
         factory.AddBelief("HealInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.HEAL));
         
-        factory.AddBelief("BuildingInFollowRange", () => followSensor.ContainsTargetOfType(BeaconType.BUILDING));
-        factory.AddBelief("BuildingInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.BUILDING));
+        factory.AddBelief("BuildingInFollowRange", () => followSensor.TryGetBuilding(out Building building) && building.CanBeBuilt(agentStats.TeamId));
+        factory.AddBelief("BuildingInInteractionRange", () => interactionSensor.TryGetBuilding(out Building building) && building.CanBeBuilt(agentStats.TeamId));
         factory.AddBelief("BuildingIsComplete", () => interactionSensor.TryGetBuilding(out var building) && building.IsComplete);
 
         factory.AddBelief("MarkerExists", () => PlayerInteraction.instance.GetMarkerPosition() != Vector3.zero && PlayerInteraction.instance.SelectedAgent == gameObject);
@@ -209,7 +209,7 @@ public class GAgent : MonoBehaviour
             .Build());
 
         actions.Add(new GAgentAction.Builder("WaitForOrders")
-            .WithStrategy(new IdleStrategy(3))
+            .WithStrategy(new IdleStrategy(1))
             .AddPrecondition(beliefs["MarkerExists"])
             .AddPrecondition(beliefs["MarkerInInteractionRange"])
             .AddEffect(beliefs["IsWaitingForOrders"])
