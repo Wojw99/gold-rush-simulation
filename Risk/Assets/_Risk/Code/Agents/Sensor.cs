@@ -39,15 +39,11 @@ public class Sensor : MonoBehaviour
             var targetInfo = new TargetInfo(beacon.gameObject, Vector3.Distance(transform.position, beacon.Position), beacon.BeaconType);
             targets.Add(targetInfo);
             TargetsChanged?.Invoke(beacon.BeaconType);
-            if(beacon.BeaconType == BeaconType.AGENT) {
-                Debug.Log("Agent entered the sensor");
-            }
             beacon.BeaconDestroyed += OnBeaconDestroyed;
         }
     }
 
     void OnBeaconDestroyed(Beacon beacon) {
-        Debug.Log("Beacon destroyed");
         targets.RemoveAll(target => target.GameObject == beacon.gameObject);
         TargetsChanged?.Invoke(beacon.BeaconType);
     }
@@ -69,6 +65,34 @@ public class Sensor : MonoBehaviour
         var nearestTarget = GetNearestTarget(type);
         beacon = nearestTarget?.GetComponent<Beacon>();
         return beacon != null;
+    }
+
+    public bool TryGetFreeDeposit(int agentId, out Deposit deposit) {
+        var nearestTarget = targets.Find(
+            target => target.BeaconType == BeaconType.DEPOSIT && target.GameObject.GetComponent<Deposit>().IsFreeToMine(agentId)
+        );
+        deposit = nearestTarget?.GameObject.GetComponent<Deposit>();
+        return deposit != null;
+    }
+
+    public bool ContainsFreeDeposit(int agentId) {
+        return targets.Exists(
+            target => target.BeaconType == BeaconType.DEPOSIT && target.GameObject.GetComponent<Deposit>().IsFreeToMine(agentId)
+        );
+    }
+
+    public bool ContainsAvailableBuilding(int teamId) {
+        return targets.Exists(
+            target => target.BeaconType == BeaconType.BUILDING && target.GameObject.GetComponent<Building>().CanBeBuilt(teamId)
+        );
+    }
+
+    public bool TryGetAvailableBuilding(int teamId, out Building building) {
+        var nearestTarget = targets.Find(
+            target => target.BeaconType == BeaconType.BUILDING && target.GameObject.GetComponent<Building>().CanBeBuilt(teamId)
+        );
+        building = nearestTarget?.GameObject.GetComponent<Building>();
+        return building != null;
     }
 
     public bool TryGetBuilding(out Building building) {

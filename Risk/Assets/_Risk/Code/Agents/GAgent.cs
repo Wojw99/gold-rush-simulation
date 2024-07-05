@@ -66,8 +66,8 @@ public class GAgent : MonoBehaviour
         factory.AddBelief("HasOre", () => agentStats.Ore > 0);
         factory.AddBelief("HasFullOre", () => agentStats.Ore >= agentStats.MaxOre);
 
-        factory.AddBelief("DepositInFollowRange", () => followSensor.ContainsTargetOfType(BeaconType.DEPOSIT));
-        factory.AddBelief("DepositInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.DEPOSIT));
+        factory.AddBelief("DepositInFollowRange", () => followSensor.TryGetFreeDeposit(agentStats.ID, out _));
+        factory.AddBelief("DepositInInteractionRange", () => interactionSensor.TryGetFreeDeposit(agentStats.ID, out _));
 
         factory.AddBelief("RestInFollowRange", () => followSensor.ContainsTargetOfType(BeaconType.REST));
         factory.AddBelief("RestInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.REST));
@@ -75,9 +75,9 @@ public class GAgent : MonoBehaviour
         factory.AddBelief("HealInFollowRange", () => followSensor.ContainsTargetOfType(BeaconType.HEAL));
         factory.AddBelief("HealInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.HEAL));
         
-        factory.AddBelief("BuildingInFollowRange", () => followSensor.TryGetBuilding(out Building building) && building.CanBeBuilt(agentStats.TeamId));
-        factory.AddBelief("BuildingInInteractionRange", () => interactionSensor.TryGetBuilding(out Building building) && building.CanBeBuilt(agentStats.TeamId));
-        factory.AddBelief("BuildingIsComplete", () => interactionSensor.TryGetBuilding(out var building) && building.IsComplete);
+        factory.AddBelief("BuildingInFollowRange", () => followSensor.TryGetAvailableBuilding(agentStats.TeamId, out _));
+        factory.AddBelief("BuildingInInteractionRange", () => interactionSensor.TryGetAvailableBuilding(agentStats.TeamId, out _));
+        factory.AddBelief("BuildingIsComplete", () => interactionSensor.TryGetAvailableBuilding(agentStats.TeamId, out var building) && building.IsComplete);
 
         factory.AddBelief("MarkerExists", () => PlayerInteraction.instance.GetMarkerPosition() != Vector3.zero && PlayerInteraction.instance.SelectedAgent == gameObject);
         factory.AddBelief("MarkerInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.MARKER));
@@ -85,21 +85,8 @@ public class GAgent : MonoBehaviour
 
         factory.AddBelief("EnemyInFollowRange", () => followSensor.TryGetEnemyStats(agentStats.TeamId, out _));
         factory.AddBelief("EnemyInInteractionRange", () => interactionSensor.TryGetEnemyStats(agentStats.TeamId, out _));
-        // factory.AddBelief("EnemyDied", () => {
-        //     if(followSensor.TryGetEnemyStats(agentStats.TeamId, out var enemyStats)) {
-        //         return enemyStats.Health <= 0;
-        //     }
-        //     return false;
-        // });
         factory.AddBelief("NoEnemyInRange", () => !followSensor.TryGetEnemyStats(agentStats.TeamId, out _) && !interactionSensor.TryGetEnemyStats(agentStats.TeamId, out _));
-
-        // factory.AddBelief("DepositFollowIsNotOccupied", () => DepositIsNotOccupied(followSensor, agentStats));
-        // factory.AddBelief("DepositInteractionIsNotOccupied", () => DepositIsNotOccupied(interactionSensor, agentStats));
     }
-
-    // bool DepositIsNotOccupied(Sensor sensor, AgentStats agentStats) {
-    //     return sensor.ContainsTargetOfType(BeaconType.DEPOSIT) && !sensor.Target.GetComponent<Beacon>().IsOccupiedByStranger(agentStats.ID);
-    // }
 
     void SetupActions() {
         actions = new HashSet<GAgentAction>();
@@ -163,7 +150,10 @@ public class GAgent : MonoBehaviour
             .Build());
 
         actions.Add(new GAgentAction.Builder("MoveToDeposit")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.GetNearestTarget(BeaconType.DEPOSIT).transform.position, animationController))
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => { 
+                followSensor.TryGetFreeDeposit(agentStats.ID, out Deposit deposit); 
+                return deposit.transform.position; 
+            }, animationController))
             .AddPrecondition(beliefs["IsRested"])
             .AddPrecondition(beliefs["DepositInFollowRange"])
             .AddEffect(beliefs["DepositInInteractionRange"])
@@ -186,7 +176,7 @@ public class GAgent : MonoBehaviour
             .Build());
 
         actions.Add(new GAgentAction.Builder("MoveToBuilding")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.GetNearestTarget(BeaconType.BUILDING).transform.position, animationController))
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.GetNearestTarget(BeaconType.BUILDING).transform.position, animationController)) // Should be handled differently. This must be the same target as in the belief. And needs to be avaiable to build. 
             .AddPrecondition(beliefs["IsRested"])
             .AddPrecondition(beliefs["HasFullOre"])
             .AddPrecondition(beliefs["BuildingInFollowRange"])

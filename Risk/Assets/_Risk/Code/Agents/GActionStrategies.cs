@@ -130,17 +130,20 @@ public class MineStrategy : IActionStrategy
 
     readonly CountdownTimer timer;
     readonly AgentStats agentStats;
+    readonly Sensor sensor;
 
     public MineStrategy(float duration, AgentStats agentStats, AnimationController animationController, Sensor sensor) {
         this.agentStats = agentStats;
+        this.sensor = sensor;
+
         timer = new CountdownTimer(duration);
         timer.OnTimerStart += () => {
             agentStats.StartDrawingStamina();
             Completed = false;
             animationController.StartAnimating(AnimType.IsDigging.ToString());
             
-            if(sensor.TryGetBeaconOfType(BeaconType.DEPOSIT, out Beacon beacon)){
-                beacon.AddOccupierId(agentStats.ID);
+            if(sensor.TryGetFreeDeposit(agentStats.ID, out Deposit deposit)){
+                deposit.Occupy(agentStats.ID);
             }
         };
         timer.OnTimerStop += () => {
@@ -150,7 +153,6 @@ public class MineStrategy : IActionStrategy
 
             if(sensor.TryGetBeaconOfType(BeaconType.DEPOSIT, out Beacon beacon)){
                 agentStats.Ore += 10;
-                beacon.ClearOccupierId();
                 beacon.Destroy();
             }
         };
@@ -158,6 +160,9 @@ public class MineStrategy : IActionStrategy
 
     public void Interrupt() {
         agentStats.StopDrawingStamina();
+        if(sensor.TryGetFreeDeposit(agentStats.ID, out Deposit deposit)){
+            deposit.Release(agentStats.ID);
+        }
         timer.Interrupt();
     }
 
