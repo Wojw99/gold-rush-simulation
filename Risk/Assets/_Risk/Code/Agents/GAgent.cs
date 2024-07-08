@@ -59,10 +59,16 @@ public class GAgent : MonoBehaviour
         factory.AddBelief("Nothing", () => false);
         factory.AddBelief("Idle", () => !navMeshAgent.hasPath);
         factory.AddBelief("Moving", () => navMeshAgent.hasPath);
+
         factory.AddBelief("IsDying", () => agentStats.Health < 30);
         factory.AddBelief("IsHealthy", () => agentStats.Health >= 50);
+
         factory.AddBelief("IsExhausted", () => agentStats.Stamina < 20);
         factory.AddBelief("IsRested", () => agentStats.Stamina >= 30);
+
+        factory.AddBelief("IsEager", () => agentStats.Relax >= 40);
+        factory.AddBelief("IsReluctant", () => agentStats.Relax < 40);
+
         factory.AddBelief("HasOre", () => agentStats.Ore > 0);
         factory.AddBelief("HasFullOre", () => agentStats.Ore >= agentStats.MaxOre);
 
@@ -91,8 +97,10 @@ public class GAgent : MonoBehaviour
     void SetupActions() {
         actions = new HashSet<GAgentAction>();
 
+        // - - - - - RELAX - - - - -
+
         actions.Add(new GAgentAction.Builder("Relax")
-            .WithStrategy(new IdleStrategy(1))
+            .WithStrategy(new RelaxStrategy(6, animationController, agentStats))
             .AddEffect(beliefs["Nothing"])
             .Build());
 
@@ -146,6 +154,7 @@ public class GAgent : MonoBehaviour
         actions.Add(new GAgentAction.Builder("SearchForDeposit")
             .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController))
             .AddPrecondition(beliefs["IsRested"])
+            .AddPrecondition(beliefs["IsEager"])
             .AddEffect(beliefs["DepositInFollowRange"])
             .Build());
 
@@ -155,12 +164,14 @@ public class GAgent : MonoBehaviour
                 return deposit.transform.position; 
             }, animationController))
             .AddPrecondition(beliefs["IsRested"])
+            .AddPrecondition(beliefs["IsEager"])
             .AddPrecondition(beliefs["DepositInFollowRange"])
             .AddEffect(beliefs["DepositInInteractionRange"])
             .Build());
 
         actions.Add(new GAgentAction.Builder("Mine")
             .WithStrategy(new MineStrategy(5, agentStats, animationController, interactionSensor))
+            .AddPrecondition(beliefs["IsEager"])
             .AddPrecondition(beliefs["DepositInInteractionRange"])
             .AddEffect(beliefs["HasOre"])
             .AddEffect(beliefs["HasFullOre"])

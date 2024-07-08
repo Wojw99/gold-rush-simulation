@@ -296,6 +296,40 @@ public class IdleStrategy : IActionStrategy
     }
 }
 
+public class RelaxStrategy : IActionStrategy
+{
+    public bool CanPerform => true;
+    public bool Completed { get; private set; }
+
+    readonly CountdownTimer timer;
+
+    public RelaxStrategy(float duration, AnimationController animationController, AgentStats agentStats) {
+        timer = new CountdownTimer(duration);
+        timer.OnTimerStart += () => {
+            Completed = false;
+            agentStats.StartFillingRelax();
+            animationController.StartAnimating(AnimType.IsSitting.ToString());
+        };
+        timer.OnTimerStop += () => {
+            Completed = true;
+            agentStats.StopFillingRelax();
+            animationController.StopAnimating();
+        };
+    }
+
+    public void Interrupt() {
+        timer.Interrupt();
+    }
+
+    public void Start() {
+        timer.Start();
+    }
+
+    public void Update(float deltaTime) {
+        timer.Tick(deltaTime);
+    }
+}
+
 public class WanderStrategy : IActionStrategy
 {
     readonly NavMeshAgent navMeshAgent;

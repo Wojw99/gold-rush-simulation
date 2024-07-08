@@ -10,11 +10,11 @@ public class AgentStats : MonoBehaviour
     [SerializeField] float maxHealth = 100;
     [SerializeField] float maxStamina = 100;
     [SerializeField] float maxOre = 100;
-    [SerializeField] float maxRisk = 100;
+    [SerializeField] float maxRelax = 100;
     float health = 100;
     float stamina = 100;
     float ore = 100;
-    float risk = 100;
+    float relax = 100;
     int id = CalculateId();
     string agentName = "James";
     [SerializeField] int attack = 10;
@@ -29,7 +29,7 @@ public class AgentStats : MonoBehaviour
     bool isFillingStamina = false;
     bool isDrawingStamina = false;
     bool isDrawingHealth = false;
-    bool isFillingRisk = true;
+    bool isFillingRelax = false;
 
     CountdownTimer statsTimer;
 
@@ -39,7 +39,7 @@ public class AgentStats : MonoBehaviour
         health = maxHealth; 
         stamina = maxStamina;
         ore = 0;
-        risk = maxRisk;
+        relax = 0;
         agentName = RandomGenerator.Instance.GenerateName();
     }
 
@@ -74,15 +74,15 @@ public class AgentStats : MonoBehaviour
             stamina -= 5;
         }
 
-        if(isFillingRisk) {
-            risk += 5;
+        if(isFillingRelax) {
+            relax += 10;
         } else {
-            risk -= 5;
+            relax -= 1;
         }
 
         stamina = Mathf.Clamp(stamina, 0, maxStamina);
         health = Mathf.Clamp(health, 0, maxHealth);
-        risk = Mathf.Clamp(risk, 0, maxRisk);
+        relax = Mathf.Clamp(relax, 0, maxRelax);
         StatsChanged?.Invoke();
     }
 
@@ -110,12 +110,12 @@ public class AgentStats : MonoBehaviour
         isFillingHealth = false;
     }
 
-    public void StartDrawingRisk() {
-        isFillingRisk = false;
+    public void StartFillingRelax() {
+        isFillingRelax = true;
     }
 
-    public void StopDrawingRisk() {
-        isFillingRisk = true;
+    public void StopFillingRelax() {
+        isFillingRelax = false;
     }
 
     public float Health {
@@ -151,11 +151,11 @@ public class AgentStats : MonoBehaviour
         }
     }
 
-    public float Risk {
-        get => risk;
+    public float Relax {
+        get => relax;
         set {
-            risk = value;
-            risk = Mathf.Clamp(risk, 0, maxRisk);
+            relax = value;
+            relax = Mathf.Clamp(relax, 0, maxRelax);
             StatsChanged?.Invoke();
         }
     }
@@ -177,7 +177,7 @@ public class AgentStats : MonoBehaviour
     public float MaxHealth => maxHealth;
     public float MaxStamina => maxStamina;
     public float MaxOre => maxOre;
-    public float MaxRisk => maxRisk;
+    public float MaxRelax => maxRelax;
     public int ID => id;
     public string AgentName => agentName;
     public int TeamId => team.id;
@@ -187,13 +187,6 @@ public class AgentStats : MonoBehaviour
             team = value;
         }
     }
-
-    // public int Attack => attack;
-    // public int AttackSpeed => attackSpeed;
-    // public int AttackModifierMin => attackModifierMin;
-    // public int AttackModifierMax => attackModifierMax;
-    // public int AttackSpeedModifierMin => attackSpeedModifierMin;
-    // public int AttackSpeedModifierMax => attackSpeedModifierMax;
 
     void OnDestroy() {
         StatsChanged = null;

@@ -51,7 +51,7 @@ public class AgentUIController : MonoBehaviour
         healthBar.fillAmount = agentStats.Health / agentStats.MaxHealth;
         staminaBar.fillAmount = agentStats.Stamina / agentStats.MaxStamina;
         oreBar.fillAmount = agentStats.Ore / agentStats.MaxOre;
-        riskBar.fillAmount = agentStats.Risk / agentStats.MaxRisk;
+        riskBar.fillAmount = agentStats.Relax / agentStats.MaxRelax;
         nameText.text = agentStats.AgentName;
     }
 
