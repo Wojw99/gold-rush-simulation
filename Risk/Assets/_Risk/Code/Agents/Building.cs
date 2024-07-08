@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class Building : MonoBehaviour
 {
     [SerializeField] List<GameObject> buildingParts;
-    [SerializeField] Image progressBar;
+    [SerializeField] Image oreProgressBar;
+    [SerializeField] Image breedProgressBar;
     [SerializeField] Material materialTemplate;
     Canvas canvas;
     Camera mainCamera;
@@ -14,16 +15,24 @@ public class Building : MonoBehaviour
     [SerializeField] GameObject agentPrefab = null;
     [SerializeField] Team ownerTeam = null;
     [SerializeField] int startSize = 0;
+    [SerializeField] float breedInterval = 100f;
+    CountdownTimer timer;
 
-    void Start() {
+    void Awake() {
         canvas = GetComponentInChildren<Canvas>();
         mainCamera = Camera.main;
+    }
 
+    void Start() {
         foreach (var part in buildingParts) {
             part.SetActive(false);
         }
 
-        progressBar.fillAmount = 0;
+        oreProgressBar.gameObject.SetActive(true);
+        breedProgressBar.gameObject.SetActive(false);
+
+        oreProgressBar.fillAmount = 0;
+        breedProgressBar.fillAmount = 0;
         CurrentSize = startSize;
         if(ownerTeam != null) {
             ColorParts(ownerTeam.color);
@@ -32,6 +41,11 @@ public class Building : MonoBehaviour
 
     void Update() {
         canvas.transform.rotation = HelperFunctions.Instance.GetLookAtCameraRotation(transform, mainCamera);
+
+        if(timer != null) {
+            timer.Tick(Time.deltaTime);
+            breedProgressBar.fillAmount = 1f - timer.Progress;
+        }
     }
 
     public void ContinueBuilding(Team team) {
@@ -47,8 +61,29 @@ public class Building : MonoBehaviour
         }
         CurrentSize += 6;
         if(IsComplete) {
-            BreedNewAgent();
-        }
+            OnBuildingComplete();
+        }   
+    }
+
+    void OnBuildingComplete() {
+        BreedNewAgent();
+        SetupBreedTimer();
+
+        oreProgressBar.gameObject.SetActive(false);
+        breedProgressBar.gameObject.SetActive(true);
+
+        breedProgressBar.color = ownerTeam.color;
+    }
+
+    void SetupBreedTimer() {
+        timer = new CountdownTimer(breedInterval);
+        timer.OnTimerStop += () => {
+            if(IsComplete) {
+                BreedNewAgent();
+                timer.Start();
+            }
+        };
+        timer.Start();
     }
 
     void BreedNewAgent() {
@@ -69,8 +104,10 @@ public class Building : MonoBehaviour
     void ColorParts(Color color) {
         foreach (var part in buildingParts) {
             var partRenderer = part.GetComponent<Renderer>();
-            var partMaterial = new Material(materialTemplate);
-            partMaterial.color = color;
+            var partMaterial = new Material(materialTemplate)
+            {
+                color = color
+            };
             partRenderer.material = partMaterial;
         }
     }
@@ -86,7 +123,7 @@ public class Building : MonoBehaviour
         set {
             _currentSize = value;
             _currentSize = Mathf.Clamp(_currentSize, 0, buildingParts.Count);
-            progressBar.fillAmount = (float)_currentSize / buildingParts.Count;
+            oreProgressBar.fillAmount = (float)_currentSize / buildingParts.Count;
             UpdateActiveState();
         }
     }

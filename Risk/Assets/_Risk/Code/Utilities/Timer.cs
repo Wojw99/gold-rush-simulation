@@ -5,6 +5,9 @@ public abstract class Timer {
     public float Time { get; set; }
     public bool IsRunning { get; protected set; }
 
+    /// <summary>
+    /// Progress of the timer from 1 (start) to 0 (end)
+    /// </summary>
     public float Progress => Time / initialTime;
 
     public Action OnTimerStart = delegate { };
