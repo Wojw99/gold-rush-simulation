@@ -10,9 +10,11 @@ public class AgentStats : MonoBehaviour
     [SerializeField] float maxHealth = 100;
     [SerializeField] float maxStamina = 100;
     [SerializeField] float maxOre = 100;
+    [SerializeField] float maxRisk = 100;
     float health = 100;
     float stamina = 100;
     float ore = 100;
+    float risk = 100;
     int id = CalculateId();
     string agentName = "James";
     [SerializeField] int attack = 10;
@@ -27,6 +29,7 @@ public class AgentStats : MonoBehaviour
     bool isFillingStamina = false;
     bool isDrawingStamina = false;
     bool isDrawingHealth = false;
+    bool isFillingRisk = true;
 
     CountdownTimer statsTimer;
 
@@ -36,6 +39,7 @@ public class AgentStats : MonoBehaviour
         health = maxHealth; 
         stamina = maxStamina;
         ore = 0;
+        risk = maxRisk;
         agentName = RandomGenerator.Instance.GenerateName();
     }
 
@@ -70,8 +74,15 @@ public class AgentStats : MonoBehaviour
             stamina -= 5;
         }
 
+        if(isFillingRisk) {
+            risk += 5;
+        } else {
+            risk -= 5;
+        }
+
         stamina = Mathf.Clamp(stamina, 0, maxStamina);
         health = Mathf.Clamp(health, 0, maxHealth);
+        risk = Mathf.Clamp(risk, 0, maxRisk);
         StatsChanged?.Invoke();
     }
 
@@ -97,6 +108,14 @@ public class AgentStats : MonoBehaviour
 
     public void StopFillingHealth() {
         isFillingHealth = false;
+    }
+
+    public void StartDrawingRisk() {
+        isFillingRisk = false;
+    }
+
+    public void StopDrawingRisk() {
+        isFillingRisk = true;
     }
 
     public float Health {
@@ -132,6 +151,15 @@ public class AgentStats : MonoBehaviour
         }
     }
 
+    public float Risk {
+        get => risk;
+        set {
+            risk = value;
+            risk = Mathf.Clamp(risk, 0, maxRisk);
+            StatsChanged?.Invoke();
+        }
+    }
+
     public float CalculateFinalAttack() {
         var finalAttack = attack + UnityEngine.Random.Range(attackModifierMin, attackModifierMax);
 
@@ -149,6 +177,7 @@ public class AgentStats : MonoBehaviour
     public float MaxHealth => maxHealth;
     public float MaxStamina => maxStamina;
     public float MaxOre => maxOre;
+    public float MaxRisk => maxRisk;
     public int ID => id;
     public string AgentName => agentName;
     public int TeamId => team.id;

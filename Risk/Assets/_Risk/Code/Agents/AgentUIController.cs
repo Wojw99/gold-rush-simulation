@@ -11,6 +11,7 @@ public class AgentUIController : MonoBehaviour
     [SerializeField] Image healthBar;
     [SerializeField] Image staminaBar;
     [SerializeField] Image oreBar;
+    [SerializeField] Image riskBar;
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI goalText;
     [SerializeField] TextMeshProUGUI actionText;
@@ -50,6 +51,7 @@ public class AgentUIController : MonoBehaviour
         healthBar.fillAmount = agentStats.Health / agentStats.MaxHealth;
         staminaBar.fillAmount = agentStats.Stamina / agentStats.MaxStamina;
         oreBar.fillAmount = agentStats.Ore / agentStats.MaxOre;
+        riskBar.fillAmount = agentStats.Risk / agentStats.MaxRisk;
         nameText.text = agentStats.AgentName;
     }
 

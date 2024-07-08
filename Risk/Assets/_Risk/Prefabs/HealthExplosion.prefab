@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1385228897116274370}
   - component: {fileID: 3804918473359789830}
-  - component: {fileID: 1270408040383288294}
-  - component: {fileID: 3801328067754406967}
+  - component: {fileID: 6909930946778756927}
   m_Layer: 0
-  m_Name: Explosion
+  m_Name: HealthExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,7 +55,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.05
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1270408040383288294
+--- !u!114 &6909930946778756927
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,23 +64,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7589322315697367990}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05ac0a6f76adb3240a05576c2df5ee7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  beaconType: 4
---- !u!114 &3801328067754406967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7589322315697367990}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 329fd22f04a80a8409e9825957de24e4, type: 3}
+  m_Script: {fileID: 11500000, guid: 29e1971dc36455543b471acb4f17e60f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lifetime: 1
+  type: 1
+  damageAmount: 10
 --- !u!1001 &2084834910487588911
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -94,6 +82,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Explosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 1198941193974080643, guid: 8eb503696b886e04faff8fc0f480d473,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.5354954
       objectReference: {fileID: 0}
     - target: {fileID: 3986179179329749341, guid: 8eb503696b886e04faff8fc0f480d473,
         type: 3}
@@ -149,6 +142,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4596544553357837919, guid: 8eb503696b886e04faff8fc0f480d473,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.47936016
+      objectReference: {fileID: 0}
+    - target: {fileID: 8523712032460173260, guid: 8eb503696b886e04faff8fc0f480d473,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.35845056
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
