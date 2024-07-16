@@ -62,6 +62,7 @@
      <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
      <Compile Include="Assets\_Risk\Code\Utilities\Timer.cs" />
      <Compile Include="Assets\_Risk\Code\Agents\AgentStats.cs" />
+     <Compile Include="Assets\_Risk\Code\Agents\AgentMemory.cs" />
      <Compile Include="Assets\_Risk\Code\Agents\GAgent.cs" />
      <Compile Include="Assets\_Risk\Code\Agents\AgentUIController.cs" />
      <Compile Include="Assets\RTS_Camera\Scripts\RTS_Camera.cs" />

@@ -387,6 +387,7 @@ GameObject:
   - component: {fileID: 2101251570433856033}
   - component: {fileID: 3529186047171842163}
   - component: {fileID: 8263602189685992850}
+  - component: {fileID: 2078177378698039316}
   - component: {fileID: 4488952798117922279}
   - component: {fileID: 1640732010983100038}
   - component: {fileID: 7234050820136317368}
@@ -501,6 +502,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dummyVisualModel: {fileID: 3516104902887102829}
+--- !u!114 &2078177378698039316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4787937725192321458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d09ff30e719924439cfb48a43ee89eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4488952798117922279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,7 +542,8 @@ MonoBehaviour:
   maxHealth: 100
   maxStamina: 100
   maxOre: 20
-  maxRisk: 100
+  maxRelax: 100
+  maxCost: 100
   attack: 10
   attackSpeed: 1
   team: {fileID: 11400000, guid: ecf3cca9413403f40868299e8c822625, type: 2}

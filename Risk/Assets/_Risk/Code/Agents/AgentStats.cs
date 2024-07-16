@@ -1,8 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class AgentStats : MonoBehaviour
@@ -11,12 +7,15 @@ public class AgentStats : MonoBehaviour
     [SerializeField] float maxStamina = 100;
     [SerializeField] float maxOre = 100;
     [SerializeField] float maxRelax = 100;
+    [SerializeField] int maxCost = 100;
     float health = 100;
     float stamina = 100;
     float ore = 100;
     float relax = 100;
+    [SerializeField] int boldness = 100;
+    [SerializeField] int searchCost = 50;
     int id = CalculateId();
-    string agentName = "James";
+    [SerializeField] string agentName = null;
     [SerializeField] int attack = 10;
     [SerializeField] float attackSpeed = 1;
     [SerializeField] Team team;
@@ -40,7 +39,9 @@ public class AgentStats : MonoBehaviour
         stamina = maxStamina;
         ore = 0;
         relax = 0;
-        agentName = RandomGenerator.Instance.GenerateName();
+        if(agentName == null) {
+            agentName = RandomGenerator.Instance.GenerateName();
+        }
     }
 
     void Start() {
@@ -59,7 +60,6 @@ public class AgentStats : MonoBehaviour
         };
         statsTimer.Start();
     }
-
 
     void UpdateStats() {
         if(isFillingHealth) {
@@ -84,6 +84,11 @@ public class AgentStats : MonoBehaviour
         health = Mathf.Clamp(health, 0, maxHealth);
         relax = Mathf.Clamp(relax, 0, maxRelax);
         StatsChanged?.Invoke();
+    }
+
+    public int CalculateTravelCost() {
+        int cost = UnityEngine.Random.Range(0, maxCost) - boldness;
+        return Math.Clamp(cost, 0, maxCost);
     }
 
     public void StartDrawingStamina() {
@@ -181,6 +186,9 @@ public class AgentStats : MonoBehaviour
     public int ID => id;
     public string AgentName => agentName;
     public int TeamId => team.id;
+    public int SearchCost => searchCost;
+    public int Boldness => boldness;
+    
     public Team Team {
         get => team;
         set {

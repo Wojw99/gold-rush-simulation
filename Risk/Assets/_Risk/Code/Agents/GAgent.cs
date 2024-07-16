@@ -17,6 +17,7 @@ public class GAgent : MonoBehaviour
     AnimationController animationController;
     Rigidbody rb;
     AgentStats agentStats;
+    AgentMemory agentMemory;
 
     GameObject target;
     Vector3 destination;
@@ -33,6 +34,7 @@ public class GAgent : MonoBehaviour
     IGPlanner goapPlanner;
 
     void Awake() {
+        agentMemory = GetComponent<AgentMemory>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         animationController = GetComponent<AnimationController>();
         agentStats = GetComponent<AgentStats>();
@@ -75,6 +77,8 @@ public class GAgent : MonoBehaviour
         factory.AddBelief("DepositInFollowRange", () => followSensor.TryGetFreeDeposit(agentStats.ID, out _));
         factory.AddBelief("DepositInInteractionRange", () => interactionSensor.TryGetFreeDeposit(agentStats.ID, out _));
 
+        factory.AddBelief("RemembersRest", () => agentMemory.ContainsTargetOfType(BeaconType.REST));
+        factory.AddBelief("EnoughBoldness", () => agentStats.Boldness > 50);
         factory.AddBelief("RestInFollowRange", () => followSensor.ContainsTargetOfType(BeaconType.REST));
         factory.AddBelief("RestInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.REST));
         
@@ -130,9 +134,20 @@ public class GAgent : MonoBehaviour
 
         // - - - - - RESTING - - - - -
 
+        actions.Add(new GAgentAction.Builder("TravelToRest")
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => agentMemory.GetNearestTarget(BeaconType.REST).transform.position, animationController))
+            .AddPrecondition(beliefs["RemembersRest"])
+            // .WithCost(agentStats.CalculateTravelCost())
+            .WithCost(10)
+            .AddEffect(beliefs["RestInFollowRange"])
+            .Build());
+
         actions.Add(new GAgentAction.Builder("SearchForRest")
             .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController))
+            // .WithCost(agentStats.SearchCost)
+            .AddPrecondition(beliefs["EnoughBoldness"])
             .AddEffect(beliefs["RestInFollowRange"])
+            .WithCost(5)
             .Build());
 
         // TODO: Consider saving the target in the InteractionTarget object when the target is first time spotted. In this point Target in follow sensor can be not the same as in belief.

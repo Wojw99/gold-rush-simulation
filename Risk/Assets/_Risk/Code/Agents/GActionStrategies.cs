@@ -347,6 +347,7 @@ public class WanderStrategy : IActionStrategy
     }
 
     public void Start() {
+        Debug.Log("dupa Start wander");
         for (int i = 0; i < 5; i++) {
             Vector3 randomDirection = (UnityEngine.Random.insideUnitSphere * wanderRange).With(y: 0);
             NavMeshHit hit;
