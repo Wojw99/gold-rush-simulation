@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="RowVillagers" class="row">
+        <ui:Label tabindex="-1" text="Villagers" display-tooltip-when-elided="true" name="EntryTeam" class="text entry-text" />
+        <ui:Label tabindex="-1" text="3" display-tooltip-when-elided="true" name="EntryCount" class="text entry-text" />
+        <ui:Label tabindex="-1" text="178" display-tooltip-when-elided="true" name="EntryOre" class="text entry-text" />
+        <ui:Label tabindex="-1" text="71" display-tooltip-when-elided="true" name="EntryBuilding" class="text entry-text" />
+        <ui:Label tabindex="-1" text="18" display-tooltip-when-elided="true" name="EntryKills" class="text entry-text" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -54,6 +54,7 @@
      <Compile Include="Assets\_Risk\Code\Agents\AnimationController.cs" />
      <Compile Include="Assets\RTS_Camera\Demo\TargetSelector.cs" />
      <Compile Include="Assets\_Risk\Code\Utilities\RandomGenerator.cs" />
+     <Compile Include="Assets\_Risk\Code\Utilities\StatsUIController.cs" />
      <Compile Include="Assets\_Risk\Code\Utilities\PlayerInteraction.cs" />
      <Compile Include="Assets\_Risk\Code\Utilities\MainCameraController.cs" />
      <Compile Include="Assets\_Risk\Code\Utilities\TimeManager.cs" />
@@ -80,6 +81,7 @@
      <None Include="Assets\RTS_Camera\Demo\Projectors\Shaders\ProjectorMultiply.shader" />
      <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Water_Shader_WebGl.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+     <None Include="Assets\_Risk\Art\UI\TeamRow.uxml" />
      <None Include="Assets\RTS_Camera\Demo\Projectors\Guidelines.txt" />
      <None Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Modular_NPC\Shaders\PT_Modular_NPC_Shader_Toon.shader" />
      <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Plants_Shader.shader" />

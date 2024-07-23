@@ -1,26 +1,30 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/_Risk/Art/UI/MainView.uss?fileID=7433441132597879392&amp;guid=79ef34c6cc0c0674b89eb2251545afed&amp;type=3#MainView" />
-    <ui:VisualElement name="Panel" class="panel">
-        <ui:VisualElement name="Header" class="header">
-            <ui:VisualElement name="IconTeam" class="icon" style="background-image: none;" />
-            <ui:VisualElement name="IconCount" class="icon" style="background-image: url(&apos;project://database/Assets/_Risk/Art/UI/Img/user-white.png?fileID=21300000&amp;guid=f630fd22831e3684bac0e536f3ab6171&amp;type=3#user-white&apos;);" />
-            <ui:VisualElement name="IconOre" class="icon" style="background-image: url(&apos;project://database/Assets/_Risk/Art/UI/Img/coal-white.png?fileID=21300000&amp;guid=22db239600e0f3a48b9045b0e1515a24&amp;type=3#coal-white&apos;);" />
-            <ui:VisualElement name="IconBuilding" class="icon" style="background-image: url(&apos;project://database/Assets/_Risk/Art/UI/Img/building-white.png?fileID=21300000&amp;guid=b88af07a51942f642a3f59415343626f&amp;type=3#building-white&apos;);" />
-            <ui:VisualElement name="IconKills" class="icon" style="background-image: url(&apos;project://database/Assets/_Risk/Art/UI/Img/sword-white.png?fileID=21300000&amp;guid=5ddbb04ecd59e99419a236c42f0e4ab0&amp;type=3#sword-white&apos;);" />
+    <ui:VisualElement name="Container" class="container">
+        <ui:VisualElement name="Panel" class="panel">
+            <ui:VisualElement name="Header" class="header">
+                <ui:VisualElement name="IconTeam" class="icon" style="background-image: none;" />
+                <ui:VisualElement name="IconCount" class="icon" style="background-image: url(&apos;project://database/Assets/_Risk/Art/UI/Img/user-white.png?fileID=21300000&amp;guid=f630fd22831e3684bac0e536f3ab6171&amp;type=3#user-white&apos;);" />
+                <ui:VisualElement name="IconOre" class="icon" style="background-image: url(&apos;project://database/Assets/_Risk/Art/UI/Img/coal-white.png?fileID=21300000&amp;guid=22db239600e0f3a48b9045b0e1515a24&amp;type=3#coal-white&apos;);" />
+                <ui:VisualElement name="IconBuilding" class="icon" style="background-image: url(&apos;project://database/Assets/_Risk/Art/UI/Img/building-white.png?fileID=21300000&amp;guid=b88af07a51942f642a3f59415343626f&amp;type=3#building-white&apos;);" />
+                <ui:VisualElement name="IconKills" class="icon" style="background-image: url(&apos;project://database/Assets/_Risk/Art/UI/Img/sword-white.png?fileID=21300000&amp;guid=5ddbb04ecd59e99419a236c42f0e4ab0&amp;type=3#sword-white&apos;);" />
+            </ui:VisualElement>
+            <ui:VisualElement name="RowKillers" class="row">
+                <ui:Label tabindex="-1" text="Killlers" display-tooltip-when-elided="true" name="EntryTeam" class="text entry-text" />
+                <ui:Label tabindex="-1" text="24" display-tooltip-when-elided="true" name="EntryCount" class="text entry-text" />
+                <ui:Label tabindex="-1" text="24" display-tooltip-when-elided="true" name="EntryOre" class="text entry-text" />
+                <ui:Label tabindex="-1" text="24" display-tooltip-when-elided="true" name="EntryBuilding" class="text entry-text" />
+                <ui:Label tabindex="-1" text="24" display-tooltip-when-elided="true" name="EntryKills" class="text entry-text" />
+            </ui:VisualElement>
+            <ui:VisualElement name="RowVillagers" class="row">
+                <ui:Label tabindex="-1" text="Villagers" display-tooltip-when-elided="true" name="EntryTeam" class="text entry-text" />
+                <ui:Label tabindex="-1" text="3" display-tooltip-when-elided="true" name="EntryCount" class="text entry-text" />
+                <ui:Label tabindex="-1" text="178" display-tooltip-when-elided="true" name="EntryOre" class="text entry-text" />
+                <ui:Label tabindex="-1" text="71" display-tooltip-when-elided="true" name="EntryBuilding" class="text entry-text" />
+                <ui:Label tabindex="-1" text="18" display-tooltip-when-elided="true" name="EntryKills" class="text entry-text" />
+            </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="RowKillers" class="row">
-            <ui:Label tabindex="-1" text="Killlers" display-tooltip-when-elided="true" name="EntryTeam" class="text entry-text" />
-            <ui:Label tabindex="-1" text="24" display-tooltip-when-elided="true" name="EntryCount" class="text entry-text" />
-            <ui:Label tabindex="-1" text="24" display-tooltip-when-elided="true" name="EntryOre" class="text entry-text" />
-            <ui:Label tabindex="-1" text="24" display-tooltip-when-elided="true" name="EntryBuilding" class="text entry-text" />
-            <ui:Label tabindex="-1" text="24" display-tooltip-when-elided="true" name="EntryKills" class="text entry-text" />
-        </ui:VisualElement>
-        <ui:VisualElement name="RowVillagers" class="row">
-            <ui:Label tabindex="-1" text="Villagers" display-tooltip-when-elided="true" name="EntryTeam" class="text entry-text" />
-            <ui:Label tabindex="-1" text="3" display-tooltip-when-elided="true" name="EntryCount" class="text entry-text" />
-            <ui:Label tabindex="-1" text="178" display-tooltip-when-elided="true" name="EntryOre" class="text entry-text" />
-            <ui:Label tabindex="-1" text="71" display-tooltip-when-elided="true" name="EntryBuilding" class="text entry-text" />
-            <ui:Label tabindex="-1" text="18" display-tooltip-when-elided="true" name="EntryKills" class="text entry-text" />
-        </ui:VisualElement>
+        <ui:VisualElement name="Empty" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
     </ui:VisualElement>
+    <ui:VisualElement name="Container2" class="container2" />
 </ui:UXML>
