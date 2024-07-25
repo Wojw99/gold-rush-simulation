@@ -22,6 +22,8 @@ public class PlayerInteraction : MonoBehaviour
 
     [SerializeField] Camera mainCamera;
     [SerializeField] GameObject selectionPrefab;
+    [SerializeField] GameObject agentSelectionMarkerPrefab;
+    [SerializeField] GameObject agentHoverMarkerPrefab;
     [SerializeField] GameObject[] prefabsArray = new GameObject[10];
     
     int _selectedPrefabIndex = -1;
@@ -39,6 +41,7 @@ public class PlayerInteraction : MonoBehaviour
         SelectAgent();
         ClearSelection();
         ManageTime();
+        HandleAgentHoverMarker();
     }
 
     void ManageTime() {
@@ -73,6 +76,7 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    GameObject selectionMarker = null;
     void SelectAgent() {
         if (SelectedPrefabIndex != -1) return;
         if (Input.GetMouseButtonDown(0)) {
@@ -82,11 +86,34 @@ public class PlayerInteraction : MonoBehaviour
                 var agent = hit.collider.gameObject;
                 if(agent.TryGetComponent(out AgentStats agentStats)) {
                     SelectedAgent = agent;
-                    Debug.Log("Selected agent: " + agentStats.AgentName);
                 }
             }
         }
     }
+
+    // To another class:
+    GameObject hoveredAgent = null;
+    GameObject hoverMarker = null;
+    void HandleAgentHoverMarker() {
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var layerMask = LayerMask.GetMask("Agent");
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask)) {
+            var agent = hit.collider.gameObject;
+            if(hoveredAgent == null && hoverMarker == null && agent != SelectedAgent) {
+                hoveredAgent = agent;
+                hoverMarker = Instantiate(agentHoverMarkerPrefab, agent.transform);
+            }
+        } else {
+            ClearHoverMarker();
+        }
+    }
+
+    void ClearHoverMarker() {
+        hoveredAgent = null;
+        Destroy(hoverMarker);
+        hoverMarker = null;
+    }
+    // - - - -  - - - -
 
     void ClearSelectionMarker() {
         if (SelectionMarker != null) {
@@ -162,6 +189,19 @@ public class PlayerInteraction : MonoBehaviour
         set {
             _selectedAgent = value;
             SelectionChanged?.Invoke();
+            HandleAgentSelectionMarker(_selectedAgent);
+        }
+    }
+
+    void HandleAgentSelectionMarker(GameObject selectedAgent) {
+        if(selectionMarker != null) {
+            Destroy(selectionMarker);
+        }
+        if(selectedAgent != null) {
+            selectionMarker = Instantiate(agentSelectionMarkerPrefab, selectedAgent.transform);
+            if(hoverMarker != null) {
+                ClearHoverMarker();
+            }
         }
     }
 

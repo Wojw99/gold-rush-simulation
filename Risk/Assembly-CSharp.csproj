@@ -43,38 +43,38 @@
      <Compile Include="Assets\_Risk\Code\Agents\GAgentBelief.cs" />
      <Compile Include="Assets\_Risk\Code\Agents\Deposit.cs" />
      <Compile Include="Assets\MenuItem.cs" />
-     <Compile Include="Assets\RTS_Camera\Demo\DemoScene.cs" />
      <Compile Include="Assets\_Risk\Code\Utilities\HelperFunctions.cs" />
      <Compile Include="Assets\_Risk\Code\Agents\GActionStrategies.cs" />
      <Compile Include="Assets\_Risk\Code\Agents\Building.cs" />
      <Compile Include="Assets\_Risk\Code\SO\Team.cs" />
-     <Compile Include="Assets\_Risk\Code\Agents\Sensor.cs" />
      <Compile Include="Assets\_Risk\Code\Utilities\Utilities.cs" />
-     <Compile Include="Assets\_Risk\Code\Agents\InteractionTarget.cs" />
-     <Compile Include="Assets\_Risk\Code\Agents\AnimationController.cs" />
-     <Compile Include="Assets\RTS_Camera\Demo\TargetSelector.cs" />
      <Compile Include="Assets\_Risk\Code\Utilities\RandomGenerator.cs" />
      <Compile Include="Assets\_Risk\Code\Utilities\StatsUIController.cs" />
-     <Compile Include="Assets\_Risk\Code\Utilities\PlayerInteraction.cs" />
      <Compile Include="Assets\_Risk\Code\Utilities\MainCameraController.cs" />
      <Compile Include="Assets\_Risk\Code\Utilities\TimeManager.cs" />
-     <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\MouseLook.cs" />
      <Compile Include="Assets\_Risk\Code\Agents\Explosion.cs" />
      <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
      <Compile Include="Assets\_Risk\Code\Utilities\Timer.cs" />
-     <Compile Include="Assets\_Risk\Code\Agents\AgentStats.cs" />
-     <Compile Include="Assets\_Risk\Code\Agents\AgentMemory.cs" />
      <Compile Include="Assets\_Risk\Code\Agents\GAgent.cs" />
-     <Compile Include="Assets\_Risk\Code\Agents\AgentUIController.cs" />
      <Compile Include="Assets\RTS_Camera\Scripts\RTS_Camera.cs" />
-     <Compile Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Scripts\PT_Create_Prefab.cs" />
-     <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\PlayerMovement.cs" />
      <Compile Include="Assets\_Risk\Code\Utilities\UIBottomMenuBuilder.cs" />
      <Compile Include="Assets\_Risk\Code\Agents\GAgentGoal.cs" />
-     <Compile Include="Assets\_Risk\Code\Agents\GAgentAction.cs" />
-     <Compile Include="Assets\_Risk\Code\Agents\GPlanner.cs" />
      <Compile Include="Assets\_Risk\Code\Agents\Beacon.cs" />
      <Compile Include="Assets\_Risk\Code\Utilities\Autodestruction.cs" />
+     <Compile Include="Assets\RTS_Camera\Demo\DemoScene.cs" />
+     <Compile Include="Assets\_Risk\Code\Agents\Sensor.cs" />
+     <Compile Include="Assets\_Risk\Code\Agents\InteractionTarget.cs" />
+     <Compile Include="Assets\_Risk\Code\Agents\AnimationController.cs" />
+     <Compile Include="Assets\RTS_Camera\Demo\TargetSelector.cs" />
+     <Compile Include="Assets\_Risk\Code\Utilities\PlayerInteraction.cs" />
+     <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\MouseLook.cs" />
+     <Compile Include="Assets\_Risk\Code\Agents\AgentStats.cs" />
+     <Compile Include="Assets\_Risk\Code\Agents\AgentMemory.cs" />
+     <Compile Include="Assets\_Risk\Code\Agents\AgentUIController.cs" />
+     <Compile Include="Assets\Polytope Studio\Lowpoly_Characters\Sources\Scripts\PT_Create_Prefab.cs" />
+     <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\PlayerMovement.cs" />
+     <Compile Include="Assets\_Risk\Code\Agents\GAgentAction.cs" />
+     <Compile Include="Assets\_Risk\Code\Agents\GPlanner.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\RTS_Camera\Demo\Projectors\Shaders\ProjectorLight.shader" />
@@ -750,6 +750,12 @@
     <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.VSCode.Editor">
+        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VisualEffectGraph.Runtime">
+        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualEffectGraph.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.RenderPipelines.Core.Runtime">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
     </Reference>
@@ -801,11 +807,14 @@
     <Reference Include="Unity.RenderPipelines.Core.Editor">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.VisualScripting.Flow">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualScripting.Flow.dll</HintPath>
+    <Reference Include="Unity.VisualEffectGraph.Editor">
+        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualEffectGraph.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.Flow.Editor">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualScripting.Flow.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.Flow">
+        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VisualScripting.Flow.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics.Editor">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
@@ -857,9 +866,6 @@
     </Reference>
     <Reference Include="Unity.AI.Navigation.Editor.ConversionSystem">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.AI.Navigation.Editor.ConversionSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VSCode.Editor">
-        <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Editor">
         <HintPath>D:\git-repos\risk\Risk\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Editor.dll</HintPath>

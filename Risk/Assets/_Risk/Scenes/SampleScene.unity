@@ -5923,6 +5923,10 @@ MonoBehaviour:
   mainCamera: {fileID: 330585545}
   selectionPrefab: {fileID: 1643771108068043612, guid: 2e43231a563fddc4d849754dc0d8b05e,
     type: 3}
+  agentSelectionMarkerPrefab: {fileID: 7699944504529810422, guid: abf8cd3f933929840892f809f65d8d95,
+    type: 3}
+  agentHoverMarkerPrefab: {fileID: 7699944504529810422, guid: 9cdb3c4c8b8e90e4696dc128a99ea1f8,
+    type: 3}
   prefabsArray:
   - {fileID: 8528804228097553254, guid: 384ffe357d83ff340989839af5945365, type: 3}
   - {fileID: 4870009530321470272, guid: 384ffe357d83ff340989839af5945365, type: 3}
