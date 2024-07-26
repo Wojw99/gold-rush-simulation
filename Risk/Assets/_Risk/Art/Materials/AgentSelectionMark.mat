@@ -112,7 +112,7 @@ Material:
     - _MainTexTilling: {r: 1, g: 1, b: 0, a: 0}
     - _Speed: {r: 2, g: 2, b: 0, a: 0}
     - _Speed2: {r: 2, g: 2, b: 0, a: 0}
-    - _TexColor: {r: 5.564573, g: 5.992157, b: 0, a: 1}
+    - _TexColor: {r: 5.564573, g: 5.584314, b: 0, a: 1}
     - _TexSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _TexTilling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

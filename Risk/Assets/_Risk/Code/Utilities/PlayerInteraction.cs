@@ -26,6 +26,11 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] GameObject agentHoverMarkerPrefab;
     [SerializeField] GameObject[] prefabsArray = new GameObject[10];
     
+    [SerializeField] KeyCode fastForwardKey = KeyCode.E;
+    [SerializeField] KeyCode playPauseTimeKey = KeyCode.Space;
+    [SerializeField] KeyCode slowDownTimeKey = KeyCode.Q;
+    [SerializeField] KeyCode clearSelectionKey = KeyCode.Escape;
+
     int _selectedPrefabIndex = -1;
     GameObject _selectedAgent = null;
     GameObject _selectionMarker;
@@ -45,22 +50,22 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     void ManageTime() {
-        if(Input.GetKeyDown(KeyCode.RightBracket)) 
+        if(Input.GetKeyDown(fastForwardKey)) 
         {
             TimeManager.instance.FastForwardTime();
         } 
-        else if (Input.GetKeyDown(KeyCode.Space)) 
+        else if (Input.GetKeyDown(playPauseTimeKey)) 
         {
             TimeManager.instance.PlayPauseTime();
         } 
-        else if (Input.GetKeyDown(KeyCode.LeftBracket)) 
+        else if (Input.GetKeyDown(slowDownTimeKey)) 
         {
             TimeManager.instance.SlowDownTime();
         }
     }
 
     void ClearSelection () {
-        if(Input.GetKeyDown(KeyCode.Escape)) {
+        if(Input.GetKeyDown(clearSelectionKey)) {
             SelectedPrefabIndex = -1;
             SelectedAgent = null;
             ClearSelectionMarker();
