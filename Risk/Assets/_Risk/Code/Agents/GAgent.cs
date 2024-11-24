@@ -85,9 +85,9 @@ public class GAgent : MonoBehaviour
         factory.AddBelief("HealInFollowRange", () => followSensor.ContainsTargetOfType(BeaconType.HEAL));
         factory.AddBelief("HealInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.HEAL));
         
-        factory.AddBelief("BuildingInFollowRange", () => followSensor.TryGetAvailableBuilding(agentStats.TeamId, out _));
-        factory.AddBelief("BuildingInInteractionRange", () => interactionSensor.TryGetAvailableBuilding(agentStats.TeamId, out _));
-        factory.AddBelief("BuildingIsComplete", () => interactionSensor.TryGetAvailableBuilding(agentStats.TeamId, out var building) && building.IsComplete);
+        factory.AddBelief("BuildingInFollowRange", () => followSensor.TryGetAvailableStorage(agentStats.TeamId, out _));
+        factory.AddBelief("BuildingInInteractionRange", () => interactionSensor.TryGetAvailableStorage(agentStats.TeamId, out _));
+        factory.AddBelief("BuildingIsComplete", () => interactionSensor.TryGetAvailableStorage(agentStats.TeamId, out var building) && building.IsComplete);
 
         factory.AddBelief("MarkerExists", () => PlayerInteraction.instance.GetMarkerPosition() != Vector3.zero && PlayerInteraction.instance.SelectedAgent == gameObject);
         factory.AddBelief("MarkerInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.MARKER));
@@ -202,7 +202,7 @@ public class GAgent : MonoBehaviour
             .Build());
 
         actions.Add(new GAgentAction.Builder("MoveToBuilding")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.GetNearestTarget(BeaconType.BUILDING).transform.position, animationController)) // Should be handled differently. This must be the same target as in the belief. And needs to be avaiable to build. 
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.GetNearestTarget(BeaconType.STORAGE).transform.position, animationController)) // Should be handled differently. This must be the same target as in the belief. And needs to be avaiable to build. 
             .AddPrecondition(beliefs["IsRested"])
             .AddPrecondition(beliefs["HasFullOre"])
             .AddPrecondition(beliefs["BuildingInFollowRange"])

@@ -39,7 +39,7 @@ public class AgentStats : MonoBehaviour
         stamina = maxStamina;
         ore = 0;
         relax = 0;
-        if(agentName == null) {
+        if(agentName.IsNullOrEmpty()) {
             agentName = RandomGenerator.Instance.GenerateName();
         }
     }

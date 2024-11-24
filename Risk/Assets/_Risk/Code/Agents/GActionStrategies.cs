@@ -101,9 +101,9 @@ public class BuildStrategy : IActionStrategy
             Completed = true;
             animationController.StopAnimating();
 
-            if(sensor.TryGetBuilding(out Building building)){
+            if(sensor.TryGetStorage(out Building building)){
+                building.AddGold(agentStats.Ore);
                 agentStats.Ore = 0;
-                building.ContinueBuilding(agentStats.Team);
             }
         };
     }

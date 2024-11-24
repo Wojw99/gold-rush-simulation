@@ -85,22 +85,16 @@ public class Sensor : MonoBehaviour
         );
     }
 
-    public bool ContainsAvailableBuilding(int teamId) {
-        return targets.Exists(
-            target => target.BeaconType == BeaconType.BUILDING && target.GameObject.GetComponent<Building>().CanBeBuilt(teamId)
-        );
-    }
-
-    public bool TryGetAvailableBuilding(int teamId, out Building building) {
+    public bool TryGetAvailableStorage(int teamId, out Building building) {
         var nearestTarget = targets.Find(
-            target => target.BeaconType == BeaconType.BUILDING && target.GameObject.GetComponent<Building>().CanBeBuilt(teamId)
+            target => target.BeaconType == BeaconType.STORAGE
         );
         building = nearestTarget?.GameObject.GetComponent<Building>();
         return building != null;
     }
 
-    public bool TryGetBuilding(out Building building) {
-        var nearestTarget = GetNearestTarget(BeaconType.BUILDING);
+    public bool TryGetStorage(out Building building) {
+        var nearestTarget = GetNearestTarget(BeaconType.STORAGE);
         building = nearestTarget?.GetComponent<Building>();
         return building != null;
     }
