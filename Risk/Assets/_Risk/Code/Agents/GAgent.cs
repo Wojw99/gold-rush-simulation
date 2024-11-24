@@ -12,6 +12,7 @@ public class GAgent : MonoBehaviour
     [Header("Sensors")]
     [SerializeField] Sensor followSensor;
     [SerializeField] Sensor interactionSensor;
+    [SerializeField] Beacon camp;
 
     NavMeshAgent navMeshAgent;
     AnimationController animationController;
@@ -66,28 +67,23 @@ public class GAgent : MonoBehaviour
         factory.AddBelief("IsHealthy", () => agentStats.Health >= 50);
 
         factory.AddBelief("IsExhausted", () => agentStats.Stamina < 20);
-        factory.AddBelief("IsRested", () => agentStats.Stamina >= 30);
-
-        factory.AddBelief("IsEager", () => agentStats.Relax >= 40);
-        factory.AddBelief("IsReluctant", () => agentStats.Relax < 40);
+        factory.AddBelief("IsRested", () => agentStats.Stamina >= 20);
 
         factory.AddBelief("HasOre", () => agentStats.Ore > 0);
+        factory.AddBelief("HasNoOre", () => agentStats.Ore <= 0);
         factory.AddBelief("HasFullOre", () => agentStats.Ore >= agentStats.MaxOre);
 
         factory.AddBelief("DepositInFollowRange", () => followSensor.TryGetFreeDeposit(agentStats.ID, out _));
         factory.AddBelief("DepositInInteractionRange", () => interactionSensor.TryGetFreeDeposit(agentStats.ID, out _));
 
-        factory.AddBelief("RemembersRest", () => agentMemory.ContainsTargetOfType(BeaconType.REST));
-        factory.AddBelief("EnoughBoldness", () => agentStats.Boldness > 50);
         factory.AddBelief("RestInFollowRange", () => followSensor.ContainsTargetOfType(BeaconType.REST));
         factory.AddBelief("RestInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.REST));
         
         factory.AddBelief("HealInFollowRange", () => followSensor.ContainsTargetOfType(BeaconType.HEAL));
         factory.AddBelief("HealInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.HEAL));
         
-        factory.AddBelief("BuildingInFollowRange", () => followSensor.TryGetAvailableStorage(agentStats.TeamId, out _));
-        factory.AddBelief("BuildingInInteractionRange", () => interactionSensor.TryGetAvailableStorage(agentStats.TeamId, out _));
-        factory.AddBelief("BuildingIsComplete", () => interactionSensor.TryGetAvailableStorage(agentStats.TeamId, out var building) && building.IsComplete);
+        factory.AddBelief("StorageInFollowRange", () => followSensor.TryGetAvailableStorage(agentStats.TeamId, out _));
+        factory.AddBelief("StorageInInteractionRange", () => interactionSensor.TryGetAvailableStorage(agentStats.TeamId, out _));
 
         factory.AddBelief("MarkerExists", () => PlayerInteraction.instance.GetMarkerPosition() != Vector3.zero && PlayerInteraction.instance.SelectedAgent == gameObject);
         factory.AddBelief("MarkerInInteractionRange", () => interactionSensor.ContainsTargetOfType(BeaconType.MARKER));
@@ -133,27 +129,9 @@ public class GAgent : MonoBehaviour
             .Build());
 
         // - - - - - RESTING - - - - -
-
-        actions.Add(new GAgentAction.Builder("TravelToRest")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => agentMemory.GetNearestTarget(BeaconType.REST).transform.position, animationController))
-            .AddPrecondition(beliefs["RemembersRest"])
-            // .WithCost(agentStats.CalculateTravelCost())
-            .WithCost(10)
-            .AddEffect(beliefs["RestInFollowRange"])
-            .Build());
-
-        actions.Add(new GAgentAction.Builder("SearchForRest")
-            .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController))
-            // .WithCost(agentStats.SearchCost)
-            .AddPrecondition(beliefs["EnoughBoldness"])
-            .AddEffect(beliefs["RestInFollowRange"])
-            .WithCost(5)
-            .Build());
-
-        // TODO: Consider saving the target in the InteractionTarget object when the target is first time spotted. In this point Target in follow sensor can be not the same as in belief.
         actions.Add(new GAgentAction.Builder("MoveToRestingPosition")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.GetNearestTarget(BeaconType.REST).transform.position, animationController))
-            .AddPrecondition(beliefs["RestInFollowRange"])
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => PositionHelper.instance.GetCampPosition(), animationController))
+            .AddPrecondition(beliefs["IsExhausted"])
             .AddEffect(beliefs["RestInInteractionRange"])
             .Build());
 
@@ -163,13 +141,11 @@ public class GAgent : MonoBehaviour
             .AddEffect(beliefs["IsRested"])
             .Build());
 
-
         // - - - - - MINING - - - - -
 
         actions.Add(new GAgentAction.Builder("SearchForDeposit")
             .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController))
             .AddPrecondition(beliefs["IsRested"])
-            .AddPrecondition(beliefs["IsEager"])
             .AddEffect(beliefs["DepositInFollowRange"])
             .Build());
 
@@ -179,41 +155,31 @@ public class GAgent : MonoBehaviour
                 return deposit.transform.position; 
             }, animationController))
             .AddPrecondition(beliefs["IsRested"])
-            .AddPrecondition(beliefs["IsEager"])
             .AddPrecondition(beliefs["DepositInFollowRange"])
             .AddEffect(beliefs["DepositInInteractionRange"])
             .Build());
 
         actions.Add(new GAgentAction.Builder("Mine")
             .WithStrategy(new MineStrategy(5, agentStats, animationController, interactionSensor))
-            .AddPrecondition(beliefs["IsEager"])
             .AddPrecondition(beliefs["DepositInInteractionRange"])
             .AddEffect(beliefs["HasOre"])
             .AddEffect(beliefs["HasFullOre"])
             .Build());
             
-        // - - - - - BUILDING - - - - -
+        // - - - - - STORAGE - - - - -
 
-        actions.Add(new GAgentAction.Builder("SearchForBuilding")
-            .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController))
+        actions.Add(new GAgentAction.Builder("MoveToStorage")
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => PositionHelper.instance.GetStoragePosition(), animationController))
             .AddPrecondition(beliefs["IsRested"])
             .AddPrecondition(beliefs["HasFullOre"])
-            .AddEffect(beliefs["BuildingInFollowRange"])
+            .AddEffect(beliefs["StorageInInteractionRange"])
             .Build());
 
-        actions.Add(new GAgentAction.Builder("MoveToBuilding")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.GetNearestTarget(BeaconType.STORAGE).transform.position, animationController)) // Should be handled differently. This must be the same target as in the belief. And needs to be avaiable to build. 
-            .AddPrecondition(beliefs["IsRested"])
-            .AddPrecondition(beliefs["HasFullOre"])
-            .AddPrecondition(beliefs["BuildingInFollowRange"])
-            .AddEffect(beliefs["BuildingInInteractionRange"])
-            .Build());
-
-        actions.Add(new GAgentAction.Builder("Build")
+        actions.Add(new GAgentAction.Builder("Store")
             .WithStrategy(new BuildStrategy(5, agentStats, animationController, interactionSensor))
-            .AddPrecondition(beliefs["BuildingInInteractionRange"])
+            .AddPrecondition(beliefs["StorageInInteractionRange"])
             .AddPrecondition(beliefs["HasFullOre"])
-            .AddEffect(beliefs["BuildingIsComplete"])
+            .AddEffect(beliefs["HasNoOre"])
             .Build());
 
         // - - - - - PLAYER MARKER - - - - -
@@ -277,9 +243,9 @@ public class GAgent : MonoBehaviour
             .WithDesiredEffect(beliefs["HasFullOre"])
             .Build());
 
-        goals.Add(new GAgentGoal.Builder("BuildBuildings")
+        goals.Add(new GAgentGoal.Builder("StoreGold")
             .WithPriority(4)
-            .WithDesiredEffect(beliefs["BuildingIsComplete"])
+            .WithDesiredEffect(beliefs["HasNoOre"])
             .Build());
 
         goals.Add(new GAgentGoal.Builder("FollowInstructions")

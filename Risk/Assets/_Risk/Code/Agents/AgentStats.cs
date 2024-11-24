@@ -3,17 +3,21 @@ using UnityEngine;
 
 public class AgentStats : MonoBehaviour
 {
-    [SerializeField] float maxHealth = 100;
-    [SerializeField] float maxStamina = 100;
-    [SerializeField] float maxOre = 100;
-    [SerializeField] float maxRelax = 100;
-    [SerializeField] int maxCost = 100;
+    [SerializeField] float strength = 10; 
+    [SerializeField] float condition = 10;
+    [SerializeField] float fortitude = 10;
+    [SerializeField] float speed = 10;
+
+    float maxHealth = 100;
+    float maxStamina = 100;
+    float maxOre = 100;
+    float maxRelax = 100;
+    int maxCost = 100;
     float health = 100;
     float stamina = 100;
     float ore = 100;
     float relax = 100;
-    [SerializeField] int boldness = 100;
-    [SerializeField] int searchCost = 50;
+
     int id = CalculateId();
     [SerializeField] string agentName = null;
     [SerializeField] int attack = 10;
@@ -24,11 +28,11 @@ public class AgentStats : MonoBehaviour
     float attackSpeedModifierMin = 0;
     float attackSpeedModifierMax = 0.5f;
 
-    bool isFillingHealth = false;
-    bool isFillingStamina = false;
-    bool isDrawingStamina = false;
-    bool isDrawingHealth = false;
-    bool isFillingRelax = false;
+    public bool isFillingHealth = false;
+    public bool isFillingStamina = false;
+    public bool isDrawingStamina = false;
+    public bool isDrawingHealth = false;
+    public bool isFillingRelax = false;
 
     CountdownTimer statsTimer;
 
@@ -42,6 +46,7 @@ public class AgentStats : MonoBehaviour
         if(agentName.IsNullOrEmpty()) {
             agentName = RandomGenerator.Instance.GenerateName();
         }
+        maxOre = strength;
     }
 
     void Start() {
@@ -84,43 +89,6 @@ public class AgentStats : MonoBehaviour
         health = Mathf.Clamp(health, 0, maxHealth);
         relax = Mathf.Clamp(relax, 0, maxRelax);
         StatsChanged?.Invoke();
-    }
-
-    public int CalculateTravelCost() {
-        int cost = UnityEngine.Random.Range(0, maxCost) - boldness;
-        return Math.Clamp(cost, 0, maxCost);
-    }
-
-    public void StartDrawingStamina() {
-        isDrawingStamina = true;
-    }
-
-    public void StopDrawingStamina() {
-        isDrawingStamina = false;
-    }
-
-    public void StartFillingStamina() {
-        isFillingStamina = true;
-    }
-
-    public void StopFillingStamina() {
-        isFillingStamina = false;
-    }
-
-    public void StartFillingHealth() {
-        isFillingHealth = true;
-    }
-
-    public void StopFillingHealth() {
-        isFillingHealth = false;
-    }
-
-    public void StartFillingRelax() {
-        isFillingRelax = true;
-    }
-
-    public void StopFillingRelax() {
-        isFillingRelax = false;
     }
 
     public float Health {
@@ -186,9 +154,7 @@ public class AgentStats : MonoBehaviour
     public int ID => id;
     public string AgentName => agentName;
     public int TeamId => team.id;
-    public int SearchCost => searchCost;
-    public int Boldness => boldness;
-    
+
     public Team Team {
         get => team;
         set {

@@ -92,12 +92,12 @@ public class BuildStrategy : IActionStrategy
         timer = new CountdownTimer(duration);
         this.agentStats = agentStats;
         timer.OnTimerStart += () => {
-            agentStats.StartDrawingStamina();
+            agentStats.isDrawingStamina = true;
             Completed = false;
             animationController.StartAnimating(AnimType.IsDigging.ToString());
         };
         timer.OnTimerStop += () => {
-            agentStats.StopDrawingStamina();
+            agentStats.isDrawingStamina = false;
             Completed = true;
             animationController.StopAnimating();
 
@@ -109,7 +109,7 @@ public class BuildStrategy : IActionStrategy
     }
 
     public void Interrupt() {
-        agentStats.StopDrawingStamina();
+        agentStats.isDrawingStamina = false;
         timer.Interrupt();
     }
 
@@ -138,7 +138,7 @@ public class MineStrategy : IActionStrategy
 
         timer = new CountdownTimer(duration);
         timer.OnTimerStart += () => {
-            agentStats.StartDrawingStamina();
+            agentStats.isDrawingStamina = true;
             Completed = false;
             animationController.StartAnimating(AnimType.IsDigging.ToString());
             
@@ -147,19 +147,19 @@ public class MineStrategy : IActionStrategy
             }
         };
         timer.OnTimerStop += () => {
-            agentStats.StopDrawingStamina();
+            agentStats.isDrawingStamina = false;
             Completed = true;
             animationController.StopAnimating();
 
             if(sensor.TryGetBeaconOfType(BeaconType.DEPOSIT, out Beacon beacon)){
-                agentStats.Ore += 10;
+                agentStats.Ore += 1;
                 beacon.Destroy();
             }
         };
     }
 
     public void Interrupt() {
-        agentStats.StopDrawingStamina();
+        agentStats.isDrawingStamina = false;
         if(sensor.TryGetFreeDeposit(agentStats.ID, out Deposit deposit)){
             deposit.Release(agentStats.ID);
         }
@@ -185,12 +185,12 @@ public class RestStrategy : IActionStrategy
     public RestStrategy(float duration, AgentStats agentStats, AnimationController animationController) {
         timer = new CountdownTimer(duration);
         timer.OnTimerStart += () => {
-            agentStats.StartFillingStamina();
+            agentStats.isFillingStamina = true;
             Completed = false;
             animationController.StartAnimating(AnimType.IsSitting.ToString());
         };
         timer.OnTimerStop += () => {
-            agentStats.StopFillingStamina();
+            agentStats.isFillingStamina = false;
             Completed = true;
             animationController.StopAnimating();
         };
@@ -219,12 +219,12 @@ public class HealStrategy : IActionStrategy
     public HealStrategy(float duration, AgentStats agentStats, AnimationController animationController) {
         timer = new CountdownTimer(duration);
         timer.OnTimerStart += () => {
-            agentStats.StartFillingHealth();
+            agentStats.isFillingHealth = true;
             Completed = false;
             animationController.StartAnimating(AnimType.IsSitting.ToString());
         };
         timer.OnTimerStop += () => {
-            agentStats.StopFillingHealth();
+            agentStats.isFillingHealth = false;
             Completed = true;
             animationController.StopAnimating();
         };
@@ -307,12 +307,12 @@ public class RelaxStrategy : IActionStrategy
         timer = new CountdownTimer(duration);
         timer.OnTimerStart += () => {
             Completed = false;
-            agentStats.StartFillingRelax();
+            agentStats.isFillingRelax = true;
             animationController.StartAnimating(AnimType.IsSitting.ToString());
         };
         timer.OnTimerStop += () => {
             Completed = true;
-            agentStats.StopFillingRelax();
+            agentStats.isFillingRelax = false;
             animationController.StopAnimating();
         };
     }
@@ -347,7 +347,6 @@ public class WanderStrategy : IActionStrategy
     }
 
     public void Start() {
-        Debug.Log("dupa Start wander");
         for (int i = 0; i < 5; i++) {
             Vector3 randomDirection = (UnityEngine.Random.insideUnitSphere * wanderRange).With(y: 0);
             NavMeshHit hit;
