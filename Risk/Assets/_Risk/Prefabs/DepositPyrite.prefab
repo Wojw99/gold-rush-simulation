@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5881407871231586344}
   - component: {fileID: 8948511824836440943}
   m_Layer: 0
-  m_Name: Deposit
+  m_Name: DepositPyrite
   m_TagString: Deposit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,7 +34,7 @@ Transform:
   m_Children:
   - {fileID: 6515721200953059178}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &8375388276905860783
 Rigidbody:
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPoisonIvy: 0
-  isPyrite: 0
+  isPyrite: 1
   poisonDamage: 10
   goldAmount: 1
 --- !u!1001 &1119780109006644079
@@ -121,11 +121,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2110994530272689763}
     m_Modifications:
-    - target: {fileID: 6098690752923437402, guid: 675e0383b4293ad40b957d549c5db668,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 19fb0294798c74e448d9dfcf754ea097, type: 2}
     - target: {fileID: 6189705083285554181, guid: 675e0383b4293ad40b957d549c5db668,
         type: 3}
       propertyPath: m_RootOrder
@@ -186,16 +181,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PT_Ore_Rock_01
       objectReference: {fileID: 0}
-    - target: {fileID: 7001445128615259621, guid: 675e0383b4293ad40b957d549c5db668,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 19fb0294798c74e448d9dfcf754ea097, type: 2}
-    - target: {fileID: 7125551639741116814, guid: 675e0383b4293ad40b957d549c5db668,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 19fb0294798c74e448d9dfcf754ea097, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

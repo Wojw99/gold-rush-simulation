@@ -20,11 +20,12 @@ public class Building : MonoBehaviour
         canvas.transform.rotation = HelperFunctions.Instance.GetLookAtCameraRotation(transform, mainCamera);
     }
 
-    public void AddGold(float amount) {
+    public void AddGold(float amount, float pyriteModifier) {
         if(amount > 0) {
-            _goldAmount += amount;
+            var addedGold = amount - pyriteModifier;
+            _goldAmount += addedGold;
             UpdateUI(); 
-            Debug.Log($"Added {amount} gold to building.");
+            Debug.Log($"{pyriteModifier} of {amount} is pyrite. Added {amount} gold to building.");
         } else {
             Debug.LogError("Amount of added gold cannot be less than or equal to 0.");
         }

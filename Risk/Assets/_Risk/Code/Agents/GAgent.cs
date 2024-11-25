@@ -176,7 +176,7 @@ public class GAgent : MonoBehaviour
             .Build());
 
         actions.Add(new GAgentAction.Builder("Store")
-            .WithStrategy(new BuildStrategy(5, agentStats, animationController, interactionSensor))
+            .WithStrategy(new StorageStrategy(5, agentStats, animationController, interactionSensor))
             .AddPrecondition(beliefs["StorageInInteractionRange"])
             .AddPrecondition(beliefs["HasFullOre"])
             .AddEffect(beliefs["HasNoOre"])

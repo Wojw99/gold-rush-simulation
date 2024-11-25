@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class AgentStats : MonoBehaviour
 {
-    [SerializeField] float strength = 10; 
-    [SerializeField] float condition = 10;
-    [SerializeField] float fortitude = 10;
+    [SerializeField] float strength = 1; // 0 - 10
+    [SerializeField] float condition = 10; // 0 - 100
+    [SerializeField] float fortitude = 10; // 0 - 100
     [SerializeField] float speed = 10;
+    [SerializeField] float miningExpertise = 50; // 0 - 100
+    [SerializeField] float plantExpertise = 50; // 0 - 100
 
     float maxHealth = 100;
     float maxStamina = 100;
@@ -17,6 +19,7 @@ public class AgentStats : MonoBehaviour
     float stamina = 100;
     float ore = 100;
     float relax = 100;
+    float pyriteModifier = 100;
 
     int id = CalculateId();
     [SerializeField] string agentName = null;
@@ -39,14 +42,20 @@ public class AgentStats : MonoBehaviour
     public event Action StatsChanged;
 
     void Awake() {
+        maxHealth = 100 + fortitude; 
+        maxStamina = 100 + condition;
+        maxOre = 2 + strength;
+
         health = maxHealth; 
         stamina = maxStamina;
         ore = 0;
+
         relax = 0;
+        pyriteModifier = 0;
+
         if(agentName.IsNullOrEmpty()) {
             agentName = RandomGenerator.Instance.GenerateName();
         }
-        maxOre = strength;
     }
 
     void Start() {
@@ -84,6 +93,10 @@ public class AgentStats : MonoBehaviour
         } else {
             relax -= 1;
         }
+
+        if(stamina > maxStamina * 0.2f) {
+            health += 1;
+        } 
 
         stamina = Mathf.Clamp(stamina, 0, maxStamina);
         health = Mathf.Clamp(health, 0, maxHealth);
@@ -130,6 +143,27 @@ public class AgentStats : MonoBehaviour
             relax = value;
             relax = Mathf.Clamp(relax, 0, maxRelax);
             StatsChanged?.Invoke();
+        }
+    }
+    
+    public float PyriteModifier {
+        get => pyriteModifier;
+        set {
+            pyriteModifier = value;
+        }
+    }
+
+    public float MiningExpertise {
+        get => miningExpertise;
+        set {
+            miningExpertise = value;
+        }
+    }
+
+    public float PlantExpertise {
+        get => plantExpertise;
+        set {
+            plantExpertise = value;
         }
     }
 

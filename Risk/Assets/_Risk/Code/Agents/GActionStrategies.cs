@@ -80,7 +80,7 @@ public class AttackStrategy : IActionStrategy
     }
 }
 
-public class BuildStrategy : IActionStrategy
+public class StorageStrategy : IActionStrategy
 {
     public bool CanPerform => true;
     public bool Completed { get; private set; }
@@ -88,7 +88,7 @@ public class BuildStrategy : IActionStrategy
     readonly CountdownTimer timer;
     readonly AgentStats agentStats;
 
-    public BuildStrategy(float duration, AgentStats agentStats, AnimationController animationController, Sensor sensor) {
+    public StorageStrategy(float duration, AgentStats agentStats, AnimationController animationController, Sensor sensor) {
         timer = new CountdownTimer(duration);
         this.agentStats = agentStats;
         timer.OnTimerStart += () => {
@@ -102,8 +102,9 @@ public class BuildStrategy : IActionStrategy
             animationController.StopAnimating();
 
             if(sensor.TryGetStorage(out Building building)){
-                building.AddGold(agentStats.Ore);
+                building.AddGold(agentStats.Ore, agentStats.PyriteModifier);
                 agentStats.Ore = 0;
+                agentStats.PyriteModifier = 0;
             }
         };
     }
@@ -152,7 +153,25 @@ public class MineStrategy : IActionStrategy
             animationController.StopAnimating();
 
             if(sensor.TryGetBeaconOfType(BeaconType.DEPOSIT, out Beacon beacon)){
-                agentStats.Ore += 1;
+                var deposit = beacon.GetComponent<Deposit>();
+
+                agentStats.Ore += deposit.GoldAmount;
+
+                if(deposit.IsPyrite) {
+                    var diceRoll = UnityEngine.Random.Range(0, 100);
+                    if(agentStats.MiningExpertise < diceRoll) {
+                        agentStats.PyriteModifier += deposit.GoldAmount;
+                    }
+                    agentStats.MiningExpertise += 1;
+                } 
+                if(deposit.IsPoisonIvy) {
+                    var diceRoll = UnityEngine.Random.Range(0, 100);
+                    if(agentStats.PlantExpertise < diceRoll) {
+                        agentStats.Health -= deposit.PoisonDamage;
+                    }
+                    agentStats.PlantExpertise += 1;
+                }
+                
                 beacon.Destroy();
             }
         };

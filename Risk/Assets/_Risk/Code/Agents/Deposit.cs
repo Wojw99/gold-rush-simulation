@@ -5,6 +5,10 @@ using UnityEngine;
 public class Deposit : MonoBehaviour
 {
     int occupierId = -1;
+    [SerializeField] bool isPoisonIvy = false;
+    [SerializeField] bool isPyrite = true;
+    [SerializeField] float poisonDamage = 10;
+    [SerializeField] float goldAmount = 1;
     
     public bool IsFreeToMine(int agentId) {
         return occupierId == -1 || occupierId == agentId;
@@ -19,4 +23,9 @@ public class Deposit : MonoBehaviour
             occupierId = -1;
         }
     }
+
+    public bool IsPoisonIvy => isPoisonIvy;
+    public bool IsPyrite => isPyrite;
+    public float PoisonDamage => poisonDamage;
+    public float GoldAmount => goldAmount;
 }
