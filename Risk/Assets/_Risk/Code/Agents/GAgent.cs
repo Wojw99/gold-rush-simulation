@@ -105,19 +105,19 @@ public class GAgent : MonoBehaviour
             .Build());
 
         actions.Add(new GAgentAction.Builder("WanderAround")
-            .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController))
+            .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController, agentStats))
             .AddEffect(beliefs["Moving"])
             .Build());
 
         // - - - - - HEALING - - - - -
 
         actions.Add(new GAgentAction.Builder("SearchForHeal")
-            .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController))
+            .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController, agentStats))
             .AddEffect(beliefs["HealInFollowRange"])
             .Build());
 
         actions.Add(new GAgentAction.Builder("MoveToHealingPosition")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.GetNearestTarget(BeaconType.HEAL).transform.position, animationController))
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.GetNearestTarget(BeaconType.HEAL).transform.position, animationController, agentStats))
             .AddPrecondition(beliefs["HealInFollowRange"])
             .AddEffect(beliefs["HealInInteractionRange"])
             .Build());
@@ -130,7 +130,7 @@ public class GAgent : MonoBehaviour
 
         // - - - - - RESTING - - - - -
         actions.Add(new GAgentAction.Builder("MoveToRestingPosition")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => PositionHelper.instance.GetCampPosition(), animationController))
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => PositionHelper.instance.GetCampPosition(), animationController, agentStats))
             .AddPrecondition(beliefs["IsExhausted"])
             .AddEffect(beliefs["RestInInteractionRange"])
             .Build());
@@ -144,7 +144,7 @@ public class GAgent : MonoBehaviour
         // - - - - - MINING - - - - -
 
         actions.Add(new GAgentAction.Builder("SearchForDeposit")
-            .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController))
+            .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController, agentStats))
             .AddPrecondition(beliefs["IsRested"])
             .AddEffect(beliefs["DepositInFollowRange"])
             .Build());
@@ -153,14 +153,14 @@ public class GAgent : MonoBehaviour
             .WithStrategy(new FollowStrategy(navMeshAgent, () => { 
                 followSensor.TryGetFreeDeposit(agentStats.ID, out Deposit deposit); 
                 return deposit.transform.position; 
-            }, animationController))
+            }, animationController, agentStats))
             .AddPrecondition(beliefs["IsRested"])
             .AddPrecondition(beliefs["DepositInFollowRange"])
             .AddEffect(beliefs["DepositInInteractionRange"])
             .Build());
 
         actions.Add(new GAgentAction.Builder("Mine")
-            .WithStrategy(new MineStrategy(5, agentStats, animationController, interactionSensor))
+            .WithStrategy(new MineStrategy(agentStats, animationController, interactionSensor))
             .AddPrecondition(beliefs["DepositInInteractionRange"])
             .AddEffect(beliefs["HasOre"])
             .AddEffect(beliefs["HasFullOre"])
@@ -169,14 +169,14 @@ public class GAgent : MonoBehaviour
         // - - - - - STORAGE - - - - -
 
         actions.Add(new GAgentAction.Builder("MoveToStorage")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => PositionHelper.instance.GetStoragePosition(), animationController))
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => PositionHelper.instance.GetStoragePosition(), animationController, agentStats))
             .AddPrecondition(beliefs["IsRested"])
             .AddPrecondition(beliefs["HasFullOre"])
             .AddEffect(beliefs["StorageInInteractionRange"])
             .Build());
 
         actions.Add(new GAgentAction.Builder("Store")
-            .WithStrategy(new StorageStrategy(5, agentStats, animationController, interactionSensor))
+            .WithStrategy(new StorageStrategy(agentStats, animationController, interactionSensor))
             .AddPrecondition(beliefs["StorageInInteractionRange"])
             .AddPrecondition(beliefs["HasFullOre"])
             .AddEffect(beliefs["HasNoOre"])
@@ -185,7 +185,7 @@ public class GAgent : MonoBehaviour
         // - - - - - PLAYER MARKER - - - - -
 
         actions.Add(new GAgentAction.Builder("MoveToMarker")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => PlayerInteraction.instance.GetMarkerPosition(), animationController))
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => PlayerInteraction.instance.GetMarkerPosition(), animationController, agentStats))
             .AddPrecondition(beliefs["MarkerExists"])
             .AddEffect(beliefs["MarkerInInteractionRange"])
             .Build());
@@ -203,7 +203,7 @@ public class GAgent : MonoBehaviour
             .WithStrategy(new FollowStrategy(navMeshAgent, () => {
                 followSensor.TryGetEnemyStats(agentStats.TeamId, out var enemyStats);
                 return enemyStats.transform.position;
-            }, animationController))
+            }, animationController, agentStats))
             .AddPrecondition(beliefs["EnemyInFollowRange"])
             .AddEffect(beliefs["EnemyInInteractionRange"])
             .Build());

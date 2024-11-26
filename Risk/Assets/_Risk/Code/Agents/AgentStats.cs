@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class AgentStats : MonoBehaviour
@@ -7,9 +8,12 @@ public class AgentStats : MonoBehaviour
     [SerializeField] float condition = 10; // 0 - 100
     [SerializeField] float fortitude = 10; // 0 - 100
     [SerializeField] float speed = 10;
+    [SerializeField] float intelligence = 10; // 0 - 100
+    [SerializeField] float goldRecognition = 50; // 0 - 100
+    [SerializeField] float plantsRecognition = 50; // 0 - 100
     [SerializeField] float miningExpertise = 50; // 0 - 100
-    [SerializeField] float plantExpertise = 50; // 0 - 100
 
+    float maxGeneral = 100;
     float maxHealth = 100;
     float maxStamina = 100;
     float maxOre = 100;
@@ -31,11 +35,13 @@ public class AgentStats : MonoBehaviour
     float attackSpeedModifierMin = 0;
     float attackSpeedModifierMax = 0.5f;
 
+    bool isFillingStamina = false;
+    bool isDrawingStamina = false;
+    float staminaPerTimeUnit = 1f;
+
     public bool isFillingHealth = false;
-    public bool isFillingStamina = false;
-    public bool isDrawingStamina = false;
     public bool isDrawingHealth = false;
-    public bool isFillingRelax = false;
+
 
     CountdownTimer statsTimer;
 
@@ -83,20 +89,18 @@ public class AgentStats : MonoBehaviour
         }
 
         if(isFillingStamina) {
-            stamina += 20;
+            stamina += staminaPerTimeUnit;
         } else if (isDrawingStamina) {
-            stamina -= 5;
-        }
-
-        if(isFillingRelax) {
-            relax += 10;
-        } else {
-            relax -= 1;
+            stamina -= staminaPerTimeUnit;
         }
 
         if(stamina > maxStamina * 0.2f) {
             health += 1;
-        } 
+        }
+
+        if(stamina <= 0) {
+            health -= 1;
+        }
 
         stamina = Mathf.Clamp(stamina, 0, maxStamina);
         health = Mathf.Clamp(health, 0, maxHealth);
@@ -150,6 +154,26 @@ public class AgentStats : MonoBehaviour
         get => pyriteModifier;
         set {
             pyriteModifier = value;
+            pyriteModifier = Mathf.Clamp(pyriteModifier, 0, maxOre);
+            StatsChanged?.Invoke();
+        }
+    }
+
+    public float GoldRecognition {
+        get => goldRecognition;
+        set {
+            goldRecognition = value;
+            goldRecognition = Mathf.Clamp(goldRecognition, 0, maxGeneral);
+            StatsChanged?.Invoke();
+        }
+    }
+
+    public float PlantsRecognition {
+        get => plantsRecognition;
+        set {
+            plantsRecognition = value;
+            plantsRecognition = Mathf.Clamp(plantsRecognition, 0, maxGeneral);
+            StatsChanged?.Invoke();
         }
     }
 
@@ -157,14 +181,38 @@ public class AgentStats : MonoBehaviour
         get => miningExpertise;
         set {
             miningExpertise = value;
+            miningExpertise = Mathf.Clamp(miningExpertise, 0, maxGeneral);
+            StatsChanged?.Invoke();
         }
     }
 
-    public float PlantExpertise {
-        get => plantExpertise;
-        set {
-            plantExpertise = value;
-        }
+    public float CalculateMiningDuration() {
+        return 10 - (miningExpertise / 10);
+    }
+
+    public float CalculateStorageDuration() {
+        return 10 - (miningExpertise / 10);
+    }
+
+    public float CalculateLearningIncrement() {
+        return intelligence / 10;
+    }
+
+    public void StartDrawingStamina(float staminaPerTimeUnit) {
+        this.staminaPerTimeUnit = staminaPerTimeUnit;
+        isDrawingStamina = true;
+        isFillingStamina = false;
+    }
+
+    public void StartFillingStamina(float staminaPerTimeUnit) {
+        this.staminaPerTimeUnit = staminaPerTimeUnit;
+        isFillingStamina = true;
+        isDrawingStamina = false;
+    }
+
+    public void StopStaminaUpdates() {
+        isDrawingStamina = false;
+        isFillingStamina = false;
     }
 
     public float CalculateFinalAttack() {

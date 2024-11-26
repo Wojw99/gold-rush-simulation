@@ -88,16 +88,20 @@ public class StorageStrategy : IActionStrategy
     readonly CountdownTimer timer;
     readonly AgentStats agentStats;
 
-    public StorageStrategy(float duration, AgentStats agentStats, AnimationController animationController, Sensor sensor) {
-        timer = new CountdownTimer(duration);
+    public StorageStrategy(AgentStats agentStats, AnimationController animationController, Sensor sensor) {
         this.agentStats = agentStats;
+
+        var duration = agentStats.CalculateStorageDuration();
+        timer = new CountdownTimer(duration);
+
         timer.OnTimerStart += () => {
-            agentStats.isDrawingStamina = true;
+            agentStats.StartDrawingStamina(5);
             Completed = false;
             animationController.StartAnimating(AnimType.IsDigging.ToString());
         };
+
         timer.OnTimerStop += () => {
-            agentStats.isDrawingStamina = false;
+            agentStats.StopStaminaUpdates();
             Completed = true;
             animationController.StopAnimating();
 
@@ -110,7 +114,7 @@ public class StorageStrategy : IActionStrategy
     }
 
     public void Interrupt() {
-        agentStats.isDrawingStamina = false;
+        agentStats.StopStaminaUpdates();
         timer.Interrupt();
     }
 
@@ -133,13 +137,15 @@ public class MineStrategy : IActionStrategy
     readonly AgentStats agentStats;
     readonly Sensor sensor;
 
-    public MineStrategy(float duration, AgentStats agentStats, AnimationController animationController, Sensor sensor) {
+    public MineStrategy(AgentStats agentStats, AnimationController animationController, Sensor sensor) {
         this.agentStats = agentStats;
         this.sensor = sensor;
 
+        var duration = agentStats.CalculateMiningDuration();
         timer = new CountdownTimer(duration);
+
         timer.OnTimerStart += () => {
-            agentStats.isDrawingStamina = true;
+            agentStats.StartDrawingStamina(5);
             Completed = false;
             animationController.StartAnimating(AnimType.IsDigging.ToString());
             
@@ -147,8 +153,9 @@ public class MineStrategy : IActionStrategy
                 deposit.Occupy(agentStats.ID);
             }
         };
+
         timer.OnTimerStop += () => {
-            agentStats.isDrawingStamina = false;
+            agentStats.StopStaminaUpdates();
             Completed = true;
             animationController.StopAnimating();
 
@@ -156,20 +163,21 @@ public class MineStrategy : IActionStrategy
                 var deposit = beacon.GetComponent<Deposit>();
 
                 agentStats.Ore += deposit.GoldAmount;
+                agentStats.MiningExpertise += agentStats.CalculateLearningIncrement();
 
                 if(deposit.IsPyrite) {
                     var diceRoll = UnityEngine.Random.Range(0, 100);
-                    if(agentStats.MiningExpertise < diceRoll) {
+                    if(agentStats.GoldRecognition < diceRoll) {
                         agentStats.PyriteModifier += deposit.GoldAmount;
                     }
-                    agentStats.MiningExpertise += 1;
+                    agentStats.GoldRecognition += agentStats.CalculateLearningIncrement();
                 } 
                 if(deposit.IsPoisonIvy) {
                     var diceRoll = UnityEngine.Random.Range(0, 100);
-                    if(agentStats.PlantExpertise < diceRoll) {
+                    if(agentStats.PlantsRecognition < diceRoll) {
                         agentStats.Health -= deposit.PoisonDamage;
                     }
-                    agentStats.PlantExpertise += 1;
+                    agentStats.PlantsRecognition += agentStats.CalculateLearningIncrement();
                 }
                 
                 beacon.Destroy();
@@ -178,7 +186,7 @@ public class MineStrategy : IActionStrategy
     }
 
     public void Interrupt() {
-        agentStats.isDrawingStamina = false;
+        agentStats.StopStaminaUpdates();
         if(sensor.TryGetFreeDeposit(agentStats.ID, out Deposit deposit)){
             deposit.Release(agentStats.ID);
         }
@@ -203,13 +211,15 @@ public class RestStrategy : IActionStrategy
 
     public RestStrategy(float duration, AgentStats agentStats, AnimationController animationController) {
         timer = new CountdownTimer(duration);
+
         timer.OnTimerStart += () => {
-            agentStats.isFillingStamina = true;
+            agentStats.StartFillingStamina(5);
             Completed = false;
             animationController.StartAnimating(AnimType.IsSitting.ToString());
         };
+
         timer.OnTimerStop += () => {
-            agentStats.isFillingStamina = false;
+            agentStats.StopStaminaUpdates();
             Completed = true;
             animationController.StopAnimating();
         };
@@ -267,25 +277,29 @@ public class FollowStrategy : IActionStrategy
     readonly NavMeshAgent navMeshAgent;
     readonly Func<Vector3> destination;
     AnimationController animationController;
+    AgentStats agentStats;
 
     public bool CanPerform => !Completed;
 
     public bool Completed => navMeshAgent.remainingDistance <= 1.5f && !navMeshAgent.pathPending;
 
-    public FollowStrategy(NavMeshAgent navMeshAgent, Func<Vector3> destination, AnimationController animationController) {
+    public FollowStrategy(NavMeshAgent navMeshAgent, Func<Vector3> destination, AnimationController animationController, AgentStats agentStats) {
         this.navMeshAgent = navMeshAgent;
         this.destination = destination;
         this.animationController = animationController;
+        this.agentStats = agentStats;
     }
 
     public void Start() {
         navMeshAgent.SetDestination(destination());
         animationController.StartAnimating(AnimType.IsWalking.ToString());
+        agentStats.StartDrawingStamina(1f);
     }
 
     public void Stop() {
         navMeshAgent.ResetPath();
         animationController.StopAnimating();
+        agentStats.StopStaminaUpdates();
     }
 }
 
@@ -326,12 +340,10 @@ public class RelaxStrategy : IActionStrategy
         timer = new CountdownTimer(duration);
         timer.OnTimerStart += () => {
             Completed = false;
-            agentStats.isFillingRelax = true;
             animationController.StartAnimating(AnimType.IsSitting.ToString());
         };
         timer.OnTimerStop += () => {
             Completed = true;
-            agentStats.isFillingRelax = false;
             animationController.StopAnimating();
         };
     }
@@ -358,11 +370,13 @@ public class WanderStrategy : IActionStrategy
     public bool Completed => navMeshAgent.remainingDistance <= 2f && !navMeshAgent.pathPending;
 
     AnimationController animationController;
+    AgentStats agentStats;
 
-    public WanderStrategy(NavMeshAgent navMeshAgent, float wanderRange, AnimationController animationController) {
+    public WanderStrategy(NavMeshAgent navMeshAgent, float wanderRange, AnimationController animationController, AgentStats agentStats) {
         this.navMeshAgent = navMeshAgent;
         this.wanderRange = wanderRange;
         this.animationController = animationController;
+        this.agentStats = agentStats;
     }
 
     public void Start() {
@@ -376,9 +390,11 @@ public class WanderStrategy : IActionStrategy
                 return;
             }
         }
+        agentStats.StartDrawingStamina(1f);
     }
 
     public void Stop() {
         animationController.StopAnimating();
+        agentStats.StopStaminaUpdates();
     }
 }
