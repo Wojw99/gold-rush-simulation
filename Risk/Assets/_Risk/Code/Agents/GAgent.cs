@@ -12,7 +12,6 @@ public class GAgent : MonoBehaviour
     [Header("Sensors")]
     [SerializeField] Sensor followSensor;
     [SerializeField] Sensor interactionSensor;
-    [SerializeField] Beacon camp;
 
     NavMeshAgent navMeshAgent;
     AnimationController animationController;

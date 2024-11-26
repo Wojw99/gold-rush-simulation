@@ -87,6 +87,7 @@
     <Compile Include="Assets\_Risk\Code\Agents\Beacon.cs" />
     <Compile Include="Assets\_Risk\Code\Utilities\Autodestruction.cs" />
     <Compile Include="Assets\RTS_Camera\Demo\DemoScene.cs" />
+    <Compile Include="Assets\_Risk\Code\Utilities\UIController.cs" />
     <Compile Include="Assets\_Risk\Code\Agents\Sensor.cs" />
     <Compile Include="Assets\_Risk\Code\Agents\InteractionTarget.cs" />
     <Compile Include="Assets\_Risk\Code\Agents\AnimationController.cs" />

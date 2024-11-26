@@ -236,6 +236,11 @@ public class AgentStats : MonoBehaviour
     public int ID => id;
     public string AgentName => agentName;
     public int TeamId => team.id;
+    public float Strength => strength;
+    public float Condition => condition;
+    public float Fortitude => fortitude;
+    public float Speed => speed;
+    public float Intelligence => intelligence;
 
     public Team Team {
         get => team;
