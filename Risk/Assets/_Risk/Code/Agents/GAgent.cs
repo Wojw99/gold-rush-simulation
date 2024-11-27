@@ -135,7 +135,7 @@ public class GAgent : MonoBehaviour
             .Build());
 
         actions.Add(new GAgentAction.Builder("Rest")
-            .WithStrategy(new RestStrategy(3, agentStats, animationController))
+            .WithStrategy(new RestStrategy(agentStats, animationController))
             .AddPrecondition(beliefs["RestInInteractionRange"])
             .AddEffect(beliefs["IsRested"])
             .Build());

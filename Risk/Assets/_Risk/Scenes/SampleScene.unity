@@ -2023,7 +2023,7 @@ GameObject:
   - component: {fileID: 490704934}
   - component: {fileID: 490704936}
   m_Layer: 0
-  m_Name: UI
+  m_Name: UI_Oldd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3367,8 +3367,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 10, y: 10}
-  m_SizeDelta: {x: -20, y: -20}
+  m_AnchoredPosition: {x: 10, y: 0}
+  m_SizeDelta: {x: -20, y: -10}
   m_Pivot: {x: 0, y: 0}
 --- !u!4 &952139927 stripped
 Transform:
@@ -4382,8 +4382,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -795, y: 245}
-  m_SizeDelta: {x: -1610, y: -510}
+  m_AnchoredPosition: {x: -795, y: 122.5}
+  m_SizeDelta: {x: -1610, y: -265}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1336286294
 MonoBehaviour:

@@ -143,7 +143,7 @@ public class MineStrategy : IActionStrategy
 
         var duration = agentStats.CalculateMiningDuration();
         timer = new CountdownTimer(duration);
-
+        
         timer.OnTimerStart += () => {
             agentStats.StartDrawingStamina(5);
             Completed = false;
@@ -208,12 +208,15 @@ public class RestStrategy : IActionStrategy
     public bool Completed { get; private set; }
 
     readonly CountdownTimer timer;
+    readonly float staminaPerTimeUnit = 5f;
+    AgentStats agentStats;
 
-    public RestStrategy(float duration, AgentStats agentStats, AnimationController animationController) {
-        timer = new CountdownTimer(duration);
+    public RestStrategy(AgentStats agentStats, AnimationController animationController) {
+        timer = new CountdownTimer(5f);
+        this.agentStats = agentStats;
 
         timer.OnTimerStart += () => {
-            agentStats.StartFillingStamina(5);
+            agentStats.StartFillingStamina(staminaPerTimeUnit);
             Completed = false;
             animationController.StartAnimating(AnimType.IsSitting.ToString());
         };
@@ -230,6 +233,10 @@ public class RestStrategy : IActionStrategy
     }
 
     public void Start() {
+        float toFill = agentStats.MaxStamina - agentStats.Stamina;
+        float duration = toFill / staminaPerTimeUnit / 2;
+        Debug.Log($"{agentStats.Stamina}/{agentStats.MaxStamina} so resting for {duration} seconds");
+        timer.Reset(duration);
         timer.Start();
     }
 
@@ -387,10 +394,10 @@ public class WanderStrategy : IActionStrategy
             if (NavMesh.SamplePosition(navMeshAgent.transform.position + randomDirection, out hit, wanderRange, 1)) {
                 navMeshAgent.SetDestination(hit.position);
                 animationController.StartAnimating(AnimType.IsWalking.ToString());
+                agentStats.StartDrawingStamina(1f);
                 return;
             }
-        }
-        agentStats.StartDrawingStamina(1f);
+        }  
     }
 
     public void Stop() {
