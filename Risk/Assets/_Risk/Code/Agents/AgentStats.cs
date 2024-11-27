@@ -4,14 +4,29 @@ using UnityEngine;
 
 public class AgentStats : MonoBehaviour
 {
-    [SerializeField] float strength = 1; // 0 - 10
-    [SerializeField] float condition = 10; // 0 - 100
-    [SerializeField] float fortitude = 10; // 0 - 100
+    [Range(10, 100)]
+    [SerializeField] float strength = 10;
+
+    [Range(10, 100)]
+    [SerializeField] float condition = 10;
+
+    [Range(10, 100)]
+    [SerializeField] float fortitude = 10;
+
+    [Range(10, 100)]
     [SerializeField] float speed = 10;
-    [SerializeField] float intelligence = 10; // 0 - 100
-    [SerializeField] float goldRecognition = 50; // 0 - 100
-    [SerializeField] float plantsRecognition = 50; // 0 - 100
-    [SerializeField] float miningExpertise = 50; // 0 - 100
+
+    [Range(10, 100)]
+    [SerializeField] float intelligence = 10;
+
+    [Range(1, 100)]
+    [SerializeField] float goldRecognition = 50;
+
+    [Range(1, 100)]
+    [SerializeField] float plantsRecognition = 50;
+
+    [Range(1, 100)]
+    [SerializeField] float miningExpertise = 50;
 
     float maxGeneral = 100;
     float maxHealth = 100;
@@ -48,9 +63,10 @@ public class AgentStats : MonoBehaviour
     public event Action StatsChanged;
 
     void Awake() {
-        maxHealth = 100 + fortitude; 
-        maxStamina = 100 + condition;
-        maxOre = 2 + strength;
+        maxHealth = 100 + fortitude * 2; 
+        maxStamina = 100 + condition * 2;
+        maxOre = strength / 10;
+        if(maxOre < 1) maxOre = 1;
 
         health = maxHealth; 
         stamina = maxStamina;
