@@ -13,8 +13,8 @@ public class AgentStats : MonoBehaviour
     [Range(10, 100)]
     [SerializeField] float fortitude = 10;
 
-    [Range(10, 100)]
-    [SerializeField] float speed = 10;
+    [Range(1, 10)]
+    [SerializeField] float speed = 3.5f;
 
     [Range(10, 100)]
     [SerializeField] float intelligence = 10;

@@ -8,6 +8,7 @@ public class UIController : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI agentStatsText;
     [SerializeField] Image agentStatsPanel;
+    [SerializeField] TextMeshProUGUI gameStatsText;
 
     AgentStats agentStats;
 
@@ -15,11 +16,27 @@ public class UIController : MonoBehaviour
         if(agentStats != null) {
             ShowAgentStatsText(agentStats);
         }
+        UpdateGameStatsText();
     }
 
     public void UpdateAgentStatsText(AgentStats agentStats) {
         ShowAgentStatsText(agentStats);
         this.agentStats = agentStats;
+    }
+
+    public void UpdateGameStatsText() {
+        var color = "#ffffff";
+        var currentTime = TimeManager.instance.CurrentTimeFormatted;
+        var timeMultiplier = TimeManager.instance.TimeMultiplier;
+        var currentGold = GameStatsManager.instance.CurrentGold;
+        var maxGold = GameStatsManager.instance.MaxGold;
+        var currentMiners = GameStatsManager.instance.CurrentMiners;
+        var maxMiners = GameStatsManager.instance.MaxMiners;
+        gameStatsText.text =                         
+            $"Current time: <color={color}>{currentTime}</color>\n" +
+            $"Time multiplier: <color={color}>{timeMultiplier}</color>\n" +
+            $"Gold: <color={color}>{currentGold}</color>/{maxGold}\n" +
+            $"Miners: <color={color}>{currentMiners}</color>/{maxMiners}\n";
     }
 
     void ShowAgentStatsText(AgentStats agentStats) {

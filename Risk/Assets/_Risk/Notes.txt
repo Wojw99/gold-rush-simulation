@@ -1,0 +1,5 @@
+UI:
+- time multiplier
+- current time
+- stored gold
+- living miners

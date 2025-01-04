@@ -52,6 +52,8 @@ public class GAgent : MonoBehaviour
         SetupGoals();
         PlayerInteraction.instance.SelectionChanged += OnPlayerSelectionChanged;
         PlayerInteraction.instance.SelectionMarkerChanged += OnPlayerSelectionMarkerChanged;
+
+        navMeshAgent.speed = agentStats.Speed;
     }
 
     void SetupBeliefs() {

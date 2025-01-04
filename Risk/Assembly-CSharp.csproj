@@ -59,7 +59,7 @@
     <UnityVersion>2022.3.4f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\woj19\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.0.4\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\woj19\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.0.5\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="D:\Program Files\Unity\2022.3.4f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="D:\Program Files\Unity\2022.3.4f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
@@ -82,6 +82,7 @@
     <Compile Include="Assets\_Risk\Code\Agents\GAgent.cs" />
     <Compile Include="Assets\RTS_Camera\Scripts\RTS_Camera.cs" />
     <Compile Include="Assets\_Risk\Code\Utilities\UIBottomMenuBuilder.cs" />
+    <Compile Include="Assets\_Risk\Code\Utilities\GameStatsManager.cs" />
     <Compile Include="Assets\_Risk\Code\Agents\GAgentGoal.cs" />
     <Compile Include="Assets\_Risk\Code\Utilities\PositionHelper.cs" />
     <Compile Include="Assets\_Risk\Code\Agents\Beacon.cs" />
@@ -137,6 +138,7 @@
     <None Include="Assets\_Risk\Art\UI\MainView.uss" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Plants_Shader_VS.shader" />
+    <None Include="Assets\_Risk\Notes.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Flowers_Shader_VS.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
