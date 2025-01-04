@@ -139,6 +139,8 @@ public class AgentStats : MonoBehaviour
         }
     }
 
+    public bool IsDead => health <= 0;
+
     public float Stamina {
         get => stamina;
         set {

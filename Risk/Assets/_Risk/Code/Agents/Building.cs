@@ -24,8 +24,9 @@ public class Building : MonoBehaviour
         if(amount > 0) {
             var addedGold = amount - pyriteModifier;
             _goldAmount += addedGold;
-            UpdateUI(); 
-            Debug.Log($"{pyriteModifier} of {amount} is pyrite. Added {amount} gold to building.");
+            UpdateUI();
+            GameStatsManager.instance.UpdateStats();
+            Debug.Log($"{pyriteModifier} of {amount} is pyrite. Added {addedGold} gold to building.");
         } else {
             Debug.LogError("Amount of added gold cannot be less than or equal to 0.");
         }
@@ -36,4 +37,5 @@ public class Building : MonoBehaviour
     }
 
     public bool IsComplete => true;
+    public float GoldAmount => _goldAmount;
 }

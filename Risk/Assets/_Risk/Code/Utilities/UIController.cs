@@ -30,8 +30,8 @@ public class UIController : MonoBehaviour
         var timeMultiplier = TimeManager.instance.TimeMultiplier;
         var currentGold = GameStatsManager.instance.CurrentGold;
         var maxGold = GameStatsManager.instance.MaxGold;
-        var currentMiners = GameStatsManager.instance.CurrentMiners;
-        var maxMiners = GameStatsManager.instance.MaxMiners;
+        var currentMiners = GameStatsManager.instance.CurrentAgents;
+        var maxMiners = GameStatsManager.instance.MaxAgents;
         gameStatsText.text =                         
             $"Current time: <color={color}>{currentTime}</color>\n" +
             $"Time multiplier: <color={color}>{timeMultiplier}</color>\n" +
@@ -46,7 +46,8 @@ public class UIController : MonoBehaviour
             
             $"Health: <color={color}>{agentStats.Health}</color>/{agentStats.MaxHealth}\n" +
             $"Stamina: <color={color}>{agentStats.Stamina}</color>/{agentStats.MaxStamina}\n" +
-            $"Gold+piryte: <color={color}>{agentStats.Ore}</color>/{agentStats.MaxOre}\n\n" +
+            $"Gold: <color={color}>{agentStats.Ore}</color>/{agentStats.MaxOre}\n\n" +
+            $"Piryte: <color={color}>{agentStats.PyriteModifier}</color>\n\n" +
 
             $"Strength: <color={color}>{agentStats.Strength}</color>\n" +
             $"Condition: <color={color}>{agentStats.Condition}</color>\n" +

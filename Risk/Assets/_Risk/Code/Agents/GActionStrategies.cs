@@ -169,6 +169,8 @@ public class MineStrategy : IActionStrategy
                     var diceRoll = UnityEngine.Random.Range(0, 100);
                     if(agentStats.GoldRecognition < diceRoll) {
                         agentStats.PyriteModifier += deposit.GoldAmount;
+                    } else {
+                        agentStats.Ore -= deposit.GoldAmount;
                     }
                     agentStats.GoldRecognition += agentStats.CalculateLearningIncrement();
                 } 

@@ -10,14 +10,12 @@ public class Sensor : MonoBehaviour
     [SerializeField] float detectionRange = 5f;
     [SerializeField] float evaluationInterval = 0.3f;
 
-    AgentMemory agentMemory;
     SphereCollider detectionSphere;
     CountdownTimer timer;
     List<TargetInfo> targets = new List<TargetInfo>();
     public event Action<BeaconType> TargetsChanged;
 
     void Awake() {
-        agentMemory = GetComponentInParent<AgentMemory>();
         detectionSphere = GetComponent<SphereCollider>();
         detectionSphere.isTrigger = true;
         detectionSphere.radius = detectionRange;
@@ -40,7 +38,6 @@ public class Sensor : MonoBehaviour
         if(other.TryGetComponent(out Beacon beacon)) {
             var targetInfo = new TargetInfo(beacon.gameObject, Vector3.Distance(transform.position, beacon.Position), beacon.BeaconType);
             targets.Add(targetInfo);
-            agentMemory.Targets.Add(targetInfo);
             TargetsChanged?.Invoke(beacon.BeaconType);
             beacon.BeaconDestroyed += OnBeaconDestroyed;
         }
@@ -48,7 +45,6 @@ public class Sensor : MonoBehaviour
 
     void OnBeaconDestroyed(Beacon beacon) {
         targets.RemoveAll(target => target.GameObject == beacon.gameObject);
-        agentMemory.Targets.RemoveAll(target => target.GameObject == beacon.gameObject);
         TargetsChanged?.Invoke(beacon.BeaconType);
     }
 
