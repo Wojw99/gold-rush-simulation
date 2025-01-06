@@ -65,7 +65,7 @@ public class GAgent : MonoBehaviour
         factory.AddBelief("Moving", () => navMeshAgent.hasPath);
 
         factory.AddBelief("IsDying", () => agentStats.Health < 30);
-        factory.AddBelief("IsHealthy", () => agentStats.Health >= 50);
+        factory.AddBelief("IsHealthy", () => agentStats.Health >= 30);
 
         factory.AddBelief("IsExhausted", () => agentStats.Stamina < 20);
         factory.AddBelief("IsRested", () => agentStats.Stamina >= 20);
@@ -112,26 +112,21 @@ public class GAgent : MonoBehaviour
 
         // - - - - - HEALING - - - - -
 
-        actions.Add(new GAgentAction.Builder("SearchForHeal")
-            .WithStrategy(new WanderStrategy(navMeshAgent, 10, animationController, agentStats))
-            .AddEffect(beliefs["HealInFollowRange"])
-            .Build());
-
         actions.Add(new GAgentAction.Builder("MoveToHealingPosition")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => followSensor.GetNearestTarget(BeaconType.HEAL).transform.position, animationController, agentStats))
-            .AddPrecondition(beliefs["HealInFollowRange"])
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => agentStats.ShrinePosition, animationController, agentStats))
+            .AddPrecondition(beliefs["IsDying"])
             .AddEffect(beliefs["HealInInteractionRange"])
             .Build());
 
         actions.Add(new GAgentAction.Builder("Heal")
-            .WithStrategy(new HealStrategy(3, agentStats, animationController))
+            .WithStrategy(new HealStrategy(agentStats, animationController))
             .AddPrecondition(beliefs["HealInInteractionRange"])
             .AddEffect(beliefs["IsHealthy"])
             .Build());
 
         // - - - - - RESTING - - - - -
         actions.Add(new GAgentAction.Builder("MoveToRestingPosition")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => PositionHelper.instance.GetCampPosition(), animationController, agentStats))
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => agentStats.RestPosition, animationController, agentStats))
             .AddPrecondition(beliefs["IsExhausted"])
             .AddEffect(beliefs["RestInInteractionRange"])
             .Build());
@@ -170,7 +165,7 @@ public class GAgent : MonoBehaviour
         // - - - - - STORAGE - - - - -
 
         actions.Add(new GAgentAction.Builder("MoveToStorage")
-            .WithStrategy(new FollowStrategy(navMeshAgent, () => PositionHelper.instance.GetStoragePosition(), animationController, agentStats))
+            .WithStrategy(new FollowStrategy(navMeshAgent, () => agentStats.StoragePosition, animationController, agentStats))
             .AddPrecondition(beliefs["IsRested"])
             .AddPrecondition(beliefs["HasFullOre"])
             .AddEffect(beliefs["StorageInInteractionRange"])

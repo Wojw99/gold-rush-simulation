@@ -45,6 +45,9 @@ public class AgentStats : MonoBehaviour
     [SerializeField] int attack = 10;
     [SerializeField] float attackSpeed = 1;
     [SerializeField] Team team;
+    [SerializeField] GameObject restGameObject;
+    [SerializeField] GameObject shrineGameObject;
+    [SerializeField] GameObject storageGameObject;
     int attackModifierMin = 1;
     int attackModifierMax = 10;
     float attackSpeedModifierMin = 0;
@@ -54,8 +57,9 @@ public class AgentStats : MonoBehaviour
     bool isDrawingStamina = false;
     float staminaPerTimeUnit = 1f;
 
-    public bool isFillingHealth = false;
-    public bool isDrawingHealth = false;
+    bool isFillingHealth = false;
+    bool isDrawingHealth = false;
+    float healthPerTimeUnit = 1f;
 
 
     CountdownTimer statsTimer;
@@ -82,6 +86,7 @@ public class AgentStats : MonoBehaviour
 
     void Start() {
         SetupTimer();
+        Health = 20;
     }
 
     void Update() {
@@ -99,9 +104,9 @@ public class AgentStats : MonoBehaviour
 
     void UpdateStats() {
         if(isFillingHealth) {
-            health += 20;
+            health += healthPerTimeUnit;
         } else if (isDrawingHealth) {
-            health -= 10;
+            health -= healthPerTimeUnit;
         }
 
         if(isFillingStamina) {
@@ -234,6 +239,23 @@ public class AgentStats : MonoBehaviour
         isFillingStamina = true;
         isDrawingStamina = false;
     }
+    
+    public void StartDrawingHealth(float healthPerTimeUnit) {
+        this.healthPerTimeUnit = healthPerTimeUnit;
+        isFillingHealth = false;
+        isDrawingHealth = true;
+    }
+
+    public void StartFillingHealth(float healthPerTimeUnit) {
+        this.healthPerTimeUnit = healthPerTimeUnit;
+        isFillingHealth = true;
+        isDrawingHealth = false;
+    }
+
+    public void StopHealthUpdates() {
+        isDrawingHealth = false;
+        isFillingHealth = false;
+    }
 
     public void StopStaminaUpdates() {
         isDrawingStamina = false;
@@ -266,6 +288,9 @@ public class AgentStats : MonoBehaviour
     public float Fortitude => fortitude;
     public float Speed => speed;
     public float Intelligence => intelligence;
+    public Vector3 RestPosition => restGameObject.transform.position;
+    public Vector3 ShrinePosition => shrineGameObject.transform.position;
+    public Vector3 StoragePosition => storageGameObject.transform.position;
 
     public Team Team {
         get => team;

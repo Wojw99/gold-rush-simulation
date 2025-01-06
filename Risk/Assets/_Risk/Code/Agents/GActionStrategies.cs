@@ -237,7 +237,6 @@ public class RestStrategy : IActionStrategy
     public void Start() {
         float toFill = agentStats.MaxStamina - agentStats.Stamina;
         float duration = toFill / staminaPerTimeUnit / 2;
-        Debug.Log($"{agentStats.Stamina}/{agentStats.MaxStamina} so resting for {duration} seconds");
         timer.Reset(duration);
         timer.Start();
     }
@@ -253,16 +252,21 @@ public class HealStrategy : IActionStrategy
     public bool Completed { get; private set; }
 
     readonly CountdownTimer timer;
+    readonly float healPerTimeUnit = 5f;
+    AgentStats agentStats;
 
-    public HealStrategy(float duration, AgentStats agentStats, AnimationController animationController) {
-        timer = new CountdownTimer(duration);
+    public HealStrategy(AgentStats agentStats, AnimationController animationController) {
+        timer = new CountdownTimer(5f);
+        this.agentStats = agentStats;
+
         timer.OnTimerStart += () => {
-            agentStats.isFillingHealth = true;
+            agentStats.StartFillingHealth(healPerTimeUnit);
             Completed = false;
             animationController.StartAnimating(AnimType.IsSitting.ToString());
         };
+
         timer.OnTimerStop += () => {
-            agentStats.isFillingHealth = false;
+            agentStats.StopHealthUpdates();
             Completed = true;
             animationController.StopAnimating();
         };
@@ -273,6 +277,9 @@ public class HealStrategy : IActionStrategy
     }
 
     public void Start() {
+        float toFill = agentStats.MaxHealth - agentStats.Health;
+        float duration = toFill / healPerTimeUnit / 2;
+        timer.Reset(duration);
         timer.Start();
     }
 

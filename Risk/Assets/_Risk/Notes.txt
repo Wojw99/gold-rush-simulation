@@ -1,5 +1,5 @@
-UI:
-- time multiplier
-- current time
-- stored gold
-- living miners
+Założenia:
+2 drużyny (i 2 obozy)
+3 agentów na każdą drużynę
+domyślnie obie drużyny mają te same cechy i parametry
+Pozycje depozytów z góry ustalone

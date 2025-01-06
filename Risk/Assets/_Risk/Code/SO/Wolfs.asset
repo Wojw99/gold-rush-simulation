@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e28834bd21fd684dacd0b49a9a8a8c4, type: 3}
+  m_Name: Wolfs
+  m_EditorClassIdentifier: 
+  id: 2
+  name: Wolfs
+  color: {r: 1, g: 0, b: 0.019619942, a: 1}
+  visualModel: {fileID: 175852, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}

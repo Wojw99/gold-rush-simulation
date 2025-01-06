@@ -539,14 +539,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b6f8ab95fcffc14eba290b8dbb805cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  maxStamina: 100
-  maxOre: 20
-  maxRelax: 100
-  maxCost: 100
-  attack: 10
-  attackSpeed: 1
+  strength: 50
+  condition: 50
+  fortitude: 50
+  speed: 3.5
+  intelligence: 50
+  goldRecognition: 50
+  plantsRecognition: 50
+  miningExpertise: 50
+  agentName: 
+  attack: 8
+  attackSpeed: 1.1
   team: {fileID: 11400000, guid: ecf3cca9413403f40868299e8c822625, type: 2}
+  isFillingHealth: 0
+  isDrawingHealth: 0
 --- !u!114 &7234050820136317368
 MonoBehaviour:
   m_ObjectHideFlags: 0
