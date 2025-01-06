@@ -37,7 +37,7 @@ public class PlayerInteraction : MonoBehaviour
 
     void Start() {
         SelectedPrefabIndex = -1;
-        UIController.instance.RemoveAgentStas();
+        UIController.instance.RemoveAgentStatsText();
     }
 
     void Update() {
@@ -69,7 +69,7 @@ public class PlayerInteraction : MonoBehaviour
         if(Input.GetKeyDown(clearSelectionKey)) {
             SelectedPrefabIndex = -1;
             SelectedAgent = null;
-            UIController.instance.RemoveAgentStas();
+            UIController.instance.RemoveAgentStatsText();
             ClearSelectionMarker();
         }
     }

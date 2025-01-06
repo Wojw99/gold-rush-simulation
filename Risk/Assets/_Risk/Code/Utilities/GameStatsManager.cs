@@ -8,6 +8,7 @@ public class GameStatsManager : MonoBehaviour
     float _maxGold = 1000;
     int _currentAgents = 0;
     int _maxAgents = 10;
+    bool _timePaused = false;
 
     public float CurrentGold => _currentGold;
     public float MaxGold => _maxGold;
@@ -24,6 +25,12 @@ public class GameStatsManager : MonoBehaviour
     public void UpdateStats() {
         _currentGold = CountGoldInStorages();
         _currentAgents = CountAgents();
+        if(_currentAgents == 0 || _currentGold == _maxGold) {
+            if(!_timePaused) {
+                TimeManager.instance.PauseTime();
+                _timePaused = true;
+            }
+        }
     }
 
     private float CountGoldInStorages() {

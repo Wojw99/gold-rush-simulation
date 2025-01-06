@@ -33,12 +33,14 @@ public class TimeManager : MonoBehaviour
 
     void PlayTime() {
         timePaused = false;
+        UIController.instance.HideStopPanel();
         Time.timeScale = 1 * TimeMultiplier;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
     }
 
-    void PauseTime() {
+    public void PauseTime() {
         timePaused = true;
+        UIController.instance.ShowStopPanel();
         Time.timeScale = 0;
         Time.fixedDeltaTime = 0;
     }
@@ -46,6 +48,7 @@ public class TimeManager : MonoBehaviour
     void ResetTimeParameters() {
         TimeMultiplier = 1;
         timePaused = false;
+        UIController.instance.HideStopPanel();
         Time.timeScale = 1;
         Time.fixedDeltaTime = 0.02f;
     }

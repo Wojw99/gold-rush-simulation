@@ -122,6 +122,7 @@ public class AgentStats : MonoBehaviour
         health = Mathf.Clamp(health, 0, maxHealth);
         relax = Mathf.Clamp(relax, 0, maxRelax);
         StatsChanged?.Invoke();
+        CheckDeath();
     }
 
     public float Health {
@@ -131,11 +132,17 @@ public class AgentStats : MonoBehaviour
             health = Mathf.Clamp(health, 0, maxHealth);
             StatsChanged?.Invoke();
             // TODO: This is a temporary solution, death should be handled differently
-            if(health == 0) {
-                transform.position = new Vector3(0, -100, 0);
-                GetComponent<GAgent>()?.ReevaluatePlan();
-                GetComponent<Beacon>()?.Destroy(5f);
-            }
+            CheckDeath();
+        }
+    }
+
+    private void CheckDeath() {
+        if(health <= 0) {
+            transform.position = new Vector3(0, -100, 0);
+            GetComponent<GAgent>()?.ReevaluatePlan();
+            GetComponent<Beacon>()?.Destroy(5f);
+            Debug.Log($"{agentName} died");
+            GameStatsManager.instance.UpdateStats();
         }
     }
 

@@ -9,6 +9,7 @@ public class UIController : MonoBehaviour
     [SerializeField] TextMeshProUGUI agentStatsText;
     [SerializeField] Image agentStatsPanel;
     [SerializeField] TextMeshProUGUI gameStatsText;
+    [SerializeField] GameObject stopPanel;
 
     AgentStats agentStats;
 
@@ -22,6 +23,14 @@ public class UIController : MonoBehaviour
     public void UpdateAgentStatsText(AgentStats agentStats) {
         ShowAgentStatsText(agentStats);
         this.agentStats = agentStats;
+    }
+
+    public void ShowStopPanel() {
+        stopPanel.gameObject.SetActive(true);
+    }
+
+    public void HideStopPanel() {
+        stopPanel.gameObject.SetActive(false);
     }
 
     public void UpdateGameStatsText() {
@@ -61,7 +70,7 @@ public class UIController : MonoBehaviour
         agentStatsPanel.gameObject.SetActive(true);
     }
 
-    public void RemoveAgentStas() {
+    public void RemoveAgentStatsText() {
         agentStats = null;
         agentStatsText.text = "";
         agentStatsPanel.gameObject.SetActive(false);
