@@ -44,7 +44,7 @@ public class UIController : MonoBehaviour
         gameStatsText.text =                         
             $"Current time: <color={color}>{currentTime}</color>\n" +
             $"Time multiplier: <color={color}>{timeMultiplier}</color>\n" +
-            $"Gold: <color={color}>{currentGold}</color>/{maxGold}\n" +
+            $"Gold in deposits: <color={color}>{currentGold}</color>/{maxGold}\n" +
             $"Miners: <color={color}>{currentMiners}</color>/{maxMiners}\n";
     }
 

@@ -17,15 +17,19 @@ public class GameStatsManager : MonoBehaviour
 
     private void Start() {
         _maxGold = CountGoldInDeposits();
-        _currentGold = CountGoldInStorages();
+        _currentGold = CountGoldInDeposits();
         _maxAgents = CountAgents();
         _currentAgents = CountAgents();
     }
 
+    private void Update() {
+        UpdateStats();
+    }
+
     public void UpdateStats() {
-        _currentGold = CountGoldInStorages();
+        _currentGold = CountGoldInDeposits();
         _currentAgents = CountAgents();
-        if(_currentAgents == 0 || _currentGold == _maxGold) {
+        if(_currentAgents == 0 || _currentGold == 0) {
             if(!_timePaused) {
                 TimeManager.instance.PauseTime();
                 _timePaused = true;
@@ -33,16 +37,16 @@ public class GameStatsManager : MonoBehaviour
         }
     }
 
-    private float CountGoldInStorages() {
-        var buildings = FindObjectsOfType<Building>();
-        var gold = 0f;
+    // private float CountGoldInStorages() {
+    //     var buildings = FindObjectsOfType<Building>();
+    //     var gold = 0f;
 
-        foreach(var building in buildings) {
-            gold += building.GoldAmount;
-        }
+    //     foreach(var building in buildings) {
+    //         gold += building.GoldAmount;
+    //     }
 
-        return gold;
-    }
+    //     return gold;
+    // }
 
     private int CountAgents() {
         var agents = FindObjectsOfType<AgentStats>();
