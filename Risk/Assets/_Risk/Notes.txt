@@ -1,5 +1,52 @@
+Cel pracy: 
+Architektura GOAP dotychczas była stosowana w grach action i FPS. Udowodnić, że mogłaby z powodzeniem znaleźć zastosowanie w symulacji komputerowej, której celem jest np. badanie zachowań społecznych, badanie zachowań łazików na marsie lub badanie przebiegu wydarzeń historycznych. 
+
+Przeprowadzić symulację hipotetycznego wydarzenia historycznego, które rozgrywa się w okresie amerykańskiej gorączki złota. Dwie grupy górników próbują się wzbogacić poprzez wydobycie jak największej ilości złota. Grupy w wyniku przeszłych waśni są do siebie wrogo nastawione.
+
+Innowacja. Usprawnienie w stosunku do oryginalnej architektury: każdy obiekt w świecie gry, tj. agent lub przedmiot środowiskowy, jest oznaczony jako Latarnia (ang. Beacon) konkretnego typu. Oznacza to "obiekt wykrywalny przez sensor agenta". Wprowadza to dodatkową warstwę abstrakcji, dzięki której agenci oraz obiekty środowiskowe mogą być łatwo wymienialne lub rozbudowywane, a ich przeznaczenie może się zmieniać w zależności od decyzji badacza. Podejście to wymaga jednak, aby cała logika postępowania z danym typem latarni została zapisana w skryptach agenta. 
+
+Za tym usprawnieniem idzie kolejne - czyli rozbudowa sensorów agentów, które muszą być zdolne do łatwego wykrywania obiektów wszelakiego typu oraz obsługiwania abstrakcji Beacon. 
+
+Zalety: 
+ - łatwość zmiany przeznaczenia danego obiektu - podczas testowania symulacji  
+
+Innym usprawnieniem jest zapisywanie listy 
+
+
+Założenia dla wszystkich scenariuszy:
+- pozycje depozytów i obozów z góry ustalone na mapie (nie mogą się zmieniać)
+
+
+Scenariusz 1
 Założenia:
-2 drużyny (i 2 obozy)
-3 agentów na każdą drużynę
-domyślnie obie drużyny mają te same cechy i parametry
-Pozycje depozytów z góry ustalone
+- 2 drużyny (i 2 obozy)
+- 3 agentów na każdą drużynę
+- agenci obu drużyn mają średnio-wysokie cechy
+- 10 min czasu symulacji
+Wnioski: 
+- drużyny w ogóle się nie spotkały (za mało staminy, aby mogły do siebie dotrzeć)
+
+
+Scenariusz 2
+Założenia:
+- 2 drużyny (i 2 obozy)
+- 3 agentów na każdą drużynę
+- agenci obu drużyn mają bardzo wysokie cechy
+- 10 min czasu symulacji
+Wnioski: 
+?
+
+Scenariusz 3
+Założenia:
+- 2 drużyny (i 2 obozy)
+- 3 agentów na każdą drużynę
+- agenci obu drużyn mają niskie cechy
+- 10 min czasu symulacji
+Wnioski: 
+?
+
+
+
+Kierunki rozwoju: 
+- Współpraca ze znawcą danej dziedziny, np. historykiem lub geologiem. Jak dokładnie wygląda wydobycie złota? Jak rozlokowane są żyły złota w naturze? 
+- Wprowadzenie sieci neuronowych 
