@@ -13,7 +13,7 @@ public class AgentStats : MonoBehaviour
     [Range(10, 100)]
     [SerializeField] float fortitude = 10;
 
-    [Range(1, 10)]
+    [Range(10, 100)]
     [SerializeField] float speed = 3.5f;
 
     [Range(10, 100)]
@@ -127,7 +127,7 @@ public class AgentStats : MonoBehaviour
         health = Mathf.Clamp(health, 0, maxHealth);
         relax = Mathf.Clamp(relax, 0, maxRelax);
         StatsChanged?.Invoke();
-        CheckDeath();
+        ServeDeath();
     }
 
     public float Health {
@@ -137,11 +137,11 @@ public class AgentStats : MonoBehaviour
             health = Mathf.Clamp(health, 0, maxHealth);
             StatsChanged?.Invoke();
             // TODO: This is a temporary solution, death should be handled differently
-            CheckDeath();
+            ServeDeath();
         }
     }
 
-    private void CheckDeath() {
+    private void ServeDeath() {
         if(health <= 0) {
             transform.position = new Vector3(0, -100, 0);
             GetComponent<GAgent>()?.ReevaluatePlan();
@@ -286,7 +286,7 @@ public class AgentStats : MonoBehaviour
     public float Strength => strength;
     public float Condition => condition;
     public float Fortitude => fortitude;
-    public float Speed => speed;
+    public float SpeedForNavMeshAgent => speed / 10;
     public float Intelligence => intelligence;
     public Vector3 RestPosition => restGameObject.transform.position;
     public Vector3 ShrinePosition => shrineGameObject.transform.position;

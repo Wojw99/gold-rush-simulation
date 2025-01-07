@@ -15,6 +15,7 @@ Innym usprawnieniem jest zapisywanie listy
 
 Założenia dla wszystkich scenariuszy:
 - pozycje depozytów i obozów z góry ustalone na mapie (nie mogą się zmieniać)
+napisać coś o czynnikach środowiskowych (świat fizyczny) i nierównomiernym ułożeniu depozytów, itp.
 
 
 Scenariusz 1

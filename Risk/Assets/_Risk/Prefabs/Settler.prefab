@@ -542,7 +542,7 @@ MonoBehaviour:
   strength: 50
   condition: 50
   fortitude: 50
-  speed: 3.5
+  speed: 35
   intelligence: 50
   goldRecognition: 50
   plantsRecognition: 50
@@ -551,8 +551,9 @@ MonoBehaviour:
   attack: 8
   attackSpeed: 1.1
   team: {fileID: 11400000, guid: ecf3cca9413403f40868299e8c822625, type: 2}
-  isFillingHealth: 0
-  isDrawingHealth: 0
+  restGameObject: {fileID: 0}
+  shrineGameObject: {fileID: 0}
+  storageGameObject: {fileID: 0}
 --- !u!114 &7234050820136317368
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,10 +10,17 @@ public class GameStatsManager : MonoBehaviour
     int _maxAgents = 10;
     bool _timePaused = false;
 
+    [SerializeField] Team team1;
+    [SerializeField] Team team2;
+    [SerializeField] Building team1Storage;
+    [SerializeField] Building team2Storage;
+
     public float CurrentGold => _currentGold;
     public float MaxGold => _maxGold;
     public int CurrentAgents => _currentAgents;
     public int MaxAgents => _maxAgents;
+    public Team Team1 => team1;
+    public Team Team2 => team2;
 
     private void Start() {
         _maxGold = CountGoldInDeposits();
@@ -24,6 +31,27 @@ public class GameStatsManager : MonoBehaviour
 
     private void Update() {
         UpdateStats();
+        CountAgentsInTeam(team1, team1Storage);
+        CountAgentsInTeam(team2, team2Storage);
+    }
+
+    private void CountAgentsInTeam(Team team, Building camp) {
+        var agents = FindObjectsOfType<AgentStats>();
+        var aliveAgents = 0;
+        var gold = 0f;
+
+        foreach(var agent in agents) {
+            if(agent.Team == team ) {
+                if(!agent.IsDead) {
+                    aliveAgents += 1;
+                }
+                gold += agent.Ore;
+            }
+        }
+        gold += camp.GoldAmount;
+
+        team.AliveAgents = aliveAgents;
+        team.CurrentGold = gold;
     }
 
     public void UpdateStats() {

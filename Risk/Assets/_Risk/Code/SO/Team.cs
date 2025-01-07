@@ -16,4 +16,7 @@ public class Team : ScriptableObject
 
     [Tooltip("The visual model for agents of this team")]
     public GameObject visualModel;
+
+    public int AliveAgents { get; set; } = 0;
+    public float CurrentGold { get; set; } = 0;
 }

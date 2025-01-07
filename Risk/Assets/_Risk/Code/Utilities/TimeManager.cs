@@ -9,17 +9,17 @@ public class TimeManager : MonoBehaviour
     bool timePaused = false;
 
     readonly int minTimeMultiplier = 1;
-    readonly int maxTimeMultiplier = 10;
+    readonly int maxTimeMultiplier = 30;
 
     public event Action<int> TimeMultiplierChanged;
 
     public void FastForwardTime() {
-        TimeMultiplier += 1;
+        TimeMultiplier += 5;
         PlayTime();
     }
 
     public void SlowDownTime() {
-        TimeMultiplier -= 1;
+        TimeMultiplier -= 5;
         PlayTime();
     }
 
