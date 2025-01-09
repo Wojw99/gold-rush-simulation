@@ -1,53 +1,54 @@
 Cel pracy: 
-Architektura GOAP dotychczas była stosowana w grach action i FPS. Udowodnić, że mogłaby z powodzeniem znaleźć zastosowanie w symulacji komputerowej, której celem jest np. badanie zachowań społecznych, badanie zachowań łazików na marsie lub badanie przebiegu wydarzeń historycznych. 
+Architektura GOAP dotychczas była stosowana w grach action i FPS. Udowodnić, że mogłaby z powodzeniem znaleźć zastosowanie w symulacji komputerowej, której celem jest np. badanie zachowań społecznych lub badanie zachowania robotów (jak np. łaziki na marsie) w terenie o zmiennych warunkach środowiskowych. 
 
-Przeprowadzić symulację hipotetycznego wydarzenia historycznego, które rozgrywa się w okresie amerykańskiej gorączki złota. Dwie grupy górników próbują się wzbogacić poprzez wydobycie jak największej ilości złota. Grupy w wyniku przeszłych waśni są do siebie wrogo nastawione.
+Przeprowadzić symulację hipotetycznego wydarzenia społeczno-historycznego, które rozgrywa się w okresie amerykańskiej gorączki złota, gdzie dwie grupy górników próbują się wzbogacić poprzez wydobycie jak największej ilości złota.
 
 Innowacja. Usprawnienie w stosunku do oryginalnej architektury: każdy obiekt w świecie gry, tj. agent lub przedmiot środowiskowy, jest oznaczony jako Latarnia (ang. Beacon) konkretnego typu. Oznacza to "obiekt wykrywalny przez sensor agenta". Wprowadza to dodatkową warstwę abstrakcji, dzięki której agenci oraz obiekty środowiskowe mogą być łatwo wymienialne lub rozbudowywane, a ich przeznaczenie może się zmieniać w zależności od decyzji badacza. Podejście to wymaga jednak, aby cała logika postępowania z danym typem latarni została zapisana w skryptach agenta. 
 
 Za tym usprawnieniem idzie kolejne - czyli rozbudowa sensorów agentów, które muszą być zdolne do łatwego wykrywania obiektów wszelakiego typu oraz obsługiwania abstrakcji Beacon. 
 
 Zalety: 
- - łatwość zmiany przeznaczenia danego obiektu - podczas testowania symulacji  
+ - łatwość zmiany przeznaczenia danego obiektu - również w czasie testowania symulacji (tylko taką real-time zmianę musiałbym zaimplementować)  
 
-Innym usprawnieniem jest zapisywanie listy 
+Innym usprawnieniem jest zapisywanie listy. 
 
+Coś o tym, że statystyki i mechaniki symulacji z założenia miały być bardzo proste, aby znajdowanie błędów i usprawnień było jak najszybsze. 
+
+Coś o tym jak może umrzeć dany agent.
+
+Zapisać coś o tym, że system planujący w GOAP może czasem wybierać działania niespodziewane nawet dla samego twórcy.  
+
+PRZEGLĄD WCZEŚNIEJSZYCH ROZWIĄZAŃ - ILE TEGO MUSI BYĆ????
+
+CZY TEN ELEMENT INNOWACJI MOŻE TAKI BYĆ???
 
 Założenia dla wszystkich scenariuszy:
 - pozycje depozytów i obozów z góry ustalone na mapie (nie mogą się zmieniać)
-napisać coś o czynnikach środowiskowych (świat fizyczny) i nierównomiernym ułożeniu depozytów, itp.
+- napisać coś o czynnikach środowiskowych (świat fizyczny) i nierównomiernym ułożeniu depozytów, itp.
+- coś o tym że początkowe pozycje depozytów zostały wylosowane przez generator (i położenie depozytów jest takie same dla każdego badania)
+- może jeszcze obliczyć złoża z pirytem i bluszczem? 
+
+A MOŻE BY TAK PODMIENIĆ GÓRNIKÓW NA ROBOTY NA MARSIE?
+
+CZY TO DOBRY SPOSÓB NA OPISYWANIE TESTÓW?
+
+CZY POWINIENEM POWTÓRZYĆ KAŻDY TEST (ROBIĆ KILKA PRÓB)? 
 
 
-Scenariusz 1
-Założenia:
-- 2 drużyny (i 2 obozy)
-- 3 agentów na każdą drużynę
-- agenci obu drużyn mają średnio-wysokie cechy
-- 10 min czasu symulacji
-Wnioski: 
-- drużyny w ogóle się nie spotkały (za mało staminy, aby mogły do siebie dotrzeć)
-
-
-Scenariusz 2
-Założenia:
-- 2 drużyny (i 2 obozy)
-- 3 agentów na każdą drużynę
-- agenci obu drużyn mają bardzo wysokie cechy
-- 10 min czasu symulacji
-Wnioski: 
-?
-
-Scenariusz 3
-Założenia:
-- 2 drużyny (i 2 obozy)
-- 3 agentów na każdą drużynę
-- agenci obu drużyn mają niskie cechy
-- 10 min czasu symulacji
-Wnioski: 
-?
-
-
+Wnioski testów: 
+- Grupy o większych zdolnościach fizycznych oraz psychicznych radziły sobie lepiej w pierwszych minutach czasu symulacji, ale pod koniec wyniki były już podobne do mniej doświadczonych grup.  
+- Członkom grup o większych zdolnościach fizycznych oraz psychicznych częściej udawało się dotrzeć do obozu po wygranym starciu i przeżyć. 
+- Agenci odwiedzali wielokrotnie te same miejsca, co skutkowało znacznym obniżeniem efektywności wydobycia. 
+- Czasem nietypowe działania, np. ucieczka Romson'a (mimo że auto pracy magisterskiej de facto tego nie zakładał).
 
 Kierunki rozwoju: 
 - Współpraca ze znawcą danej dziedziny, np. historykiem lub geologiem. Jak dokładnie wygląda wydobycie złota? Jak rozlokowane są żyły złota w naturze? 
 - Wprowadzenie sieci neuronowych 
+- zapis przebiegu symulacji dla całej mapy z możliwością jej odtwarzania (symulacja była śledzona przeze mnie w czasie rzeczywistym i nie została przeze mnie zauważona przyczyna śmierci w teście 1 próbie 3)
+- Przelicznik czasu symulacji na hipotetyczny czas rzeczywisty
+- Znakowanie odwiedzonych terenów
+
+Do czego mógłby posłużyć stworzony system? 
+- Optymalizowanie czasu pracy urządzeń IoT. Kiedy urządzenie powinno przestać pracować, aby zaoszczędzić energię? Test przeprowadzony na górnikach pokazuje, że agenci mieli najwyższą efektywność w pierwszych minutach testu. 
+- Prototypowanie nowych rozwiązań dla urządzeń IoT. Przykładowo, gdyby grupy górników zamienić na np. autonomiczne odkurzacze, to moglibyśmy jakoś znakować odwiedzone tereny, aby przyspieszyć proces. 
+- Optymalizowanie efektywności pracowników w zakładach pracy. 
