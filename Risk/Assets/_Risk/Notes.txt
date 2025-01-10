@@ -34,6 +34,29 @@ CZY TO DOBRY SPOSÓB NA OPISYWANIE TESTÓW?
 
 CZY POWINIENEM POWTÓRZYĆ KAŻDY TEST (ROBIĆ KILKA PRÓB)? 
 
+NIE MAM UI DO USTAWIANIA WARUNKÓW POCZĄTKOWYCH I NA RAZIE WSZYSTKO USTAWIAM W UNITY. CZY DOPISAĆ TAKA FUNKCJONALNOŚĆ?
+
+
+
+Czego dowieść w badaniach?
+
+* Percepcja - bycie świadomym środowiska oraz reakcja na zmiany w takowym środowisku.
+
+* Interaktywność - interakcja z innymi agentami i/lub środowiskiem.
+
+* Proaktywność - agent podejmuje inicjatywę, a jego działanie jest zorientowane na cel. 
+
+* Autonomiczność - agent działa bez bezpośredniej interwencji człowieka.
+
+Dodatkowo: 
+
+* modyfikowanie zachowania pod wpływem cech
+
+* uczenie się i zwiększanie efektywności pracy 
+
+
+
+
 
 Wnioski testów: 
 - Grupy o większych zdolnościach fizycznych oraz psychicznych radziły sobie lepiej w pierwszych minutach czasu symulacji, ale pod koniec wyniki były już podobne do mniej doświadczonych grup.  

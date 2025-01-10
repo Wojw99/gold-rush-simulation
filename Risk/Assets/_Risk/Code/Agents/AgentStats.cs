@@ -39,6 +39,8 @@ public class AgentStats : MonoBehaviour
     float ore = 100;
     float relax = 100;
     float pyriteModifier = 100;
+    int kills = 0;
+    float collectedGold = 0;
 
     int id = CalculateId();
     [SerializeField] string agentName = null;
@@ -65,6 +67,8 @@ public class AgentStats : MonoBehaviour
     CountdownTimer statsTimer;
 
     public event Action StatsChanged;
+    public event Action CollectedGoldChanged;
+    public event Action DeathStatusChanged;
 
     void Awake() {
         maxHealth = 100 + fortitude * 2; 
@@ -86,7 +90,6 @@ public class AgentStats : MonoBehaviour
 
     void Start() {
         SetupTimer();
-        Health = 20;
     }
 
     void Update() {
@@ -148,6 +151,7 @@ public class AgentStats : MonoBehaviour
             GetComponent<Beacon>()?.Destroy(5f);
             Debug.Log($"{agentName} died");
             GameStatsManager.instance.UpdateStats();
+            DeathStatusChanged?.Invoke();
         }
     }
 
@@ -288,6 +292,21 @@ public class AgentStats : MonoBehaviour
     public float Fortitude => fortitude;
     public float SpeedForNavMeshAgent => speed / 10;
     public float Intelligence => intelligence;
+    public int Kills {
+        get => kills;
+        set {
+            kills = value;
+            StatsChanged?.Invoke();
+        }
+    }
+    public float CollectedGold {
+        get => collectedGold;
+        set {
+            collectedGold = value;
+            StatsChanged?.Invoke();
+            CollectedGoldChanged?.Invoke();
+        }
+    }
     public Vector3 RestPosition => restGameObject.transform.position;
     public Vector3 ShrinePosition => shrineGameObject.transform.position;
     public Vector3 StoragePosition => storageGameObject.transform.position;
@@ -301,6 +320,8 @@ public class AgentStats : MonoBehaviour
 
     void OnDestroy() {
         StatsChanged = null;
+        CollectedGoldChanged = null;
+        DeathStatusChanged = null;
     }
 
     private static int _maxId = -1;

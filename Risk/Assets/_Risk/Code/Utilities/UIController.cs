@@ -10,20 +10,22 @@ public class UIController : MonoBehaviour
     [SerializeField] TextMeshProUGUI agentStatsText;
     [SerializeField] Image agentStatsPanel;
     [SerializeField] TextMeshProUGUI gameStatsText;
+    [SerializeField] TextMeshProUGUI teamStatsText;
     [SerializeField] GameObject stopPanel;
 
-    AgentStats agentStats;
+    AgentStats selectedAgentStats;
 
     void Update() {
-        if(agentStats != null) {
-            ShowAgentStatsText(agentStats);
+        if(selectedAgentStats != null) {
+            ShowAgentStatsText(selectedAgentStats);
         }
         UpdateGameStatsText();
+        UpdateTeamStatsText();
     }
 
     public void UpdateAgentStatsText(AgentStats agentStats) {
         ShowAgentStatsText(agentStats);
-        this.agentStats = agentStats;
+        this.selectedAgentStats = agentStats;
     }
 
     public void ShowStopPanel() {
@@ -34,10 +36,29 @@ public class UIController : MonoBehaviour
         stopPanel.gameObject.SetActive(false);
     }
 
+    public void UpdateTeamStatsText() {
+        var color = "#ffffff";
+        var text = "";
+
+        foreach(var team in GameStatsManager.instance.Teams) {
+            text += 
+                $"<color=#{team.color.ToHexString()}>{team.name}</color>\n" +
+                $"Gold: <color={color}>{team.CurrentGold}</color>, Miners: <color={color}>{team.AliveAgents}</color>\n";
+            var agents = FindObjectsOfType<AgentStats>();
+
+            foreach(var agent in agents) {
+                if(agent.Team == team ) {
+                    text += $"{agent.name} - Gold: {agent.CollectedGold}\n";
+                }
+            }
+            text += "\n";
+        }
+
+        teamStatsText.text = text;
+    }
+
     public void UpdateGameStatsText() {
         var color = "#ffffff";
-        var team1Color = GameStatsManager.instance.Team1.color;
-        var team2Color = GameStatsManager.instance.Team2.color;
         var currentTime = TimeManager.instance.CurrentTimeFormatted;
         var timeMultiplier = TimeManager.instance.TimeMultiplier;
         var currentGold = GameStatsManager.instance.CurrentGold;
@@ -48,15 +69,7 @@ public class UIController : MonoBehaviour
             $"Current time: <color={color}>{currentTime}</color>\n" +
             $"Time multiplier: <color={color}>{timeMultiplier}</color>\n" +
             $"Gold in deposits: <color={color}>{currentGold}</color>/{maxGold}\n" +
-            $"Miners: <color={color}>{currentMiners}</color>/{maxMiners}\n\n" + 
-
-            $"<color=#{team1Color.ToHexString()}>{GameStatsManager.instance.Team1.name}</color>\n" + 
-            $"Miners: {GameStatsManager.instance.Team1.AliveAgents}\n" + 
-            $"Gold: {GameStatsManager.instance.Team1.CurrentGold}\n\n" + 
-
-            $"<color=#{team2Color.ToHexString()}>{GameStatsManager.instance.Team2.name}</color>\n" + 
-            $"Miners: {GameStatsManager.instance.Team2.AliveAgents}\n" + 
-            $"Gold: {GameStatsManager.instance.Team2.CurrentGold}\n\n";
+            $"Miners: <color={color}>{currentMiners}</color>/{maxMiners}\n\n";
     }
 
     void ShowAgentStatsText(AgentStats agentStats) {
@@ -82,7 +95,7 @@ public class UIController : MonoBehaviour
     }
 
     public void RemoveAgentStatsText() {
-        agentStats = null;
+        selectedAgentStats = null;
         agentStatsText.text = "";
         agentStatsPanel.gameObject.SetActive(false);
     }

@@ -10,17 +10,15 @@ public class GameStatsManager : MonoBehaviour
     int _maxAgents = 10;
     bool _timePaused = false;
 
-    [SerializeField] Team team1;
-    [SerializeField] Team team2;
-    [SerializeField] Building team1Storage;
-    [SerializeField] Building team2Storage;
+    [SerializeField] Team[] teams;
+    [SerializeField] Building[] storages;
 
     public float CurrentGold => _currentGold;
     public float MaxGold => _maxGold;
     public int CurrentAgents => _currentAgents;
     public int MaxAgents => _maxAgents;
-    public Team Team1 => team1;
-    public Team Team2 => team2;
+    public Team[] Teams => teams;
+    public Building[] Buildings => storages;
 
     private void Start() {
         _maxGold = CountGoldInDeposits();
@@ -31,8 +29,7 @@ public class GameStatsManager : MonoBehaviour
 
     private void Update() {
         UpdateStats();
-        CountAgentsInTeam(team1, team1Storage);
-        CountAgentsInTeam(team2, team2Storage);
+        PauseTimeIfNecessery();
     }
 
     private void CountAgentsInTeam(Team team, Building camp) {
@@ -54,9 +51,7 @@ public class GameStatsManager : MonoBehaviour
         team.CurrentGold = gold;
     }
 
-    public void UpdateStats() {
-        _currentGold = CountGoldInDeposits();
-        _currentAgents = CountAgents();
+    private void PauseTimeIfNecessery() {
         if(_currentAgents == 0 || _currentGold == 0) {
             if(!_timePaused) {
                 TimeManager.instance.PauseTime();
@@ -65,16 +60,13 @@ public class GameStatsManager : MonoBehaviour
         }
     }
 
-    // private float CountGoldInStorages() {
-    //     var buildings = FindObjectsOfType<Building>();
-    //     var gold = 0f;
-
-    //     foreach(var building in buildings) {
-    //         gold += building.GoldAmount;
-    //     }
-
-    //     return gold;
-    // }
+    public void UpdateStats() {
+        _currentGold = CountGoldInDeposits();
+        _currentAgents = CountAgents();
+        for(int i = 0; i < teams.Length; i++) {
+            CountAgentsInTeam(teams[i], storages[i]);
+        }
+    }
 
     private int CountAgents() {
         var agents = FindObjectsOfType<AgentStats>();

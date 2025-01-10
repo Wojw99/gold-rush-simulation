@@ -165,6 +165,10 @@ public class MineStrategy : IActionStrategy
                 agentStats.Ore += deposit.GoldAmount;
                 agentStats.MiningExpertise += agentStats.CalculateLearningIncrement();
 
+                if(!deposit.IsPyrite) {
+                    agentStats.CollectedGold += deposit.GoldAmount;
+                }
+
                 if(deposit.IsPyrite) {
                     var diceRoll = UnityEngine.Random.Range(0, 100);
                     if(agentStats.GoldRecognition < diceRoll) {

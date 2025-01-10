@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e28834bd21fd684dacd0b49a9a8a8c4, type: 3}
-  m_Name: Enemies
+  m_Name: MinersB
   m_EditorClassIdentifier: 
   id: 1
-  name: Enemies
+  name: Team B
   color: {r: 1, g: 0.018481445, b: 0, a: 1}
-  visualModel: {fileID: 7625158201351052849, guid: 5e7af96254bc26b4282863967b27d03d,
+  visualModel: {fileID: 4385822909378713727, guid: 8f3b659eb2715924fa4731511c9af6a4,
     type: 3}

@@ -4,18 +4,9 @@ using UnityEngine;
 
 public class PositionHelper : MonoBehaviour
 {
-    [SerializeField] GameObject campGameObject;
-    [SerializeField] GameObject storageGameObject;
+    [SerializeField] GameObject hellPosition;
 
-    // public Vector3 GetCampPosition()
-    // {
-    //     return campGameObject.transform.position;
-    // }
-
-    // public Vector3 GetStoragePosition()
-    // {
-    //     return storageGameObject.transform.position;
-    // }
+    public GameObject HellPosition => hellPosition;
 
     #region Singleton
 
