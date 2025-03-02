@@ -48,7 +48,7 @@ public class UIController : MonoBehaviour
 
             foreach(var agent in agents) {
                 if(agent.Team == team ) {
-                    text += $"{agent.name} - Gold: {agent.CollectedGold}\n";
+                    text += $"{agent.AgentName} - Gold: {agent.CollectedGold}\n";
                 }
             }
             text += "\n";
@@ -58,18 +58,21 @@ public class UIController : MonoBehaviour
     }
 
     public void UpdateGameStatsText() {
-        var color = "#ffffff";
+        var color = "#feec79";
         var currentTime = TimeManager.instance.CurrentTimeFormatted;
         var timeMultiplier = TimeManager.instance.TimeMultiplier;
         var currentGold = GameStatsManager.instance.CurrentGold;
         var maxGold = GameStatsManager.instance.MaxGold;
         var currentMiners = GameStatsManager.instance.CurrentAgents;
         var maxMiners = GameStatsManager.instance.MaxAgents;
+        var extractedGold = ((maxGold - currentGold) / maxGold) * 100;
+        extractedGold = Mathf.Round(extractedGold * 100) / 100;
         gameStatsText.text =                         
-            $"Current time: <color={color}>{currentTime}</color>\n" +
-            $"Time multiplier: <color={color}>{timeMultiplier}</color>\n" +
-            $"Gold in deposits: <color={color}>{currentGold}</color>/{maxGold}\n" +
-            $"Miners: <color={color}>{currentMiners}</color>/{maxMiners}\n\n";
+            $"Current time: <color={color}>{currentTime}</color>     " +
+            $"Time multiplier: <color={color}>{timeMultiplier}</color>     " +
+            $"Gold in deposits: <color={color}>{currentGold}</color>/{maxGold}     " +
+            $"Extracted gold: <color={color}>{extractedGold}%</color>     " +
+            $"Miners: <color={color}>{currentMiners}</color>/{maxMiners}";
     }
 
     void ShowAgentStatsText(AgentStats agentStats) {

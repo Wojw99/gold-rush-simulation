@@ -47,6 +47,8 @@ public class AgentStats : MonoBehaviour
     [SerializeField] int attack = 10;
     [SerializeField] float attackSpeed = 1;
     [SerializeField] Team team;
+    [SerializeField] bool canModifyStamina = true;
+    [SerializeField] bool canModifyHealth = true;
     [SerializeField] GameObject restGameObject;
     [SerializeField] GameObject shrineGameObject;
     [SerializeField] GameObject storageGameObject;
@@ -90,6 +92,9 @@ public class AgentStats : MonoBehaviour
 
     void Start() {
         SetupTimer();
+        if(AgentName == "MinerA1") {
+            Health = 20;
+        }
     }
 
     void Update() {
@@ -106,16 +111,12 @@ public class AgentStats : MonoBehaviour
     }
 
     void UpdateStats() {
-        if(isFillingHealth) {
-            health += healthPerTimeUnit;
-        } else if (isDrawingHealth) {
-            health -= healthPerTimeUnit;
+        if(canModifyHealth) {
+            ModifyHealth();
         }
 
-        if(isFillingStamina) {
-            stamina += staminaPerTimeUnit;
-        } else if (isDrawingStamina) {
-            stamina -= staminaPerTimeUnit;
+        if(canModifyStamina) {
+            ModifyStamina();
         }
 
         if(stamina > maxStamina * 0.2f) {
@@ -131,6 +132,22 @@ public class AgentStats : MonoBehaviour
         relax = Mathf.Clamp(relax, 0, maxRelax);
         StatsChanged?.Invoke();
         ServeDeath();
+    }
+
+    void ModifyHealth() {
+        if(isFillingHealth) {
+            health += healthPerTimeUnit;
+        } else if (isDrawingHealth) {
+            health -= healthPerTimeUnit;
+        }
+    }
+
+    void ModifyStamina() {
+        if(isFillingStamina) {
+            stamina += staminaPerTimeUnit;
+        } else if (isDrawingStamina) {
+            stamina -= staminaPerTimeUnit;
+        }
     }
 
     public float Health {

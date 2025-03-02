@@ -390,6 +390,7 @@ GameObject:
   - component: {fileID: 2078177378698039316}
   - component: {fileID: 4488952798117922279}
   - component: {fileID: 1640732010983100038}
+  - component: {fileID: 941274564692157893}
   - component: {fileID: 7234050820136317368}
   m_Layer: 6
   m_Name: Settler
@@ -551,9 +552,56 @@ MonoBehaviour:
   attack: 8
   attackSpeed: 1.1
   team: {fileID: 11400000, guid: ecf3cca9413403f40868299e8c822625, type: 2}
+  canModifyStamina: 1
+  canModifyHealth: 1
   restGameObject: {fileID: 0}
   shrineGameObject: {fileID: 0}
   storageGameObject: {fileID: 0}
+--- !u!114 &941274564692157893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4787937725192321458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ce31ecef38f2274182603ca94a3100c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goalSettings:
+  - goalName: ChillOut
+    goalPriority: 0
+    goalDesiredEffect: Nothing
+    isActive: 1
+  - goalName: Wander
+    goalPriority: 1
+    goalDesiredEffect: Moving
+    isActive: 1
+  - goalName: KeepHealthUp
+    goalPriority: 10
+    goalDesiredEffect: IsHealthy
+    isActive: 1
+  - goalName: KeepStaminaUp
+    goalPriority: 5
+    goalDesiredEffect: IsRested
+    isActive: 1
+  - goalName: CollectOre
+    goalPriority: 3
+    goalDesiredEffect: HasFullOre
+    isActive: 1
+  - goalName: StoreGold
+    goalPriority: 4
+    goalDesiredEffect: HasNoOre
+    isActive: 1
+  - goalName: FollowInstructions
+    goalPriority: 99
+    goalDesiredEffect: IsWaitingForOrders
+    isActive: 1
+  - goalName: DefendYourself
+    goalPriority: 15
+    goalDesiredEffect: NoEnemyInRange
+    isActive: 1
 --- !u!114 &7234050820136317368
 MonoBehaviour:
   m_ObjectHideFlags: 0

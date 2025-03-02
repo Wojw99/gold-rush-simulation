@@ -18,6 +18,7 @@ public class GAgent : MonoBehaviour
     Rigidbody rb;
     AgentStats agentStats;
     AgentMemory agentMemory;
+    AgentSettings agentSettings;
 
     GameObject target;
     Vector3 destination;
@@ -35,6 +36,7 @@ public class GAgent : MonoBehaviour
 
     void Awake() {
         agentMemory = GetComponent<AgentMemory>();
+        agentSettings = GetComponent<AgentSettings>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         animationController = GetComponent<AnimationController>();
         agentStats = GetComponent<AgentStats>();
@@ -214,45 +216,54 @@ public class GAgent : MonoBehaviour
     void SetupGoals() {
         goals = new HashSet<GAgentGoal>();
 
-        goals.Add(new GAgentGoal.Builder("ChillOut")
-            .WithPriority(0)
-            .WithDesiredEffect(beliefs["Nothing"])
-            .Build());
+        foreach(var goalSettings in agentSettings.GoalSettings) {
+            if(goalSettings.isActive) {
+                goals.Add(new GAgentGoal.Builder(goalSettings.goalName)
+                    .WithPriority(goalSettings.goalPriority)
+                    .WithDesiredEffect(beliefs[goalSettings.goalDesiredEffect])
+                    .Build());
+            }
+        }
 
-        goals.Add(new GAgentGoal.Builder("Wander")
-            .WithPriority(1)
-            .WithDesiredEffect(beliefs["Moving"])
-            .Build());
+        // goals.Add(new GAgentGoal.Builder("ChillOut")
+        //     .WithPriority(0)
+        //     .WithDesiredEffect(beliefs["Nothing"])
+        //     .Build());
 
-        goals.Add(new GAgentGoal.Builder("KeepHealthUp")
-            .WithPriority(10)
-            .WithDesiredEffect(beliefs["IsHealthy"])
-            .Build());
+        // goals.Add(new GAgentGoal.Builder("Wander")
+        //     .WithPriority(1)
+        //     .WithDesiredEffect(beliefs["Moving"])
+        //     .Build());
 
-        goals.Add(new GAgentGoal.Builder("KeepStaminaUp")
-            .WithPriority(5)
-            .WithDesiredEffect(beliefs["IsRested"])
-            .Build());
+        // goals.Add(new GAgentGoal.Builder("KeepHealthUp")
+        //     .WithPriority(10)
+        //     .WithDesiredEffect(beliefs["IsHealthy"])
+        //     .Build());
 
-        goals.Add(new GAgentGoal.Builder("CollectOre")
-            .WithPriority(3)
-            .WithDesiredEffect(beliefs["HasFullOre"])
-            .Build());
+        // goals.Add(new GAgentGoal.Builder("KeepStaminaUp")
+        //     .WithPriority(5)
+        //     .WithDesiredEffect(beliefs["IsRested"])
+        //     .Build());
 
-        goals.Add(new GAgentGoal.Builder("StoreGold")
-            .WithPriority(4)
-            .WithDesiredEffect(beliefs["HasNoOre"])
-            .Build());
+        // goals.Add(new GAgentGoal.Builder("CollectOre")
+        //     .WithPriority(3)
+        //     .WithDesiredEffect(beliefs["HasFullOre"])
+        //     .Build());
 
-        goals.Add(new GAgentGoal.Builder("FollowInstructions")
-            .WithPriority(99)
-            .WithDesiredEffect(beliefs["IsWaitingForOrders"])
-            .Build());
+        // goals.Add(new GAgentGoal.Builder("StoreGold")
+        //     .WithPriority(4)
+        //     .WithDesiredEffect(beliefs["HasNoOre"])
+        //     .Build());
 
-        goals.Add(new GAgentGoal.Builder("DefendYourself")
-            .WithPriority(15)
-            .WithDesiredEffect(beliefs["NoEnemyInRange"])
-            .Build());
+        // goals.Add(new GAgentGoal.Builder("FollowInstructions")
+        //     .WithPriority(99)
+        //     .WithDesiredEffect(beliefs["IsWaitingForOrders"])
+        //     .Build());
+
+        // goals.Add(new GAgentGoal.Builder("DefendYourself")
+        //     .WithPriority(15)
+        //     .WithDesiredEffect(beliefs["NoEnemyInRange"])
+        //     .Build());
     }
 
     void OnPlayerSelectionChanged() {
