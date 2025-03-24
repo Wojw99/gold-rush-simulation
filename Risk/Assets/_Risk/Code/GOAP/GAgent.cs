@@ -224,46 +224,6 @@ public class GAgent : MonoBehaviour
                     .Build());
             }
         }
-
-        // goals.Add(new GAgentGoal.Builder("ChillOut")
-        //     .WithPriority(0)
-        //     .WithDesiredEffect(beliefs["Nothing"])
-        //     .Build());
-
-        // goals.Add(new GAgentGoal.Builder("Wander")
-        //     .WithPriority(1)
-        //     .WithDesiredEffect(beliefs["Moving"])
-        //     .Build());
-
-        // goals.Add(new GAgentGoal.Builder("KeepHealthUp")
-        //     .WithPriority(10)
-        //     .WithDesiredEffect(beliefs["IsHealthy"])
-        //     .Build());
-
-        // goals.Add(new GAgentGoal.Builder("KeepStaminaUp")
-        //     .WithPriority(5)
-        //     .WithDesiredEffect(beliefs["IsRested"])
-        //     .Build());
-
-        // goals.Add(new GAgentGoal.Builder("CollectOre")
-        //     .WithPriority(3)
-        //     .WithDesiredEffect(beliefs["HasFullOre"])
-        //     .Build());
-
-        // goals.Add(new GAgentGoal.Builder("StoreGold")
-        //     .WithPriority(4)
-        //     .WithDesiredEffect(beliefs["HasNoOre"])
-        //     .Build());
-
-        // goals.Add(new GAgentGoal.Builder("FollowInstructions")
-        //     .WithPriority(99)
-        //     .WithDesiredEffect(beliefs["IsWaitingForOrders"])
-        //     .Build());
-
-        // goals.Add(new GAgentGoal.Builder("DefendYourself")
-        //     .WithPriority(15)
-        //     .WithDesiredEffect(beliefs["NoEnemyInRange"])
-        //     .Build());
     }
 
     void OnPlayerSelectionChanged() {
