@@ -101,8 +101,8 @@ public class Sensor : MonoBehaviour
 
     public bool TryGetEnemyStats(int agentTeamId, out AgentStats enemyStats) {
         foreach(var target in targets) {
-            if(target.BeaconType == BeaconType.AGENT) {
-                if(target.GameObject.TryGetComponent(out AgentStats targetStats)) {
+            if(target != null && target.BeaconType == BeaconType.AGENT) {
+                if(target.GameObject != null && target.GameObject.TryGetComponent(out AgentStats targetStats)) {
                     if(targetStats.TeamId != agentTeamId) {
                         enemyStats = targetStats;
                         return true;
